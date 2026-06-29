@@ -4,6 +4,6 @@
           <AppFooter />
           <NuxtPage />
           <NuxtPage />
-  </:name=>
+  </NuxtLayout>
 </template>
 
