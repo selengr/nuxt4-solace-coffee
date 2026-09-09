@@ -4,6 +4,8 @@ const { info } = useCafe()
 useSeoMeta({
   title: `${info.name} — Specialty Coffee`,
   description: info.tagline,
+  ogTitle: `${info.name} — Specialty Coffee`,
+  ogDescription: info.tagline,
 })
 </script>
 
@@ -11,7 +13,9 @@ useSeoMeta({
   <div>
     <HomeHero />
     <HomeFeatured />
+    <HomeValues />
     <HomeStory />
+    <HomeGallery />
     <HomeVisit />
   </div>
 </template>

@@ -1,28 +1,34 @@
 <script setup lang="ts">
-const { info } = useCafe()
+const { info, values } = useCafe()
 
 useSeoMeta({
   title: `About — ${info.name}`,
-  description: 'The story behind Northroom specialty coffee.',
+  description: 'The story behind Solace specialty coffee in Seattle.',
 })
 </script>
 
 <template>
-  <div class="page section">
-    <div class="container about">
+  <div class="section-space">
+    <div class="container-site grid items-center gap-10 lg:grid-cols-2">
       <div>
         <p class="eyebrow">
           About
         </p>
-        <h1>Built for better mornings.</h1>
-        <p>
+        <h1 class="mb-5 max-w-[12ch] text-[clamp(2.4rem,6vw,3.4rem)]">
+          Built for better mornings.
+        </h1>
+        <p class="mb-4 max-w-md text-mute">
           {{ info.name }} began as a small counter with one espresso machine and
           a stubborn belief that coffee shops should feel calm — not rushed,
           not loud for the sake of it.
         </p>
-        <p>
+        <p class="mb-4 max-w-md text-mute">
           We roast relationships first: rotating microlots, dialed recipes, and
           a short food list that pairs with what’s in the cup.
+        </p>
+        <p class="max-w-md text-mute">
+          Today the room on Mercer Street is where neighbors start their day,
+          meet mid-afternoon, or simply sit with a pour-over and a book.
         </p>
       </div>
       <aside>
@@ -31,41 +37,23 @@ useSeoMeta({
           alt="Warm café interior with wooden tables and soft light"
           width="1200"
           height="800"
+          class="h-[min(28rem,70vw)] w-full rounded-sm object-cover"
         >
       </aside>
     </div>
+
+    <div class="container-site mt-20 grid gap-8 border-t border-ink/10 pt-12 md:grid-cols-3">
+      <article
+        v-for="value in values"
+        :key="value.title"
+      >
+        <h2 class="mb-3 text-xl">
+          {{ value.title }}
+        </h2>
+        <p class="text-sm leading-relaxed text-mute">
+          {{ value.description }}
+        </p>
+      </article>
+    </div>
   </div>
 </template>
-
-<style scoped>
-.about {
-  display: grid;
-  gap: 2.5rem;
-  align-items: center;
-}
-
-.about h1 {
-  font-size: clamp(2.4rem, 6vw, 3.4rem);
-  margin-bottom: 1.25rem;
-  max-width: 12ch;
-}
-
-.about p {
-  color: var(--color-muted);
-  margin-bottom: 1rem;
-  max-width: 36rem;
-}
-
-.about img {
-  width: 100%;
-  height: min(28rem, 70vw);
-  object-fit: cover;
-  border-radius: 0.35rem;
-}
-
-@media (min-width: 900px) {
-  .about {
-    grid-template-columns: 1fr 1fr;
-  }
-}
-</style>

@@ -3,106 +3,61 @@ const { info, byCategory } = useCafe()
 
 useSeoMeta({
   title: `Menu — ${info.name}`,
-  description: 'Espresso, brew bar, and simple food at Northroom.',
+  description: 'Espresso, brew bar, and kitchen plates at Solace Coffee.',
 })
 
 const sections = [
-  { key: 'espresso' as const, title: 'Espresso bar' },
-  { key: 'brew' as const, title: 'Brew bar' },
-  { key: 'food' as const, title: 'Kitchen' },
+  { key: 'espresso' as const, title: 'Espresso bar', note: 'Milk alternatives available.' },
+  { key: 'brew' as const, title: 'Brew bar', note: 'Ask for today’s origin card.' },
+  { key: 'food' as const, title: 'Kitchen', note: 'Pastries bake through the morning.' },
 ]
 </script>
 
 <template>
-  <div class="page section">
-    <div class="container">
+  <div class="section-space">
+    <div class="container-site">
       <p class="eyebrow">
         Menu
       </p>
-      <h1>What we’re pouring</h1>
-      <p class="lede">
-        A compact specialty menu — swap items in <code>app/data/menu.ts</code>.
+      <h1 class="mb-3 text-[clamp(2.4rem,6vw,3.5rem)]">
+        What we’re pouring
+      </h1>
+      <p class="mb-12 max-w-xl text-mute">
+        A focused specialty menu. Edit items in
+        <code class="rounded bg-stone px-1.5 py-0.5 text-sm">app/data/menu.ts</code>.
       </p>
 
       <section
         v-for="section in sections"
         :key="section.key"
-        class="menu-block"
+        class="mb-12"
       >
-        <h2>{{ section.title }}</h2>
-        <ul>
+        <div class="mb-4 flex flex-wrap items-end justify-between gap-3 border-b border-ink/10 pb-3">
+          <h2 class="text-[1.6rem]">
+            {{ section.title }}
+          </h2>
+          <p class="text-sm text-mute">
+            {{ section.note }}
+          </p>
+        </div>
+        <ul class="m-0 list-none p-0">
           <li
             v-for="item in byCategory(section.key)"
             :key="item.id"
+            class="grid grid-cols-[1fr_auto] gap-4 border-b border-ink/[0.08] py-4"
           >
             <div>
-              <h3>{{ item.name }}</h3>
-              <p>{{ item.description }}</p>
+              <h3 class="mb-1 text-[1.15rem]">
+                {{ item.name }}
+              </h3>
+              <p class="text-[0.92rem] text-mute">
+                {{ item.description }}
+              </p>
             </div>
-            <span>{{ item.price }}</span>
+            <span class="whitespace-nowrap font-medium">{{ item.price }}</span>
           </li>
         </ul>
       </section>
     </div>
   </div>
 </template>
-
-<style scoped>
-.page h1 {
-  font-size: clamp(2.4rem, 6vw, 3.5rem);
-  margin-bottom: 0.75rem;
-}
-
-.lede {
-  color: var(--color-muted);
-  margin-bottom: 3rem;
-  max-width: 36rem;
-}
-
-.lede code {
-  font-size: 0.85em;
-  background: var(--color-stone);
-  padding: 0.1rem 0.35rem;
-  border-radius: 0.25rem;
-}
-
-.menu-block {
-  margin-bottom: 2.75rem;
-}
-
-.menu-block h2 {
-  font-size: 1.6rem;
-  margin-bottom: 1rem;
-  padding-bottom: 0.65rem;
-  border-bottom: 1px solid rgb(26 23 20 / 0.12);
-}
-
-.menu-block ul {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.menu-block li {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 1rem;
-  padding: 1.1rem 0;
-  border-bottom: 1px solid rgb(26 23 20 / 0.08);
-}
-
-.menu-block h3 {
-  font-size: 1.15rem;
-  margin-bottom: 0.3rem;
-}
-
-.menu-block p {
-  color: var(--color-muted);
-  font-size: 0.92rem;
-}
-
-.menu-block span {
-  font-weight: 500;
-  white-space: nowrap;
-}
-</style>

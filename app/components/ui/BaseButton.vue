@@ -4,10 +4,12 @@ withDefaults(
     to?: string
     variant?: 'primary' | 'ghost' | 'light' | 'ink'
     type?: 'button' | 'submit'
+    disabled?: boolean
   }>(),
   {
     variant: 'primary',
     type: 'button',
+    disabled: false,
   },
 )
 
@@ -31,7 +33,8 @@ const variants: Record<string, string> = {
   <button
     v-else
     :type="type"
-    class="inline-flex items-center justify-center gap-2 rounded-sm px-5 py-3.5 text-sm font-medium tracking-wide transition duration-200 ease-out hover:-translate-y-px disabled:cursor-not-allowed disabled:opacity-60"
+    :disabled="disabled"
+    class="inline-flex items-center justify-center gap-2 rounded-sm px-5 py-3.5 text-sm font-medium tracking-wide transition duration-200 ease-out hover:-translate-y-px disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
     :class="variants[variant]"
   >
     <slot />

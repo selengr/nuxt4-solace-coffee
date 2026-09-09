@@ -1,17 +1,20 @@
-# Northroom — Nuxt 4 Café Starter
+# Solace Coffee
 
-A modern specialty-café website boilerplate built with **Nuxt 4**, Vue 3, and TypeScript.
+A production-shaped specialty café website built with **Nuxt 4**, Vue 3, TypeScript, Tailwind CSS, and a Nitro contact API.
 
-Demo brand: **Northroom**. Swap the name, menu, and photos to ship your own café site — or keep it as a clean Nuxt structure reference.
+Demo brand: **Solace** — quiet specialty coffee in Seattle. Fork it, rebrand it, or use it as a client-ready café site.
 
-## What’s included
+## Why this project
 
-- Full-bleed homepage (hero, featured menu, story, visit CTA)
-- Pages: Home · Menu · About · Visit
-- Typed café data + `useCafe()` composable
-- Layout shell with sticky header and footer
-- Design tokens (CSS variables) + expressive typography
-- Nuxt 4 `app/` directory best-practice layout
+Not a bare folder demo. It includes:
+
+- Polished multi-page café experience (Home, Menu, About, Visit, Contact)
+- Full-bleed hero, featured menu, values, story, gallery, and visit CTA
+- Typed content model + `useCafe()` composable
+- Tailwind design tokens (Solace palette + Fraunces / Sora)
+- Validated contact form with `POST /api/contact`
+- SEO meta, page transitions, responsive layout
+- Clear structure you can hand to a client or keep as a portfolio piece
 
 ## Quick start
 
@@ -22,29 +25,38 @@ npm run dev
 
 Open [http://localhost:3000](http://localhost:3000).
 
-## Project structure
+## Customize
+
+| Goal | Where |
+|---|---|
+| Café name, hours, menu | `app/data/menu.ts` |
+| Colors & type | `tailwind.config.ts` + `app/assets/css/main.css` |
+| Contact inbox | `.env` → `NUXT_CONTACT_INBOX` |
+| Photos | Replace Unsplash URLs in home/about components |
+| Map | `app/pages/visit.vue` |
+
+Copy `.env.example` to `.env` for local contact config.
+
+## Structure
 
 ```text
 app/
-  assets/css/        # Global tokens & base styles
   components/
-    home/            # Homepage sections
-    layout/          # Header & footer
-    ui/              # Reusable UI (BaseButton)
-  composables/       # useCafe()
-  data/              # Café info & menu content
-  layouts/           # default layout
-  pages/             # File-based routes
-  types/             # Shared TypeScript types
-nuxt.config.ts
+    contact/     Contact form
+    home/        Landing sections
+    layout/      Header & footer
+    ui/          BaseButton
+  composables/   useCafe()
+  data/          Café content
+  pages/         Routes
+  types/         Shared types
+server/
+  api/           contact.post.ts
 ```
 
-## Customize
+## Contact API
 
-1. Edit `app/data/menu.ts` — café name, hours, menu items  
-2. Update colors/fonts in `app/assets/css/main.css`  
-3. Replace Unsplash images with your own in `public/` or a CDN  
-4. Drop a map embed into `app/pages/visit.vue`
+`POST /api/contact` accepts `{ name, email, message }`, validates input, and logs the payload (demo mode). Wire `console.info` in `server/api/contact.post.ts` to Resend, Nodemailer, or a CRM webhook for production.
 
 ## Scripts
 
@@ -53,15 +65,12 @@ nuxt.config.ts
 | `npm run dev` | Development server |
 | `npm run build` | Production build |
 | `npm run preview` | Preview production build |
-| `npm run generate` | Static site generation |
+| `npm run generate` | Static generation |
 
-## Stack
+## Suggested GitHub name
 
-- [Nuxt 4](https://nuxt.com)
-- Vue 3 + Vue Router
-- TypeScript
-- Plain CSS with design tokens (no UI framework lock-in)
+Rename the remote repository to **`solace-coffee`** so the project reads as a brand product, not a tutorial starter.
 
 ## License
 
-MIT — use it for client work, demos, or your own café brand.
+MIT
