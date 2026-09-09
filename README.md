@@ -4,15 +4,13 @@ A production-shaped specialty café website built with **Nuxt 4**, Vue 3, TypeSc
 
 ## Features
 
-- Multi-page café site: Home · Menu · About · Visit · Contact · Order · **Events**
-- Open-now status from structured hours
-- Pickup cart + toast feedback
-- Menu category filters with add-to-order
-- Contact + events inquiry APIs (Resend or demo log)
-- Google Maps embed + LocalBusiness JSON-LD
-- Sitemap + robots
-- i18n English / فارسی (RTL)
-- `@nuxt/image`, ESLint, GitHub Actions CI, Vercel headers
+- Multi-page café site: Home · Menu · About · Visit · Contact · Order · Events · **Journal**
+- Markdown journal (`content/blog`) with listing + post pages
+- Menu search + category filters + pickup cart
+- Newsletter signup API (demo log)
+- Open-now status, testimonials, maps, JSON-LD, sitemap
+- EN / FA i18n with RTL
+- Skip link + focus styles, toasts, ESLint, CI
 
 ## Quick start
 

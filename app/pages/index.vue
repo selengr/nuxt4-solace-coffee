@@ -17,6 +17,7 @@ useSeoMeta({
     <HomeStory />
     <HomeTestimonials />
     <HomeGallery />
+    <HomeNewsletter />
     <HomeVisit />
   </div>
 </template>

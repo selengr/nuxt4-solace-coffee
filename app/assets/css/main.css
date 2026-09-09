@@ -74,6 +74,11 @@
   .skip-link {
     @apply absolute start-4 top-0 z-[60] -translate-y-[120%] rounded-sm bg-ink px-4 py-2 text-sm text-foam transition focus:translate-y-4;
   }
+
+  .sr-only {
+    @apply absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0;
+    clip: rect(0, 0, 0, 0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

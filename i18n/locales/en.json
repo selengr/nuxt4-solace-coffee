@@ -61,6 +61,15 @@
     "eyebrow": "From the room",
     "title": "What neighbors say."
   },
+  "newsletter": {
+    "eyebrow": "Stay close",
+    "title": "Seasonal notes in your inbox.",
+    "lede": "New lots, events, and quiet updates — a few times a month, never noisy.",
+    "email": "Email",
+    "placeholder": "you@email.com",
+    "cta": "Subscribe",
+    "sending": "Sending…"
+  },
   "lang": {
     "en": "EN",
     "fa": "FA"
