@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const { info } = useCafe()
+const { t } = useI18n()
+const localePath = useLocalePath()
 const year = new Date().getFullYear()
 </script>
 
@@ -17,7 +19,7 @@ const year = new Date().getFullYear()
 
       <div>
         <p class="mb-3 text-[0.7rem] uppercase tracking-[0.14em] text-brass">
-          Visit
+          {{ t('footer.visit') }}
         </p>
         <p class="text-sm">
           {{ info.address }}
@@ -29,7 +31,7 @@ const year = new Date().getFullYear()
 
       <div>
         <p class="mb-3 text-[0.7rem] uppercase tracking-[0.14em] text-brass">
-          Hours
+          {{ t('footer.hours') }}
         </p>
         <p
           v-for="line in info.hours"
@@ -42,14 +44,14 @@ const year = new Date().getFullYear()
 
       <div>
         <p class="mb-3 text-[0.7rem] uppercase tracking-[0.14em] text-brass">
-          Contact
+          {{ t('footer.contact') }}
         </p>
         <p class="text-sm">
           <NuxtLink
-            to="/contact"
+            :to="localePath('/contact')"
             class="transition hover:text-foam"
           >
-            Write to us
+            {{ t('footer.write') }}
           </NuxtLink>
         </p>
         <p class="text-sm">
@@ -65,8 +67,8 @@ const year = new Date().getFullYear()
     </div>
 
     <div class="container-site flex flex-col gap-2 pt-6 text-xs text-foam/45 sm:flex-row sm:justify-between">
-      <p>© {{ year }} {{ info.name }} Coffee. Built with Nuxt 4.</p>
-      <p>Specialty café website · Seattle</p>
+      <p>{{ t('footer.built', { year, name: info.name }) }}</p>
+      <p>{{ t('footer.city') }}</p>
     </div>
   </footer>
 </template>

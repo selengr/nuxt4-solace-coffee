@@ -13,6 +13,10 @@ withDefaults(
   },
 )
 
+const emit = defineEmits<{
+  click: [MouseEvent]
+}>()
+
 const variants: Record<string, string> = {
   primary: 'bg-leaf text-foam hover:bg-leaf-soft',
   ghost: 'border border-foam/35 bg-transparent text-foam hover:border-foam hover:bg-foam/10',
@@ -36,6 +40,7 @@ const variants: Record<string, string> = {
     :disabled="disabled"
     class="inline-flex items-center justify-center gap-2 rounded-sm px-5 py-3.5 text-sm font-medium tracking-wide transition duration-200 ease-out hover:-translate-y-px disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
     :class="variants[variant]"
+    @click="emit('click', $event)"
   >
     <slot />
   </button>

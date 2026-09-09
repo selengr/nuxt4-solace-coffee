@@ -11,6 +11,17 @@
     @apply bg-foam font-sans text-ink antialiased;
   }
 
+  body.font-fa {
+    font-family: 'Vazirmatn', 'Sora', system-ui, sans-serif;
+  }
+
+  body.font-fa h1,
+  body.font-fa h2,
+  body.font-fa h3,
+  body.font-fa h4 {
+    font-family: 'Vazirmatn', 'Fraunces', Georgia, serif;
+  }
+
   h1,
   h2,
   h3,

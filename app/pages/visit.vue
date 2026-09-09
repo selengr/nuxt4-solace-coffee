@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { info } = useCafe()
+const localePath = useLocalePath()
 
 useSeoMeta({
   title: `Visit — ${info.name}`,
@@ -50,7 +51,7 @@ useSeoMeta({
             </dt>
             <dd class="m-0">
               <NuxtLink
-                to="/contact"
+                :to="localePath('/contact')"
                 class="text-leaf underline-offset-2 hover:underline"
               >
                 Send a message
@@ -62,18 +63,7 @@ useSeoMeta({
         </dl>
       </div>
 
-      <div
-        class="grid min-h-[22rem] place-content-center gap-1 rounded-md bg-gradient-to-br from-stone to-mist p-8 text-center"
-        aria-label="Map placeholder for café location"
-      >
-        <p class="font-display text-2xl">
-          {{ info.address }}
-        </p>
-        <p>{{ info.city }}</p>
-        <p class="mt-3 text-sm text-mute">
-          Replace this panel with Google Maps or Mapbox in production.
-        </p>
-      </div>
+      <VisitMap />
     </div>
   </div>
 </template>

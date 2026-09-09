@@ -1,15 +1,22 @@
 <script setup lang="ts">
 const { info } = useCafe()
+const { t, locale } = useI18n()
+const localePath = useLocalePath()
+const switchLocalePath = useSwitchLocalePath()
+const { count } = useCart()
 const open = ref(false)
 const route = useRoute()
 
-const links = [
-  { to: '/', label: 'Home' },
-  { to: '/menu', label: 'Menu' },
-  { to: '/about', label: 'About' },
-  { to: '/visit', label: 'Visit' },
-  { to: '/contact', label: 'Contact' },
-]
+const links = computed(() => [
+  { to: localePath('/'), label: t('nav.home') },
+  { to: localePath('/menu'), label: t('nav.menu') },
+  { to: localePath('/about'), label: t('nav.about') },
+  { to: localePath('/order'), label: t('nav.order') },
+  { to: localePath('/visit'), label: t('nav.visit') },
+  { to: localePath('/contact'), label: t('nav.contact') },
+])
+
+const otherLocale = computed(() => (locale.value === 'en' ? 'fa' : 'en'))
 
 watch(
   () => route.fullPath,
@@ -21,17 +28,17 @@ watch(
 
 <template>
   <header class="sticky top-0 z-40 border-b border-ink/5 bg-foam/90 backdrop-blur-md">
-    <div class="container-site flex min-h-[4.25rem] items-center gap-6">
+    <div class="container-site flex min-h-[4.25rem] items-center gap-4 md:gap-6">
       <NuxtLink
-        to="/"
-        class="mr-auto font-display text-[1.45rem] font-semibold tracking-tight"
+        :to="localePath('/')"
+        class="me-auto font-display text-[1.45rem] font-semibold tracking-tight"
       >
         {{ info.name }}
       </NuxtLink>
 
       <nav
         id="mobile-nav"
-        class="hidden items-center gap-7 md:flex"
+        class="hidden items-center gap-6 lg:flex"
         aria-label="Primary"
       >
         <NuxtLink
@@ -45,16 +52,36 @@ watch(
         </NuxtLink>
       </nav>
 
+      <NuxtLink
+        :to="switchLocalePath(otherLocale)"
+        class="hidden text-xs font-medium uppercase tracking-wider text-mute hover:text-ink sm:inline"
+      >
+        {{ t(`lang.${otherLocale}`) }}
+      </NuxtLink>
+
+      <NuxtLink
+        :to="localePath('/order')"
+        class="relative hidden text-sm text-mute hover:text-ink md:inline"
+      >
+        {{ t('nav.order') }}
+        <span
+          v-if="count"
+          class="absolute -end-3 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-leaf px-1 text-[10px] text-foam"
+        >
+          {{ count }}
+        </span>
+      </NuxtLink>
+
       <BaseButton
         class="hidden md:inline-flex"
-        to="/visit"
+        :to="localePath('/visit')"
         variant="primary"
       >
-        Visit us
+        {{ t('nav.visitCta') }}
       </BaseButton>
 
       <button
-        class="grid h-10 w-10 place-content-center gap-1.5 md:hidden"
+        class="grid h-10 w-10 place-content-center gap-1.5 lg:hidden"
         type="button"
         :aria-expanded="open"
         aria-controls="mobile-nav-panel"
@@ -69,7 +96,7 @@ watch(
     <nav
       v-if="open"
       id="mobile-nav-panel"
-      class="border-t border-ink/5 bg-foam px-5 py-4 md:hidden"
+      class="border-t border-ink/5 bg-foam px-5 py-4 lg:hidden"
       aria-label="Mobile"
     >
       <div class="flex flex-col gap-3">
@@ -81,11 +108,17 @@ watch(
         >
           {{ link.label }}
         </NuxtLink>
+        <NuxtLink
+          :to="switchLocalePath(otherLocale)"
+          class="py-1 text-sm text-mute"
+        >
+          {{ t(`lang.${otherLocale}`) }}
+        </NuxtLink>
         <BaseButton
-          to="/visit"
+          :to="localePath('/visit')"
           variant="primary"
         >
-          Visit us
+          {{ t('nav.visitCta') }}
         </BaseButton>
       </div>
     </nav>

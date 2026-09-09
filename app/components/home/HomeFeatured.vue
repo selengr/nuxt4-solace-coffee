@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const { featured } = useCafe()
+const { t } = useI18n()
+const localePath = useLocalePath()
 </script>
 
 <template>
@@ -8,14 +10,14 @@ const { featured } = useCafe()
       <div class="mb-10 flex flex-wrap items-end justify-between gap-5">
         <div>
           <p class="eyebrow">
-            On the bar
+            {{ t('featured.eyebrow') }}
           </p>
           <h2 class="max-w-[14ch] text-[clamp(2rem,4vw,2.85rem)]">
-            Featured pours & plates
+            {{ t('featured.title') }}
           </h2>
         </div>
-        <BaseButton to="/menu">
-          Full menu
+        <BaseButton :to="localePath('/menu')">
+          {{ t('featured.fullMenu') }}
         </BaseButton>
       </div>
 

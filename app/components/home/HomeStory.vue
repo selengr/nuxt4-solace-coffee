@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const { info } = useCafe()
+const { t } = useI18n()
+const localePath = useLocalePath()
 </script>
 
 <template>
@@ -15,23 +17,20 @@ const { info } = useCafe()
     </div>
     <div class="grid content-center gap-4 p-[clamp(2.5rem,6vw,4.5rem)]">
       <p class="eyebrow">
-        Our room
+        {{ t('story.eyebrow') }}
       </p>
       <h2 class="max-w-[12ch] text-[clamp(2rem,4vw,3rem)]">
-        A quiet counter for better coffee.
+        {{ t('story.title') }}
       </h2>
       <p class="max-w-md text-mute">
-        {{ info.name }} is a specialty café built for unhurried mornings —
-        single-origin lots, careful milk texture, and a room that feels like a
-        pause in the day.
+        {{ t('story.p1', { name: info.name }) }}
       </p>
       <p class="max-w-md text-mute">
-        This codebase is production-shaped: typed content, composables, Tailwind
-        design tokens, and a Nitro contact API you can connect to email or CRM.
+        {{ t('story.p2') }}
       </p>
       <div class="pt-2">
-        <BaseButton to="/about">
-          Our story
+        <BaseButton :to="localePath('/about')">
+          {{ t('story.cta') }}
         </BaseButton>
       </div>
     </div>

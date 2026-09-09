@@ -1,5 +1,7 @@
 <script setup lang="ts">
 const { info } = useCafe()
+const { t } = useI18n()
+const localePath = useLocalePath()
 </script>
 
 <template>
@@ -20,7 +22,7 @@ const { info } = useCafe()
 
     <div class="container-site relative z-10 max-w-2xl pb-[clamp(3.5rem,8vw,5.5rem)] pt-[clamp(4rem,12vw,7rem)]">
       <p class="eyebrow !text-brass reveal">
-        Specialty coffee · Seattle
+        {{ t('hero.eyebrow') }}
       </p>
       <h1 class="reveal reveal-delay-1 mb-4 text-[clamp(3.4rem,10vw,6.6rem)] tracking-tight">
         {{ info.name }}
@@ -30,16 +32,16 @@ const { info } = useCafe()
       </p>
       <div class="reveal reveal-delay-3 flex flex-wrap gap-3">
         <BaseButton
-          to="/menu"
+          :to="localePath('/menu')"
           variant="light"
         >
-          View the menu
+          {{ t('hero.ctaMenu') }}
         </BaseButton>
         <BaseButton
-          to="/visit"
+          :to="localePath('/visit')"
           variant="ghost"
         >
-          Find the room
+          {{ t('hero.ctaVisit') }}
         </BaseButton>
       </div>
     </div>

@@ -1,75 +1,50 @@
 # Solace Coffee
 
-A production-shaped specialty café website built with **Nuxt 4**, Vue 3, TypeScript, Tailwind CSS, and a Nitro contact API.
+A production-shaped specialty café website built with **Nuxt 4**, Vue 3, TypeScript, Tailwind CSS, Nitro APIs, Resend email, and bilingual **EN / FA**.
 
-Demo brand: **Solace** — quiet specialty coffee in Seattle. Fork it, rebrand it, or use it as a client-ready café site.
+Demo brand: **Solace** — quiet specialty coffee in Seattle.
 
-## Why this project
+## Features
 
-Not a bare folder demo. It includes:
-
-- Polished multi-page café experience (Home, Menu, About, Visit, Contact)
-- Full-bleed hero, featured menu, values, story, gallery, and visit CTA
-- Typed content model + `useCafe()` composable
-- Tailwind design tokens (Solace palette + Fraunces / Sora)
-- Validated contact form with `POST /api/contact`
-- SEO meta, page transitions, responsive layout
-- Clear structure you can hand to a client or keep as a portfolio piece
+- Multi-page café site: Home · Menu · About · Visit · Contact · **Order**
+- Full-bleed landing with values, story, gallery, and visit CTA
+- Pickup ordering cart (`useCart`) + `POST /api/order`
+- Contact form + `POST /api/contact` with **Resend** (demo log fallback)
+- Embedded Google Maps on Visit
+- i18n English / فارسی with RTL support (Vazirmatn)
+- Typed content model + composables
+- Tailwind design tokens
 
 ## Quick start
 
 ```bash
 npm install
+cp .env.example .env
 npm run dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000).
+Open [http://localhost:3000](http://localhost:3000) · فارسی: [/fa](http://localhost:3000/fa)
+
+## Environment
+
+| Variable | Purpose |
+|---|---|
+| `NUXT_CONTACT_INBOX` | Where contact/orders are sent |
+| `NUXT_RESEND_API_KEY` | Resend API key (empty = demo mode) |
+| `NUXT_MAIL_FROM` | Verified sender address |
 
 ## Customize
 
 | Goal | Where |
 |---|---|
 | Café name, hours, menu | `app/data/menu.ts` |
-| Colors & type | `tailwind.config.ts` + `app/assets/css/main.css` |
-| Contact inbox | `.env` → `NUXT_CONTACT_INBOX` |
-| Photos | Replace Unsplash URLs in home/about components |
-| Map | `app/pages/visit.vue` |
+| Colors | `tailwind.config.ts` |
+| Translations | `i18n/locales/en.json`, `fa.json` |
+| Photos | Home/about components |
 
-Copy `.env.example` to `.env` for local contact config.
+## GitHub name
 
-## Structure
-
-```text
-app/
-  components/
-    contact/     Contact form
-    home/        Landing sections
-    layout/      Header & footer
-    ui/          BaseButton
-  composables/   useCafe()
-  data/          Café content
-  pages/         Routes
-  types/         Shared types
-server/
-  api/           contact.post.ts
-```
-
-## Contact API
-
-`POST /api/contact` accepts `{ name, email, message }`, validates input, and logs the payload (demo mode). Wire `console.info` in `server/api/contact.post.ts` to Resend, Nodemailer, or a CRM webhook for production.
-
-## Scripts
-
-| Command | Description |
-|---|---|
-| `npm run dev` | Development server |
-| `npm run build` | Production build |
-| `npm run preview` | Preview production build |
-| `npm run generate` | Static generation |
-
-## Suggested GitHub name
-
-Rename the remote repository to **`solace-coffee`** so the project reads as a brand product, not a tutorial starter.
+Rename the remote repo to **`solace-coffee`** — clearer and more professional than a “starter” label.
 
 ## License
 

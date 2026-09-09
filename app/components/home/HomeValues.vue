@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const { values } = useCafe()
+const { t } = useI18n()
 </script>
 
 <template>
@@ -7,10 +8,10 @@ const { values } = useCafe()
     <div class="container-site">
       <div class="mb-10 max-w-xl">
         <p class="eyebrow">
-          How we work
+          {{ t('values.eyebrow') }}
         </p>
         <h2 class="text-[clamp(2rem,4vw,2.85rem)]">
-          Three principles behind every cup.
+          {{ t('values.title') }}
         </h2>
       </div>
 

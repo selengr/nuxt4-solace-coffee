@@ -1,0 +1,62 @@
+{
+  "nav": {
+    "home": "Home",
+    "menu": "Menu",
+    "about": "About",
+    "visit": "Visit",
+    "contact": "Contact",
+    "order": "Order",
+    "visitCta": "Visit us"
+  },
+  "hero": {
+    "eyebrow": "Specialty coffee · Seattle",
+    "ctaMenu": "View the menu",
+    "ctaVisit": "Find the room"
+  },
+  "featured": {
+    "eyebrow": "On the bar",
+    "title": "Featured pours & plates",
+    "fullMenu": "Full menu"
+  },
+  "values": {
+    "eyebrow": "How we work",
+    "title": "Three principles behind every cup."
+  },
+  "story": {
+    "eyebrow": "Our room",
+    "title": "A quiet counter for better coffee.",
+    "p1": "{name} is a specialty café built for unhurried mornings — single-origin lots, careful milk texture, and a room that feels like a pause in the day.",
+    "p2": "This codebase is production-shaped: typed content, composables, Tailwind design tokens, and APIs you can connect to email or CRM.",
+    "cta": "Our story"
+  },
+  "gallery": {
+    "eyebrow": "Atmosphere",
+    "title": "The room, the light, the cup.",
+    "note": "Photography placeholders — replace with your own café shots in production."
+  },
+  "visitBlock": {
+    "eyebrow": "Come by",
+    "title": "Find {name}",
+    "lede": "Walk in, take a seat by the window, and stay as long as the cup lasts.",
+    "address": "Address",
+    "hours": "Hours",
+    "cta": "Plan your visit"
+  },
+  "footer": {
+    "visit": "Visit",
+    "hours": "Hours",
+    "contact": "Contact",
+    "write": "Write to us",
+    "built": "© {year} {name} Coffee. Built with Nuxt 4.",
+    "city": "Specialty café website · Seattle"
+  },
+  "order": {
+    "eyebrow": "Pickup",
+    "title": "Order ahead",
+    "lede": "Build a pickup order, then we’ll confirm by email. Payment stays at the counter for this demo flow."
+  },
+  "lang": {
+    "en": "EN",
+    "fa": "FA"
+  }
+}

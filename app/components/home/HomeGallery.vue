@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const { t } = useI18n()
+
 const images = [
   {
     src: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1000&q=80',
@@ -20,14 +22,14 @@ const images = [
     <div class="container-site mb-8 flex flex-wrap items-end justify-between gap-4">
       <div>
         <p class="eyebrow">
-          Atmosphere
+          {{ t('gallery.eyebrow') }}
         </p>
         <h2 class="text-[clamp(2rem,4vw,2.75rem)]">
-          The room, the light, the cup.
+          {{ t('gallery.title') }}
         </h2>
       </div>
       <p class="max-w-sm text-sm text-mute">
-        Photography placeholders — replace with your own café shots in production.
+        {{ t('gallery.note') }}
       </p>
     </div>
 

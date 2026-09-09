@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
   },
-  modules: ['@nuxtjs/tailwindcss'],
+  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/i18n'],
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
   components: [
@@ -15,14 +15,41 @@ export default defineNuxtConfig({
   ],
   runtimeConfig: {
     contactInbox: process.env.NUXT_CONTACT_INBOX || 'hello@solace.coffee',
+    resendApiKey: process.env.NUXT_RESEND_API_KEY || '',
+    mailFrom: process.env.NUXT_MAIL_FROM || 'Solace Coffee <onboarding@resend.dev>',
     public: {
       siteName: 'Solace',
+    },
+  },
+  i18n: {
+    locales: [
+      {
+        code: 'en',
+        language: 'en-US',
+        name: 'English',
+        file: 'en.json',
+        dir: 'ltr',
+      },
+      {
+        code: 'fa',
+        language: 'fa-IR',
+        name: 'فارسی',
+        file: 'fa.json',
+        dir: 'rtl',
+      },
+    ],
+    defaultLocale: 'en',
+    lazy: true,
+    langDir: 'locales',
+    strategy: 'prefix_except_default',
+    detectBrowserLanguage: {
+      cookieKey: 'solace_lang',
+      redirectOn: 'root',
     },
   },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
-      htmlAttrs: { lang: 'en' },
       title: 'Solace — Specialty Coffee',
       meta: [
         {
@@ -47,7 +74,7 @@ export default defineNuxtConfig({
         },
         {
           rel: 'stylesheet',
-          href: 'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Sora:wght@300;400;500;600&display=swap',
+          href: 'https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Sora:wght@300;400;500;600&family=Vazirmatn:wght@300;400;500;600&display=swap',
         },
       ],
     },
