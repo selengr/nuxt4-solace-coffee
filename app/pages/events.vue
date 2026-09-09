@@ -1,11 +1,13 @@
 <script setup lang="ts">
 const { info, events } = useCafe()
+const { t } = useI18n()
+const { tx } = useLocaleText()
 const localePath = useLocalePath()
 const toast = useToast()
 
 useSeoMeta({
-  title: `Events — ${info.name}`,
-  description: 'Cuppings, workshops, and private morning hire at Solace Coffee.',
+  title: () => `${t('eventsPage.eyebrow')} — ${info.name}`,
+  description: () => t('eventsPage.lede'),
 })
 
 const inquiry = reactive({
@@ -27,13 +29,13 @@ async function submitInquiry() {
         message: `[Events inquiry]\n${inquiry.message}`,
       },
     })
-    toast.success('Thanks — we received your events inquiry.')
+    toast.success(t('eventsPage.send'))
     inquiry.name = ''
     inquiry.email = ''
     inquiry.message = ''
   }
   catch {
-    toast.error('Could not send inquiry. Try again or email us.')
+    toast.error(t('error.generic'))
   }
   finally {
     status.value = 'idle'
@@ -45,13 +47,13 @@ async function submitInquiry() {
   <div class="section-space">
     <div class="container-site">
       <p class="eyebrow">
-        Events
+        {{ t('eventsPage.eyebrow') }}
       </p>
-      <h1 class="mb-3 max-w-[14ch] text-[clamp(2.4rem,6vw,3.5rem)]">
-        Cuppings, workshops, quiet mornings.
+      <h1 class="mb-3 max-w-[16ch] text-[clamp(2.4rem,6vw,3.5rem)] leading-snug">
+        {{ t('eventsPage.title') }}
       </h1>
-      <p class="mb-12 max-w-xl text-mute">
-        Public tastings and private hire — keep the room calm, keep the coffee sharp.
+      <p class="mb-12 max-w-xl leading-relaxed text-mute">
+        {{ t('eventsPage.lede') }}
       </p>
 
       <ul class="mb-16 grid list-none gap-6 p-0 md:grid-cols-3">
@@ -60,31 +62,31 @@ async function submitInquiry() {
           :key="event.id"
           class="border border-ink/10 p-6"
         >
-          <p class="mb-3 text-[0.7rem] uppercase tracking-[0.12em] text-leaf">
-            {{ event.type }}
+          <p class="mb-3 text-[0.7rem] text-leaf label-meta">
+            {{ t(`eventsPage.types.${event.type}`) }}
           </p>
-          <h2 class="mb-2 text-xl">
-            {{ event.title }}
+          <h2 class="mb-2 text-xl leading-snug">
+            {{ tx(event.title) }}
           </h2>
           <p class="mb-1 text-sm font-medium">
-            {{ event.date }} · {{ event.time }}
+            {{ tx(event.date) }} · {{ event.time }}
           </p>
-          <p class="text-sm text-mute">
-            {{ event.description }}
+          <p class="text-sm leading-relaxed text-mute">
+            {{ tx(event.description) }}
           </p>
         </li>
       </ul>
 
       <div class="grid gap-10 rounded-md bg-mist p-6 sm:p-8 lg:grid-cols-2">
         <div>
-          <h2 class="mb-3 text-2xl">
-            Book the room
+          <h2 class="mb-3 text-2xl leading-snug">
+            {{ t('eventsPage.bookTitle') }}
           </h2>
-          <p class="mb-4 text-mute">
-            Tell us about your group size, date, and whether you want a tasting flight or just the space.
+          <p class="mb-4 leading-relaxed text-mute">
+            {{ t('eventsPage.bookLede') }}
           </p>
           <BaseButton :to="localePath('/contact')">
-            Or use the contact page
+            {{ t('eventsPage.contactLink') }}
           </BaseButton>
         </div>
 
@@ -96,21 +98,21 @@ async function submitInquiry() {
             v-model="inquiry.name"
             required
             type="text"
-            placeholder="Your name"
+            :placeholder="t('eventsPage.name')"
             class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
           >
           <input
             v-model="inquiry.email"
             required
             type="email"
-            placeholder="Email"
+            :placeholder="t('eventsPage.email')"
             class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
           >
           <textarea
             v-model="inquiry.message"
             required
             rows="5"
-            placeholder="Event details…"
+            :placeholder="t('eventsPage.details')"
             class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
           />
           <BaseButton
@@ -118,7 +120,7 @@ async function submitInquiry() {
             variant="ink"
             :disabled="status === 'loading'"
           >
-            {{ status === 'loading' ? 'Sending…' : 'Send inquiry' }}
+            {{ status === 'loading' ? t('eventsPage.sending') : t('eventsPage.send') }}
           </BaseButton>
         </form>
       </div>

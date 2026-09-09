@@ -7,6 +7,7 @@ function toMinutes(value: string) {
 
 export function useCafeHours() {
   const { info } = useCafe()
+  const { t } = useI18n()
 
   const now = useState('cafe-now', () => new Date())
 
@@ -37,11 +38,11 @@ export function useCafeHours() {
   const statusLabel = computed(() => {
     const schedule = todaySchedule.value
     if (!schedule) {
-      return 'Hours unavailable'
+      return t('hours.unavailable')
     }
     return isOpen.value
-      ? `Open now · until ${schedule.close}`
-      : `Closed · opens ${schedule.open}`
+      ? t('hours.openNow', { time: schedule.close })
+      : t('hours.closed', { time: schedule.open })
   })
 
   return {

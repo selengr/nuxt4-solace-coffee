@@ -1,8 +1,11 @@
 import matter from 'gray-matter'
 import { marked } from 'marked'
 
+export type BlogLocale = 'en' | 'fa'
+
 export interface BlogPostMeta {
   slug: string
+  locale: BlogLocale
   title: string
   description: string
   date: string
@@ -15,11 +18,18 @@ export interface BlogPost extends BlogPostMeta {
   html: string
 }
 
-const rawPosts = import.meta.glob('../../content/blog/*.md', {
+const rawPosts = import.meta.glob('../../content/blog/*/*.md', {
   eager: true,
   query: '?raw',
   import: 'default',
 }) as Record<string, string>
+
+function localeFromPath(filePath: string): BlogLocale {
+  if (filePath.includes('/blog/fa/')) {
+    return 'fa'
+  }
+  return 'en'
+}
 
 function slugFromPath(filePath: string) {
   const file = filePath.split('/').pop() || ''
@@ -29,9 +39,11 @@ function slugFromPath(filePath: string) {
 function parsePost(filePath: string, raw: string): BlogPost {
   const { data, content } = matter(raw)
   const slug = slugFromPath(filePath)
+  const locale = localeFromPath(filePath)
 
   return {
     slug,
+    locale,
     path: `/blog/${slug}`,
     title: String(data.title || slug),
     description: String(data.description || ''),
@@ -42,19 +54,23 @@ function parsePost(filePath: string, raw: string): BlogPost {
   }
 }
 
-export function getAllPosts(): BlogPostMeta[] {
+export function getAllPosts(locale: BlogLocale = 'en'): BlogPostMeta[] {
   return Object.entries(rawPosts)
     .map(([filePath, raw]) => {
       const post = parsePost(filePath, raw)
       const { html: _html, ...meta } = post
       return meta
     })
+    .filter(post => post.locale === locale)
     .sort((a, b) => +new Date(b.date) - +new Date(a.date))
 }
 
-export function getPostBySlug(slug: string): BlogPost | undefined {
+export function getPostBySlug(
+  slug: string,
+  locale: BlogLocale = 'en',
+): BlogPost | undefined {
   const entry = Object.entries(rawPosts).find(([filePath]) =>
-    slugFromPath(filePath) === slug,
+    slugFromPath(filePath) === slug && localeFromPath(filePath) === locale,
   )
   if (!entry) {
     return undefined

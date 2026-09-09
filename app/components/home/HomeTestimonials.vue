@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { testimonials } = useCafe()
 const { t } = useI18n()
+const { tx } = useLocaleText()
 </script>
 
 <template>
@@ -21,14 +22,14 @@ const { t } = useI18n()
           :key="item.id"
           class="border border-ink/10 bg-foam p-6"
         >
-          <p class="mb-6 font-display text-xl leading-snug text-ink">
-            “{{ item.quote }}”
+          <p class="mb-6 font-display text-xl leading-snug text-ink quote-mark">
+            «{{ tx(item.quote) }}»
           </p>
           <p class="text-sm font-medium">
             {{ item.name }}
           </p>
           <p class="text-xs text-mute">
-            {{ item.role }}
+            {{ tx(item.role) }}
           </p>
         </li>
       </ul>

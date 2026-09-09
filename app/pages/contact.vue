@@ -1,9 +1,10 @@
 <script setup lang="ts">
 const { info } = useCafe()
+const { t } = useI18n()
 
 useSeoMeta({
-  title: `Contact — ${info.name}`,
-  description: 'Write to Solace Coffee for events, catering, or general questions.',
+  title: () => `${t('contactPage.eyebrow')} — ${info.name}`,
+  description: () => t('contactPage.lede'),
 })
 </script>
 
@@ -12,32 +13,31 @@ useSeoMeta({
     <div class="container-site grid gap-12 lg:grid-cols-[0.9fr_1.1fr]">
       <div>
         <p class="eyebrow">
-          Contact
+          {{ t('contactPage.eyebrow') }}
         </p>
-        <h1 class="mb-4 max-w-[12ch] text-[clamp(2.4rem,6vw,3.4rem)]">
-          Say hello.
+        <h1 class="mb-4 max-w-[12ch] text-[clamp(2.4rem,6vw,3.4rem)] leading-snug">
+          {{ t('contactPage.title') }}
         </h1>
-        <p class="mb-8 max-w-md text-mute">
-          Questions about the café, private mornings, or wholesale beans —
-          send a note and we’ll get back within one or two business days.
+        <p class="mb-8 max-w-md leading-relaxed text-mute">
+          {{ t('contactPage.lede') }}
         </p>
 
         <div class="space-y-5 text-sm">
           <div>
-            <p class="mb-1 text-[0.7rem] uppercase tracking-[0.12em] text-leaf">
-              Email
+            <p class="mb-1 text-[0.7rem] text-leaf label-meta">
+              {{ t('contactPage.email') }}
             </p>
             <a :href="`mailto:${info.email}`">{{ info.email }}</a>
           </div>
           <div>
-            <p class="mb-1 text-[0.7rem] uppercase tracking-[0.12em] text-leaf">
-              Phone
+            <p class="mb-1 text-[0.7rem] text-leaf label-meta">
+              {{ t('contactPage.phone') }}
             </p>
             <p>{{ info.phone }}</p>
           </div>
           <div>
-            <p class="mb-1 text-[0.7rem] uppercase tracking-[0.12em] text-leaf">
-              Social
+            <p class="mb-1 text-[0.7rem] text-leaf label-meta">
+              {{ t('contactPage.social') }}
             </p>
             <p>{{ info.instagram }}</p>
           </div>

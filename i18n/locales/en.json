@@ -15,6 +15,11 @@
     "ctaMenu": "View the menu",
     "ctaVisit": "Find the room"
   },
+  "hours": {
+    "openNow": "Open now · until {time}",
+    "closed": "Closed · opens {time}",
+    "unavailable": "Hours unavailable"
+  },
   "featured": {
     "eyebrow": "On the bar",
     "title": "Featured pours & plates",
@@ -52,10 +57,95 @@
     "built": "© {year} {name} Coffee. Built with Nuxt 4.",
     "city": "Specialty café website · Seattle"
   },
+  "menuPage": {
+    "eyebrow": "Menu",
+    "title": "What we’re pouring",
+    "lede": "Search the board, filter by category, and add items to pickup.",
+    "search": "Search menu",
+    "searchPlaceholder": "Latte, pour over, toast…",
+    "all": "All",
+    "espresso": "Espresso",
+    "brew": "Brew",
+    "food": "Food",
+    "categories": "Menu categories",
+    "empty": "No items match “{query}”. Try another search.",
+    "espressoTitle": "Espresso bar",
+    "espressoNote": "Milk alternatives available.",
+    "brewTitle": "Brew bar",
+    "brewNote": "Ask for today’s origin card.",
+    "foodTitle": "Kitchen",
+    "foodNote": "Pastries bake through the morning.",
+    "add": "Add",
+    "showing": "Showing {visible} of {total} items",
+    "reviewOrder": "Review pickup order"
+  },
+  "aboutPage": {
+    "eyebrow": "About",
+    "title": "Built for better mornings.",
+    "p1": "{name} began as a small counter with one espresso machine and a stubborn belief that coffee shops should feel calm — not rushed, not loud for the sake of it.",
+    "p2": "We roast relationships first: rotating microlots, dialed recipes, and a short food list that pairs with what’s in the cup.",
+    "p3": "Today the room on Mercer Street is where neighbors start their day, meet mid-afternoon, or simply sit with a pour-over and a book."
+  },
+  "visitPage": {
+    "eyebrow": "Visit",
+    "title": "We’re open when you need a pause.",
+    "lede": "No reservations — just walk in. Laptops welcome until the afternoon rush. Dogs on the patio when the weather cooperates.",
+    "address": "Address",
+    "hours": "Hours",
+    "contact": "Contact",
+    "message": "Send a message"
+  },
+  "contactPage": {
+    "eyebrow": "Contact",
+    "title": "Say hello.",
+    "lede": "Questions about the café, private mornings, or wholesale beans — send a note and we’ll get back within one or two business days.",
+    "email": "Email",
+    "phone": "Phone",
+    "social": "Social"
+  },
+  "eventsPage": {
+    "eyebrow": "Events",
+    "title": "Cuppings, workshops, quiet mornings.",
+    "lede": "Public tastings and private hire — keep the room calm, keep the coffee sharp.",
+    "bookTitle": "Book the room",
+    "bookLede": "Tell us about your group size, date, and whether you want a tasting flight or just the space.",
+    "contactLink": "Or use the contact page",
+    "name": "Your name",
+    "email": "Email",
+    "details": "Event details…",
+    "send": "Send inquiry",
+    "sending": "Sending…",
+    "types": {
+      "cupping": "cupping",
+      "workshop": "workshop",
+      "private": "private"
+    }
+  },
+  "blogPage": {
+    "eyebrow": "Journal",
+    "title": "Notes from the counter",
+    "lede": "Short essays on dialing espresso, shaping the room, and keeping the menu seasonal.",
+    "back": "All notes",
+    "seoTitle": "Journal — {name}",
+    "seoDescription": "Notes on espresso, room design, and seasonal cooking from Solace Coffee."
+  },
   "order": {
     "eyebrow": "Pickup",
     "title": "Order ahead",
-    "lede": "Build a pickup order, then we’ll confirm by email. Payment stays at the counter for this demo flow."
+    "lede": "Build a pickup order, then we’ll confirm by email. Payment stays at the counter for this demo flow.",
+    "menu": "Menu",
+    "add": "Add",
+    "bag": "Your bag",
+    "item": "item",
+    "items": "items",
+    "empty": "Add drinks or food from the menu.",
+    "subtotal": "Subtotal",
+    "name": "Your name",
+    "email": "Email for confirmation",
+    "phone": "Phone (optional)",
+    "notes": "Notes (oat milk, extra hot…)",
+    "place": "Place pickup order",
+    "sending": "Sending…"
   },
   "testimonials": {
     "eyebrow": "From the room",
@@ -69,6 +159,17 @@
     "placeholder": "you@email.com",
     "cta": "Subscribe",
     "sending": "Sending…"
+  },
+  "a11y": {
+    "skip": "Skip to content"
+  },
+  "error": {
+    "brand": "Solace",
+    "notFound": "Page not found",
+    "generic": "Something went wrong",
+    "notFoundLede": "That route wandered off. Let’s get you back to the counter.",
+    "home": "Back home",
+    "clear": "Clear error"
   },
   "lang": {
     "en": "EN",

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { featured } = useCafe()
 const { t } = useI18n()
+const { tx } = useLocaleText()
 const localePath = useLocalePath()
 </script>
 
@@ -12,7 +13,7 @@ const localePath = useLocalePath()
           <p class="eyebrow">
             {{ t('featured.eyebrow') }}
           </p>
-          <h2 class="max-w-[14ch] text-[clamp(2rem,4vw,2.85rem)]">
+          <h2 class="max-w-[16ch] text-[clamp(2rem,4vw,2.85rem)]">
             {{ t('featured.title') }}
           </h2>
         </div>
@@ -27,14 +28,14 @@ const localePath = useLocalePath()
           :key="item.id"
           class="border-t border-ink/10 py-6"
         >
-          <p class="mb-2 text-[0.7rem] uppercase tracking-[0.12em] text-mute">
-            {{ item.category }}
+          <p class="mb-2 text-[0.7rem] text-mute category-label">
+            {{ t(`menuPage.${item.category}`) }}
           </p>
           <h3 class="mb-2 text-[1.45rem]">
-            {{ item.name }}
+            {{ tx(item.name) }}
           </h3>
           <p class="mb-3 max-w-md text-[0.95rem] text-mute">
-            {{ item.description }}
+            {{ tx(item.description) }}
           </p>
           <p class="text-[0.95rem] font-medium">
             {{ item.price }}

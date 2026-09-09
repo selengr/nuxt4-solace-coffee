@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { info } = useCafe()
 const { t } = useI18n()
+const { tx, txList } = useLocaleText()
 const localePath = useLocalePath()
 const year = new Date().getFullYear()
 </script>
@@ -13,12 +14,12 @@ const year = new Date().getFullYear()
           {{ info.name }}
         </p>
         <p class="max-w-xs text-[0.95rem] text-foam/60">
-          {{ info.tagline }}
+          {{ tx(info.tagline) }}
         </p>
       </div>
 
       <div>
-        <p class="mb-3 text-[0.7rem] uppercase tracking-[0.14em] text-brass">
+        <p class="mb-3 text-[0.7rem] text-brass label-meta">
           {{ t('footer.visit') }}
         </p>
         <p class="text-sm">
@@ -30,11 +31,11 @@ const year = new Date().getFullYear()
       </div>
 
       <div>
-        <p class="mb-3 text-[0.7rem] uppercase tracking-[0.14em] text-brass">
+        <p class="mb-3 text-[0.7rem] text-brass label-meta">
           {{ t('footer.hours') }}
         </p>
         <p
-          v-for="line in info.hours"
+          v-for="line in txList(info.hours)"
           :key="line"
           class="text-sm"
         >
@@ -43,7 +44,7 @@ const year = new Date().getFullYear()
       </div>
 
       <div>
-        <p class="mb-3 text-[0.7rem] uppercase tracking-[0.14em] text-brass">
+        <p class="mb-3 text-[0.7rem] text-brass label-meta">
           {{ t('footer.contact') }}
         </p>
         <p class="text-sm">

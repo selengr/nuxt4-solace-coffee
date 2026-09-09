@@ -4,7 +4,7 @@ const { isOpen, statusLabel } = useCafeHours()
 
 <template>
   <p
-    class="inline-flex items-center gap-2 rounded-sm border px-3 py-1.5 text-xs font-medium tracking-wide"
+    class="inline-flex items-center gap-2 rounded-sm border px-3 py-1.5 text-xs font-medium"
     :class="isOpen ? 'border-leaf/25 bg-leaf/10 text-leaf' : 'border-ink/10 bg-mist text-mute'"
   >
     <span

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { info } = useCafe()
 const { t } = useI18n()
+const { txList } = useLocaleText()
 const localePath = useLocalePath()
 </script>
 
@@ -21,18 +22,18 @@ const localePath = useLocalePath()
 
       <div class="grid gap-6 sm:grid-cols-2 md:grid-cols-1 lg:grid-cols-2">
         <div>
-          <p class="mb-2 text-[0.7rem] uppercase tracking-[0.12em] text-brass">
+          <p class="mb-2 text-[0.7rem] text-brass label-meta">
             {{ t('visitBlock.address') }}
           </p>
           <p>{{ info.address }}</p>
           <p>{{ info.city }}</p>
         </div>
         <div>
-          <p class="mb-2 text-[0.7rem] uppercase tracking-[0.12em] text-brass">
+          <p class="mb-2 text-[0.7rem] text-brass label-meta">
             {{ t('visitBlock.hours') }}
           </p>
           <p
-            v-for="line in info.hours"
+            v-for="line in txList(info.hours)"
             :key="line"
           >
             {{ line }}

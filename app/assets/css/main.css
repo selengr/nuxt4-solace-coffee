@@ -13,6 +13,9 @@
 
   body.font-fa {
     font-family: 'Vazirmatn', 'Sora', system-ui, sans-serif;
+    line-height: 1.8;
+    letter-spacing: 0;
+    text-align: start;
   }
 
   body.font-fa h1,
@@ -20,6 +23,8 @@
   body.font-fa h3,
   body.font-fa h4 {
     font-family: 'Vazirmatn', 'Fraunces', Georgia, serif;
+    letter-spacing: 0;
+    line-height: 1.35;
   }
 
   h1,
@@ -40,6 +45,11 @@
   select:focus-visible {
     @apply outline outline-2 outline-offset-2 outline-leaf;
   }
+
+  [dir='rtl'] input,
+  [dir='rtl'] textarea {
+    text-align: right;
+  }
 }
 
 @layer components {
@@ -48,7 +58,32 @@
   }
 
   .eyebrow {
-    @apply mb-3 inline-block text-xs font-medium uppercase tracking-[0.14em] text-leaf;
+    @apply mb-3 inline-block text-xs font-medium text-leaf;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+  }
+
+  [dir='rtl'] .eyebrow,
+  body.font-fa .eyebrow,
+  [dir='rtl'] .label-meta,
+  body.font-fa .label-meta,
+  [dir='rtl'] .category-label,
+  body.font-fa .category-label,
+  [dir='rtl'] .tag-chip,
+  body.font-fa .tag-chip {
+    letter-spacing: 0;
+    text-transform: none;
+    font-weight: 500;
+  }
+
+  .label-meta {
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .category-label {
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
   }
 
   .section-space {
@@ -78,6 +113,16 @@
   .sr-only {
     @apply absolute h-px w-px overflow-hidden whitespace-nowrap border-0 p-0;
     clip: rect(0, 0, 0, 0);
+  }
+
+  [dir='rtl'] .quote-mark {
+    font-family: 'Vazirmatn', 'Fraunces', Georgia, serif;
+  }
+
+  [dir='rtl'] .prose-solace,
+  body.font-fa .prose-solace {
+    text-align: justify;
+    text-justify: inter-word;
   }
 }
 

@@ -10,7 +10,7 @@ const jsonLd = computed(() => ({
   '@context': 'https://schema.org',
   '@type': 'CafeOrCoffeeShop',
   'name': `${info.name} Coffee`,
-  'description': info.tagline,
+  'description': info.tagline.en,
   'url': siteUrl.value,
   'telephone': info.phone,
   'email': info.email,

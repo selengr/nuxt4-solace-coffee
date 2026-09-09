@@ -2,13 +2,15 @@
 import type { MenuItem } from '~/types/cafe'
 
 const { info, menu, byCategory } = useCafe()
+const { t } = useI18n()
+const { tx } = useLocaleText()
 const localePath = useLocalePath()
 const { addItem } = useCart()
 const toast = useToast()
 
 useSeoMeta({
-  title: `Menu — ${info.name}`,
-  description: 'Espresso, brew bar, and kitchen plates at Solace Coffee.',
+  title: () => `${t('menuPage.eyebrow')} — ${info.name}`,
+  description: () => t('menuPage.lede'),
 })
 
 type Filter = 'all' | MenuItem['category']
@@ -16,18 +18,18 @@ type Filter = 'all' | MenuItem['category']
 const filter = ref<Filter>('all')
 const query = ref('')
 
-const sections = [
-  { key: 'espresso' as const, title: 'Espresso bar', note: 'Milk alternatives available.' },
-  { key: 'brew' as const, title: 'Brew bar', note: 'Ask for today’s origin card.' },
-  { key: 'food' as const, title: 'Kitchen', note: 'Pastries bake through the morning.' },
-]
+const sections = computed(() => [
+  { key: 'espresso' as const, title: t('menuPage.espressoTitle'), note: t('menuPage.espressoNote') },
+  { key: 'brew' as const, title: t('menuPage.brewTitle'), note: t('menuPage.brewNote') },
+  { key: 'food' as const, title: t('menuPage.foodTitle'), note: t('menuPage.foodNote') },
+])
 
-const filters: { key: Filter, label: string }[] = [
-  { key: 'all', label: 'All' },
-  { key: 'espresso', label: 'Espresso' },
-  { key: 'brew', label: 'Brew' },
-  { key: 'food', label: 'Food' },
-]
+const filters = computed(() => [
+  { key: 'all' as const, label: t('menuPage.all') },
+  { key: 'espresso' as const, label: t('menuPage.espresso') },
+  { key: 'brew' as const, label: t('menuPage.brew') },
+  { key: 'food' as const, label: t('menuPage.food') },
+])
 
 function matchesQuery(item: MenuItem) {
   const q = query.value.trim().toLowerCase()
@@ -35,16 +37,16 @@ function matchesQuery(item: MenuItem) {
     return true
   }
   return (
-    item.name.toLowerCase().includes(q)
-    || item.description.toLowerCase().includes(q)
+    tx(item.name).toLowerCase().includes(q)
+    || tx(item.description).toLowerCase().includes(q)
     || item.category.includes(q)
   )
 }
 
 const visibleSections = computed(() => {
   const base = filter.value === 'all'
-    ? sections
-    : sections.filter(section => section.key === filter.value)
+    ? sections.value
+    : sections.value.filter(section => section.key === filter.value)
 
   return base
     .map(section => ({
@@ -59,8 +61,9 @@ const visibleCount = computed(() =>
 )
 
 function addToOrder(item: MenuItem) {
-  addItem(item)
-  toast.success(`${item.name} added to your bag`)
+  const name = tx(item.name)
+  addItem(item, name)
+  toast.success(`${name} · ${t('menuPage.add')}`)
 }
 </script>
 
@@ -68,22 +71,22 @@ function addToOrder(item: MenuItem) {
   <div class="section-space">
     <div class="container-site">
       <p class="eyebrow">
-        Menu
+        {{ t('menuPage.eyebrow') }}
       </p>
       <h1 class="mb-3 text-[clamp(2.4rem,6vw,3.5rem)]">
-        What we’re pouring
+        {{ t('menuPage.title') }}
       </h1>
       <p class="mb-8 max-w-xl text-mute">
-        Search the board, filter by category, and add items to pickup.
+        {{ t('menuPage.lede') }}
       </p>
 
       <label class="mb-6 block max-w-md">
-        <span class="mb-2 block text-sm font-medium">Search menu</span>
+        <span class="mb-2 block text-sm font-medium">{{ t('menuPage.search') }}</span>
         <input
           v-model="query"
           type="search"
           name="menu-search"
-          placeholder="Latte, pour over, toast…"
+          :placeholder="t('menuPage.searchPlaceholder')"
           class="w-full rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none transition focus:border-leaf"
         >
       </label>
@@ -91,7 +94,7 @@ function addToOrder(item: MenuItem) {
       <div
         class="mb-10 flex flex-wrap gap-2"
         role="group"
-        aria-label="Menu categories"
+        :aria-label="t('menuPage.categories')"
       >
         <button
           v-for="option in filters"
@@ -112,7 +115,7 @@ function addToOrder(item: MenuItem) {
         v-if="!visibleSections.length"
         class="mb-8 text-mute"
       >
-        No items match “{{ query }}”. Try another search.
+        {{ t('menuPage.empty', { query }) }}
       </p>
 
       <section
@@ -136,10 +139,10 @@ function addToOrder(item: MenuItem) {
           >
             <div>
               <h3 class="mb-1 text-[1.15rem]">
-                {{ item.name }}
+                {{ tx(item.name) }}
               </h3>
               <p class="text-[0.92rem] text-mute">
-                {{ item.description }}
+                {{ tx(item.description) }}
               </p>
               <p class="mt-2 text-sm font-medium">
                 {{ item.price }}
@@ -150,19 +153,19 @@ function addToOrder(item: MenuItem) {
               variant="ink"
               @click="addToOrder(item)"
             >
-              Add
+              {{ t('menuPage.add') }}
             </BaseButton>
           </li>
         </ul>
       </section>
 
       <p class="text-sm text-mute">
-        Showing {{ visibleCount }} of {{ menu.length }} items ·
+        {{ t('menuPage.showing', { visible: visibleCount, total: menu.length }) }} ·
         <NuxtLink
           :to="localePath('/order')"
           class="text-leaf underline-offset-2 hover:underline"
         >
-          Review pickup order
+          {{ t('menuPage.reviewOrder') }}
         </NuxtLink>
       </p>
     </div>

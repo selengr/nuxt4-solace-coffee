@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { info } = useCafe()
 const { t } = useI18n()
+const { tx } = useLocaleText()
 const localePath = useLocalePath()
 </script>
 
@@ -33,7 +34,7 @@ const localePath = useLocalePath()
         {{ info.name }}
       </h1>
       <p class="reveal reveal-delay-2 mb-8 max-w-md text-[clamp(1.05rem,2.2vw,1.25rem)] font-light text-foam/85">
-        {{ info.tagline }}
+        {{ tx(info.tagline) }}
       </p>
       <div class="reveal reveal-delay-3 flex flex-wrap gap-3">
         <BaseButton

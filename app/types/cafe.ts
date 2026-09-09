@@ -1,7 +1,11 @@
+export type AppLocale = 'en' | 'fa'
+
+export type LocalizedText = string | Record<AppLocale, string>
+
 export interface MenuItem {
   id: string
-  name: string
-  description: string
+  name: Record<AppLocale, string>
+  description: Record<AppLocale, string>
   price: string
   category: 'espresso' | 'brew' | 'food'
   featured?: boolean
@@ -12,15 +16,15 @@ export interface DayHours {
   days: number[]
   open: string
   close: string
-  label: string
+  label: Record<AppLocale, string>
 }
 
 export interface CafeInfo {
   name: string
-  tagline: string
+  tagline: Record<AppLocale, string>
   address: string
   city: string
-  hours: string[]
+  hours: Record<AppLocale, string[]>
   schedule: DayHours[]
   phone: string
   email: string
@@ -32,8 +36,8 @@ export interface CafeInfo {
 }
 
 export interface CafeValue {
-  title: string
-  description: string
+  title: Record<AppLocale, string>
+  description: Record<AppLocale, string>
 }
 
 export interface ContactPayload {
@@ -44,16 +48,16 @@ export interface ContactPayload {
 
 export interface Testimonial {
   id: string
-  quote: string
+  quote: Record<AppLocale, string>
   name: string
-  role: string
+  role: Record<AppLocale, string>
 }
 
 export interface CafeEvent {
   id: string
-  title: string
-  date: string
+  title: Record<AppLocale, string>
+  date: Record<AppLocale, string>
   time: string
-  description: string
+  description: Record<AppLocale, string>
   type: 'cupping' | 'workshop' | 'private'
 }

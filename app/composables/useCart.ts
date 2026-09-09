@@ -27,15 +27,18 @@ export function useCart() {
 
   const subtotalLabel = computed(() => `$${subtotal.value.toFixed(2)}`)
 
-  function addItem(item: MenuItem) {
+  function addItem(item: MenuItem, displayName?: string) {
+    const { tx } = useLocaleText()
+    const name = displayName || tx(item.name)
     const existing = lines.value.find(line => line.id === item.id)
     if (existing) {
       existing.qty += 1
+      existing.name = name
       return
     }
     lines.value.push({
       id: item.id,
-      name: item.name,
+      name,
       price: item.price,
       qty: 1,
     })

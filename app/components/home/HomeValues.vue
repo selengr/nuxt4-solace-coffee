@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { values } = useCafe()
 const { t } = useI18n()
+const { tx } = useLocaleText()
 </script>
 
 <template>
@@ -18,17 +19,17 @@ const { t } = useI18n()
       <ul class="grid list-none gap-8 p-0 md:grid-cols-3">
         <li
           v-for="(value, index) in values"
-          :key="value.title"
+          :key="tx(value.title)"
           class="border-t border-ink/10 pt-6"
         >
           <p class="mb-4 font-display text-4xl text-brass/80">
             0{{ index + 1 }}
           </p>
           <h3 class="mb-3 text-xl">
-            {{ value.title }}
+            {{ tx(value.title) }}
           </h3>
           <p class="text-[0.95rem] leading-relaxed text-mute">
-            {{ value.description }}
+            {{ tx(value.description) }}
           </p>
         </li>
       </ul>
