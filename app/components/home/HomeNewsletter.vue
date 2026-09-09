@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { t, te } = useI18n()
 const toast = useToast()
+const { el, visible } = useReveal()
 
 const email = ref('')
 const status = ref<'idle' | 'loading'>('idle')
@@ -31,47 +32,55 @@ async function subscribe() {
 </script>
 
 <template>
-  <section class="section-space">
-    <div class="container-site grid gap-8 rounded-md border border-ink/10 bg-mist p-[clamp(2rem,5vw,3.5rem)] md:grid-cols-[1.2fr_1fr] md:items-end">
-      <div>
-        <p class="eyebrow">
-          {{ t('newsletter.eyebrow') }}
-        </p>
-        <h2 class="mb-3 text-[clamp(1.8rem,4vw,2.5rem)] leading-snug">
-          {{ t('newsletter.title') }}
-        </h2>
-        <p class="max-w-md leading-relaxed text-mute">
-          {{ t('newsletter.lede') }}
-        </p>
-      </div>
+  <section
+    ref="el"
+    class="section-space"
+  >
+    <div
+      class="container-site"
+      :class="{ 'is-visible': visible }"
+    >
+      <div class="reveal-block grid gap-8 overflow-hidden border border-ink/10 bg-[linear-gradient(135deg,#f1efe9_0%,#faf8f4_48%,#e8e2d8_100%)] p-[clamp(2rem,6vw,4rem)] md:grid-cols-[1.15fr_1fr] md:items-end">
+        <div>
+          <p class="eyebrow">
+            {{ t('newsletter.eyebrow') }}
+          </p>
+          <h2 class="mb-3 text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.05] tracking-tight">
+            {{ t('newsletter.title') }}
+          </h2>
+          <p class="max-w-md leading-relaxed text-mute">
+            {{ t('newsletter.lede') }}
+          </p>
+        </div>
 
-      <form
-        class="flex flex-col gap-3 sm:flex-row"
-        @submit.prevent="subscribe"
-      >
-        <label
-          class="sr-only"
-          for="newsletter-email"
+        <form
+          class="flex flex-col gap-3 sm:flex-row"
+          @submit.prevent="subscribe"
         >
-          {{ t('newsletter.email') }}
-        </label>
-        <input
-          id="newsletter-email"
-          v-model="email"
-          required
-          type="email"
-          autocomplete="email"
-          :placeholder="t('newsletter.placeholder')"
-          class="w-full rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
-        >
-        <BaseButton
-          type="submit"
-          variant="ink"
-          :disabled="status === 'loading'"
-        >
-          {{ status === 'loading' ? t('newsletter.sending') : t('newsletter.cta') }}
-        </BaseButton>
-      </form>
+          <label
+            class="sr-only"
+            for="newsletter-email"
+          >
+            {{ t('newsletter.email') }}
+          </label>
+          <input
+            id="newsletter-email"
+            v-model="email"
+            required
+            type="email"
+            autocomplete="email"
+            :placeholder="t('newsletter.placeholder')"
+            class="w-full rounded-sm border border-ink/15 bg-foam/90 px-3 py-3.5 text-sm outline-none transition focus:border-leaf"
+          >
+          <BaseButton
+            type="submit"
+            variant="ink"
+            :disabled="status === 'loading'"
+          >
+            {{ status === 'loading' ? t('newsletter.sending') : t('newsletter.cta') }}
+          </BaseButton>
+        </form>
+      </div>
     </div>
   </section>
 </template>

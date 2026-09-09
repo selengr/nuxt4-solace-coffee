@@ -12,13 +12,13 @@ useSeoMeta({
 </script>
 
 <template>
-  <div>
+  <div class="home-page">
     <HomeHero />
     <HomeFeatured />
-    <HomeValues />
     <HomeStory />
-    <HomeTestimonials />
+    <HomeValues />
     <HomeGallery />
+    <HomeTestimonials />
     <HomeJournal />
     <HomeNewsletter />
     <HomeVisit />

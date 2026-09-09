@@ -115,6 +115,35 @@
     animation-delay: 360ms;
   }
 
+  .reveal-block {
+    opacity: 0;
+    transform: translateY(1.5rem);
+    transition:
+      opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+      transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .reveal-block--1 {
+    transition-delay: 80ms;
+  }
+
+  .reveal-block--2 {
+    transition-delay: 160ms;
+  }
+
+  .reveal-block--3 {
+    transition-delay: 240ms;
+  }
+
+  .reveal-block--4 {
+    transition-delay: 320ms;
+  }
+
+  .is-visible .reveal-block {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
   .skip-link {
     @apply absolute start-4 top-0 z-[60] -translate-y-[120%] rounded-sm bg-ink px-4 py-2 text-sm text-foam transition focus:translate-y-4;
   }
@@ -153,9 +182,11 @@
   .reveal,
   .reveal-delay-1,
   .reveal-delay-2,
-  .reveal-delay-3 {
+  .reveal-delay-3,
+  .reveal-block {
     animation: none !important;
     opacity: 1 !important;
     transform: none !important;
+    transition: none !important;
   }
 }

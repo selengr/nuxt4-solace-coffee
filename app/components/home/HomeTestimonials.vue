@@ -2,33 +2,41 @@
 const { testimonials } = useCafe()
 const { t } = useI18n()
 const { tx } = useLocaleText()
+const { el, visible } = useReveal()
 </script>
 
 <template>
-  <section class="section-space border-y border-ink/5">
-    <div class="container-site">
-      <div class="mb-10 max-w-xl">
+  <section
+    ref="el"
+    class="section-space"
+  >
+    <div
+      class="container-site"
+      :class="{ 'is-visible': visible }"
+    >
+      <div class="reveal-block mb-12 max-w-xl">
         <p class="eyebrow">
           {{ t('testimonials.eyebrow') }}
         </p>
-        <h2 class="text-[clamp(2rem,4vw,2.85rem)]">
+        <h2 class="text-[clamp(2.2rem,4.5vw,3.3rem)] leading-[1.05] tracking-tight">
           {{ t('testimonials.title') }}
         </h2>
       </div>
 
-      <ul class="grid list-none gap-6 p-0 md:grid-cols-3">
+      <ul class="m-0 grid list-none gap-10 p-0 lg:grid-cols-3 lg:gap-12">
         <li
-          v-for="item in testimonials"
+          v-for="(item, index) in testimonials"
           :key="item.id"
-          class="border border-ink/10 bg-foam p-6"
+          class="border-t border-ink/10 pt-6"
+          :class="`reveal-block reveal-block--${index + 1}`"
         >
-          <p class="mb-6 font-display text-xl leading-snug text-ink quote-mark">
+          <p class="mb-8 font-display text-[clamp(1.35rem,2.2vw,1.7rem)] leading-snug tracking-tight text-ink quote-mark">
             «{{ tx(item.quote) }}»
           </p>
           <p class="text-sm font-medium">
             {{ item.name }}
           </p>
-          <p class="text-xs text-mute">
+          <p class="mt-1 text-xs text-mute">
             {{ tx(item.role) }}
           </p>
         </li>
