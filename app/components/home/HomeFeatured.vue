@@ -33,14 +33,28 @@ const { el, visible } = useReveal()
         </BaseButton>
       </div>
 
-      <ul class="m-0 grid list-none gap-0 p-0 md:grid-cols-2 md:gap-x-12">
+      <ul class="m-0 grid list-none gap-8 p-0 md:grid-cols-2 md:gap-x-8 md:gap-y-12">
         <li
           v-for="(item, index) in featured"
           :key="item.id"
-          class="group border-t border-ink/10 py-7 transition-colors"
+          class="group"
           :class="`reveal-block reveal-block--${(index % 4) + 1}`"
         >
-          <div class="mb-3 flex items-center justify-between gap-4">
+          <div
+            v-if="item.image"
+            class="mb-5 overflow-hidden"
+          >
+            <NuxtImg
+              :src="item.image"
+              :alt="tx(item.name)"
+              width="900"
+              height="700"
+              format="webp"
+              sizes="(max-width: 768px) 100vw, 45vw"
+              class="aspect-[5/4] w-full object-cover transition duration-[900ms] ease-out group-hover:scale-[1.03]"
+            />
+          </div>
+          <div class="mb-2 flex items-center justify-between gap-4 border-t border-ink/10 pt-4">
             <p class="category-label text-[0.7rem] text-mute">
               {{ t(`menuPage.${item.category}`) }}
             </p>
@@ -48,7 +62,7 @@ const { el, visible } = useReveal()
               {{ item.price }}
             </p>
           </div>
-          <h3 class="mb-2 font-display text-[clamp(1.45rem,2.4vw,1.85rem)] tracking-tight transition group-hover:text-leaf">
+          <h3 class="mb-2 font-display text-[clamp(1.45rem,2.4vw,1.9rem)] tracking-tight transition group-hover:text-leaf">
             {{ tx(item.name) }}
           </h3>
           <p class="max-w-md text-[0.95rem] leading-relaxed text-mute">

@@ -14,6 +14,7 @@ useSeoMeta({
 <template>
   <div class="home-page">
     <HomeHero />
+    <HomeMarquee />
     <HomeFeatured />
     <HomeStory />
     <HomeValues />
@@ -24,3 +25,13 @@ useSeoMeta({
     <HomeVisit />
   </div>
 </template>
+
+<style scoped>
+.home-page {
+  background-color: #faf8f4;
+  background-image:
+    radial-gradient(circle at 12% 18%, rgb(156 135 96 / 0.07), transparent 28%),
+    radial-gradient(circle at 88% 8%, rgb(53 86 72 / 0.06), transparent 26%),
+    linear-gradient(180deg, #faf8f4 0%, #f3f0ea 48%, #faf8f4 100%);
+}
+</style>

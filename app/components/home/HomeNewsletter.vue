@@ -34,27 +34,31 @@ async function subscribe() {
 <template>
   <section
     ref="el"
-    class="section-space"
+    class="section-space pt-0"
   >
     <div
       class="container-site"
       :class="{ 'is-visible': visible }"
     >
-      <div class="reveal-block grid gap-8 overflow-hidden border border-ink/10 bg-[linear-gradient(135deg,#f1efe9_0%,#faf8f4_48%,#e8e2d8_100%)] p-[clamp(2rem,6vw,4rem)] md:grid-cols-[1.15fr_1fr] md:items-end">
-        <div>
-          <p class="eyebrow">
+      <div class="reveal-block relative overflow-hidden bg-roast px-[clamp(1.75rem,5vw,3.5rem)] py-[clamp(2.25rem,6vw,3.75rem)] text-foam md:grid md:grid-cols-[1.2fr_1fr] md:items-end md:gap-10">
+        <div
+          class="pointer-events-none absolute -end-10 -top-16 h-56 w-56 rounded-full bg-brass/20 blur-3xl"
+          aria-hidden="true"
+        />
+        <div class="relative">
+          <p class="eyebrow !text-brass">
             {{ t('newsletter.eyebrow') }}
           </p>
           <h2 class="mb-3 text-[clamp(1.9rem,4vw,2.8rem)] leading-[1.05] tracking-tight">
             {{ t('newsletter.title') }}
           </h2>
-          <p class="max-w-md leading-relaxed text-mute">
+          <p class="max-w-md leading-relaxed text-foam/70">
             {{ t('newsletter.lede') }}
           </p>
         </div>
 
         <form
-          class="flex flex-col gap-3 sm:flex-row"
+          class="relative mt-8 flex flex-col gap-3 sm:flex-row md:mt-0"
           @submit.prevent="subscribe"
         >
           <label
@@ -70,11 +74,11 @@ async function subscribe() {
             type="email"
             autocomplete="email"
             :placeholder="t('newsletter.placeholder')"
-            class="w-full rounded-sm border border-ink/15 bg-foam/90 px-3 py-3.5 text-sm outline-none transition focus:border-leaf"
+            class="w-full rounded-sm border border-foam/20 bg-ink/40 px-3 py-3.5 text-sm text-foam outline-none transition placeholder:text-foam/40 focus:border-brass"
           >
           <BaseButton
             type="submit"
-            variant="ink"
+            variant="light"
             :disabled="status === 'loading'"
           >
             {{ status === 'loading' ? t('newsletter.sending') : t('newsletter.cta') }}

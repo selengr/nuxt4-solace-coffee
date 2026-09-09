@@ -181,6 +181,7 @@ export const menuItems: MenuItem[] = [
     price: '$3.75',
     category: 'espresso',
     featured: true,
+    image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=900&q=80',
   },
   {
     id: 'oat-latte',
@@ -195,6 +196,7 @@ export const menuItems: MenuItem[] = [
     price: '$5.25',
     category: 'espresso',
     featured: true,
+    image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=900&q=80',
   },
   {
     id: 'flat-white',
@@ -235,6 +237,7 @@ export const menuItems: MenuItem[] = [
     price: '$6.00',
     category: 'brew',
     featured: true,
+    image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80',
   },
   {
     id: 'cold-brew',
@@ -288,6 +291,7 @@ export const menuItems: MenuItem[] = [
     price: '$7.00',
     category: 'food',
     featured: true,
+    image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=900&q=80',
   },
   {
     id: 'granola',

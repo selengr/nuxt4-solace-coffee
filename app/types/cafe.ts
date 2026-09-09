@@ -9,6 +9,7 @@ export interface MenuItem {
   price: string
   category: 'espresso' | 'brew' | 'food'
   featured?: boolean
+  image?: string
 }
 
 export interface DayHours {

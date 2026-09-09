@@ -34,8 +34,11 @@
     "eyebrow": "Our room",
     "title": "A quiet counter for better coffee.",
     "p1": "{name} is a specialty café built for unhurried mornings — single-origin lots, careful milk texture, and a room that feels like a pause in the day.",
-    "p2": "This codebase is production-shaped: typed content, composables, Tailwind design tokens, and APIs you can connect to email or CRM.",
+    "p2": "We roast for the bar, not the shelf — small lots, honest tasting notes, and a counter that never feels rushed.",
     "cta": "Our story"
+  },
+  "marquee": {
+    "items": "Single origin · Hand-steamed milk · Quiet mornings · Seasonal pastry · Slow pour-over · Soft light · Window seats · House espresso"
   },
   "gallery": {
     "eyebrow": "Atmosphere",
@@ -44,7 +47,12 @@
     "alt1": "Café interior with warm light",
     "alt2": "Espresso in a white cup",
     "alt3": "Coffee shop seating area",
-    "storyAlt": "Barista pouring espresso into a ceramic cup"
+    "alt4": "Latte art in a ceramic cup",
+    "storyAlt": "Barista pouring espresso into a ceramic cup",
+    "caption1": "The room",
+    "caption2": "The cup",
+    "caption3": "The pause",
+    "caption4": "The craft"
   },
   "visitBlock": {
     "eyebrow": "Come by",
@@ -52,7 +60,8 @@
     "lede": "Walk in, take a seat by the window, and stay as long as the cup lasts.",
     "address": "Address",
     "hours": "Hours",
-    "cta": "Plan your visit"
+    "cta": "Plan your visit",
+    "alt": "Street view near Solace café"
   },
   "footer": {
     "visit": "Visit",
@@ -156,14 +165,15 @@
   },
   "testimonials": {
     "eyebrow": "From the room",
-    "title": "What neighbors say."
+    "title": "What neighbors say.",
+    "featuredLabel": "Favorite chair"
   },
   "newsletter": {
     "eyebrow": "Stay close",
     "title": "Seasonal notes in your inbox.",
     "lede": "New lots, events, and quiet updates — a few times a month, never noisy.",
     "email": "Email",
-    "placeholder": "you@email.com",
+    "placeholder": "you{'@'}email.com",
     "cta": "Subscribe",
     "sending": "Sending…",
     "success": "You’re on the list — thanks for joining Solace notes.",
@@ -177,7 +187,7 @@
     "email": "Email",
     "message": "Message",
     "namePlaceholder": "Your name",
-    "emailPlaceholder": "you@email.com",
+    "emailPlaceholder": "you{'@'}email.com",
     "messagePlaceholder": "Private events, catering, feedback, or just hello…",
     "send": "Send message",
     "sending": "Sending…",

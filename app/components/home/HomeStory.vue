@@ -8,10 +8,10 @@ const { el, visible } = useReveal()
 <template>
   <section
     ref="el"
-    class="relative grid min-h-[min(88vh,46rem)] overflow-hidden bg-ink lg:grid-cols-2"
+    class="relative isolate overflow-hidden bg-ink lg:grid lg:min-h-[min(88vh,46rem)] lg:grid-cols-2"
     :class="{ 'is-visible': visible }"
   >
-    <div class="relative min-h-[22rem] lg:min-h-full">
+    <div class="relative min-h-[22rem] lg:order-2 lg:min-h-full">
       <NuxtImg
         src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=1600&q=80"
         :alt="t('gallery.storyAlt')"
@@ -21,10 +21,10 @@ const { el, visible } = useReveal()
         sizes="(max-width: 1024px) 100vw, 50vw"
         class="story-media absolute inset-0 h-full w-full object-cover"
       />
-      <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent lg:bg-gradient-to-r lg:from-transparent lg:to-ink/30" />
+      <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent lg:bg-gradient-to-l lg:from-transparent lg:to-ink/25" />
     </div>
 
-    <div class="relative flex items-center bg-mist px-[clamp(1.5rem,6vw,4.5rem)] py-[clamp(3rem,8vw,5rem)] text-ink">
+    <div class="relative flex items-center bg-mist px-[clamp(1.5rem,6vw,4.5rem)] py-[clamp(3rem,8vw,5rem)] text-ink lg:order-1">
       <div class="max-w-lg">
         <p class="eyebrow reveal-block">
           {{ t('story.eyebrow') }}

@@ -9,16 +9,24 @@ const { el, visible } = useReveal()
 <template>
   <section
     ref="el"
-    class="relative overflow-hidden bg-roast py-[clamp(4.5rem,10vw,7.5rem)] text-foam"
+    class="relative isolate overflow-hidden py-[clamp(5rem,11vw,8rem)] text-foam"
   >
     <div
-      class="pointer-events-none absolute -start-24 top-0 h-72 w-72 rounded-full bg-brass/15 blur-3xl"
+      class="absolute inset-0"
       aria-hidden="true"
-    />
-    <div
-      class="pointer-events-none absolute -end-16 bottom-0 h-80 w-80 rounded-full bg-leaf/20 blur-3xl"
-      aria-hidden="true"
-    />
+    >
+      <NuxtImg
+        src="https://images.unsplash.com/photo-1559305616-3f99cd43e353?auto=format&fit=crop&w=2200&q=80"
+        :alt="t('visitBlock.alt')"
+        width="2200"
+        height="1400"
+        format="webp"
+        sizes="100vw"
+        class="h-full w-full object-cover"
+      />
+      <div class="absolute inset-0 bg-ink/78" />
+      <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgb(156_135_96_/_0.22),transparent_45%),radial-gradient(circle_at_85%_70%,rgb(53_86_72_/_0.2),transparent_40%)]" />
+    </div>
 
     <div
       class="container-site relative grid gap-10 lg:grid-cols-[1.3fr_1fr_auto] lg:items-end"
@@ -31,7 +39,7 @@ const { el, visible } = useReveal()
         <h2 class="mb-4 text-[clamp(2.3rem,5vw,3.6rem)] leading-[1.02] tracking-tight">
           {{ t('visitBlock.title', { name: info.name }) }}
         </h2>
-        <p class="max-w-md text-foam/70 leading-relaxed">
+        <p class="max-w-md text-foam/75 leading-relaxed">
           {{ t('visitBlock.lede') }}
         </p>
       </div>

@@ -71,17 +71,18 @@ const localePath = useLocalePath()
 .hero__title {
   font-size: clamp(4rem, 14vw, 8.5rem);
   line-height: 0.9;
+  text-wrap: balance;
 }
 
 .hero__media {
-  transform: scale(1.08);
-  animation: hero-zoom 18s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+  transform: scale(1.1);
+  animation: hero-zoom 22s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
 .hero__veil {
   background:
-    linear-gradient(90deg, rgb(20 17 15 / 0.55) 0%, rgb(20 17 15 / 0.2) 48%, rgb(20 17 15 / 0.45) 100%),
-    linear-gradient(180deg, rgb(20 17 15 / 0.25) 0%, rgb(20 17 15 / 0.35) 42%, rgb(20 17 15 / 0.92) 100%);
+    linear-gradient(105deg, rgb(20 17 15 / 0.62) 0%, rgb(20 17 15 / 0.18) 46%, rgb(20 17 15 / 0.5) 100%),
+    linear-gradient(180deg, rgb(20 17 15 / 0.2) 0%, rgb(20 17 15 / 0.32) 40%, rgb(20 17 15 / 0.94) 100%);
 }
 
 .hero__grain {
