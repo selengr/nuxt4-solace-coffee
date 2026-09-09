@@ -8,6 +8,7 @@ const links = [
   { to: '/menu', label: 'Menu' },
   { to: '/about', label: 'About' },
   { to: '/visit', label: 'Visit' },
+  { to: '/contact', label: 'Contact' },
 ]
 
 watch(
@@ -19,33 +20,33 @@ watch(
 </script>
 
 <template>
-  <header class="header">
-    <div class="container header__inner">
+  <header class="sticky top-0 z-40 border-b border-ink/5 bg-foam/90 backdrop-blur-md">
+    <div class="container-site flex min-h-[4.25rem] items-center gap-6">
       <NuxtLink
         to="/"
-        class="logo"
+        class="mr-auto font-display text-[1.45rem] font-semibold tracking-tight"
       >
         {{ info.name }}
       </NuxtLink>
 
       <nav
         id="mobile-nav"
-        class="nav"
-        :class="{ 'nav--open': open }"
+        class="hidden items-center gap-7 md:flex"
         aria-label="Primary"
       >
         <NuxtLink
           v-for="link in links"
           :key="link.to"
           :to="link.to"
-          class="nav__link"
+          class="text-sm text-mute transition hover:text-ink"
+          active-class="!text-ink"
         >
           {{ link.label }}
         </NuxtLink>
       </nav>
 
       <BaseButton
-        class="header__cta"
+        class="hidden md:inline-flex"
         to="/visit"
         variant="primary"
       >
@@ -53,107 +54,40 @@ watch(
       </BaseButton>
 
       <button
-        class="menu-toggle"
+        class="grid h-10 w-10 place-content-center gap-1.5 md:hidden"
         type="button"
         :aria-expanded="open"
-        aria-controls="mobile-nav"
+        aria-controls="mobile-nav-panel"
         aria-label="Toggle menu"
         @click="open = !open"
       >
-        <span />
-        <span />
+        <span class="block h-0.5 w-5 bg-ink" />
+        <span class="block h-0.5 w-5 bg-ink" />
       </button>
     </div>
+
+    <nav
+      v-if="open"
+      id="mobile-nav-panel"
+      class="border-t border-ink/5 bg-foam px-5 py-4 md:hidden"
+      aria-label="Mobile"
+    >
+      <div class="flex flex-col gap-3">
+        <NuxtLink
+          v-for="link in links"
+          :key="link.to"
+          :to="link.to"
+          class="py-1 text-sm text-mute"
+        >
+          {{ link.label }}
+        </NuxtLink>
+        <BaseButton
+          to="/visit"
+          variant="primary"
+        >
+          Visit us
+        </BaseButton>
+      </div>
+    </nav>
   </header>
 </template>
-
-<style scoped>
-.header {
-  position: sticky;
-  top: 0;
-  z-index: 40;
-  background: rgb(250 249 246 / 0.88);
-  backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgb(26 23 20 / 0.06);
-}
-
-.header__inner {
-  display: flex;
-  align-items: center;
-  gap: 1.5rem;
-  min-height: 4.25rem;
-}
-
-.logo {
-  font-family: var(--font-display);
-  font-size: 1.45rem;
-  font-weight: 600;
-  letter-spacing: -0.02em;
-  margin-right: auto;
-}
-
-.nav {
-  display: none;
-  gap: 1.75rem;
-}
-
-.nav__link {
-  font-size: 0.875rem;
-  font-weight: 400;
-  color: var(--color-muted);
-  transition: color 180ms ease;
-}
-
-.nav__link:hover,
-.nav__link.router-link-active {
-  color: var(--color-ink);
-}
-
-.header__cta {
-  display: none;
-}
-
-.menu-toggle {
-  width: 2.5rem;
-  height: 2.5rem;
-  border: 0;
-  background: transparent;
-  display: grid;
-  place-content: center;
-  gap: 6px;
-  cursor: pointer;
-}
-
-.menu-toggle span {
-  display: block;
-  width: 1.35rem;
-  height: 1.5px;
-  background: var(--color-ink);
-}
-
-@media (max-width: 767px) {
-  .nav--open {
-    display: flex;
-    flex-direction: column;
-    position: absolute;
-    inset: 4.25rem 0 auto;
-    padding: 1.25rem 1.25rem 1.5rem;
-    background: var(--color-foam);
-    border-bottom: 1px solid rgb(26 23 20 / 0.08);
-  }
-}
-
-@media (min-width: 768px) {
-  .nav {
-    display: flex;
-  }
-
-  .header__cta {
-    display: inline-flex;
-  }
-
-  .menu-toggle {
-    display: none;
-  }
-}
-</style>

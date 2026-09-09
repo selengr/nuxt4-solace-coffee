@@ -1,21 +1,22 @@
 <template>
-  <div class="layout">
+  <div class="flex min-h-screen flex-col">
     <AppHeader />
-    <main class="layout__main">
+    <main class="flex-1">
       <slot />
     </main>
     <AppFooter />
   </div>
 </template>
 
-<style scoped>
-.layout {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
+<style>
+.page-enter-active,
+.page-leave-active {
+  transition: opacity 220ms ease, transform 220ms ease;
 }
 
-.layout__main {
-  flex: 1;
+.page-enter-from,
+.page-leave-to {
+  opacity: 0;
+  transform: translateY(6px);
 }
 </style>

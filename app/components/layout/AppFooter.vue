@@ -1,111 +1,72 @@
 <script setup lang="ts">
 const { info } = useCafe()
-
 const year = new Date().getFullYear()
 </script>
 
 <template>
-  <footer class="footer">
-    <div class="container footer__grid">
+  <footer class="bg-ink pb-8 pt-16 text-foam/80">
+    <div class="container-site grid gap-8 border-b border-foam/10 pb-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
       <div>
-        <p class="footer__brand">
+        <p class="mb-3 font-display text-3xl text-foam">
           {{ info.name }}
         </p>
-        <p class="footer__tagline">
+        <p class="max-w-xs text-[0.95rem] text-foam/60">
           {{ info.tagline }}
         </p>
       </div>
 
       <div>
-        <p class="footer__label">
+        <p class="mb-3 text-[0.7rem] uppercase tracking-[0.14em] text-brass">
           Visit
         </p>
-        <p>{{ info.address }}</p>
-        <p>{{ info.city }}</p>
+        <p class="text-sm">
+          {{ info.address }}
+        </p>
+        <p class="text-sm">
+          {{ info.city }}
+        </p>
       </div>
 
       <div>
-        <p class="footer__label">
+        <p class="mb-3 text-[0.7rem] uppercase tracking-[0.14em] text-brass">
           Hours
         </p>
         <p
           v-for="line in info.hours"
           :key="line"
+          class="text-sm"
         >
           {{ line }}
         </p>
       </div>
 
       <div>
-        <p class="footer__label">
+        <p class="mb-3 text-[0.7rem] uppercase tracking-[0.14em] text-brass">
           Contact
         </p>
-        <p>
-          <a :href="`mailto:${info.email}`">{{ info.email }}</a>
+        <p class="text-sm">
+          <NuxtLink
+            to="/contact"
+            class="transition hover:text-foam"
+          >
+            Write to us
+          </NuxtLink>
         </p>
-        <p>{{ info.phone }}</p>
+        <p class="text-sm">
+          <a
+            :href="`mailto:${info.email}`"
+            class="transition hover:text-foam"
+          >{{ info.email }}</a>
+        </p>
+        <p class="text-sm">
+          {{ info.instagram }}
+        </p>
       </div>
     </div>
 
-    <div class="container footer__bottom">
-      <p>© {{ year }} {{ info.name }}. Nuxt 4 café starter boilerplate.</p>
+    <div class="container-site flex flex-col gap-2 pt-6 text-xs text-foam/45 sm:flex-row sm:justify-between">
+      <p>© {{ year }} {{ info.name }} Coffee. Built with Nuxt 4.</p>
+      <p>Specialty café website · Seattle</p>
     </div>
   </footer>
 </template>
-
-<style scoped>
-.footer {
-  background: var(--color-ink);
-  color: rgb(250 249 246 / 0.82);
-  padding-top: 4rem;
-  padding-bottom: 2rem;
-}
-
-.footer__grid {
-  display: grid;
-  gap: 2rem;
-  padding-bottom: 3rem;
-  border-bottom: 1px solid rgb(250 249 246 / 0.12);
-}
-
-.footer__brand {
-  font-family: var(--font-display);
-  font-size: 1.75rem;
-  color: var(--color-foam);
-  margin-bottom: 0.65rem;
-}
-
-.footer__tagline {
-  max-width: 18rem;
-  color: rgb(250 249 246 / 0.62);
-  font-size: 0.95rem;
-}
-
-.footer__label {
-  font-size: 0.7rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--color-brass);
-  margin-bottom: 0.75rem;
-}
-
-.footer p {
-  font-size: 0.9rem;
-}
-
-.footer a:hover {
-  color: var(--color-foam);
-}
-
-.footer__bottom {
-  padding-top: 1.5rem;
-  font-size: 0.8rem;
-  color: rgb(250 249 246 / 0.45);
-}
-
-@media (min-width: 768px) {
-  .footer__grid {
-    grid-template-columns: 1.4fr 1fr 1fr 1fr;
-  }
-}
-</style>

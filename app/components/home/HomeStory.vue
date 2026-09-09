@@ -3,73 +3,37 @@ const { info } = useCafe()
 </script>
 
 <template>
-  <section class="story">
-    <div class="story__image">
+  <section class="grid bg-mist lg:grid-cols-[1.05fr_0.95fr] lg:min-h-[34rem]">
+    <div>
       <img
         src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=1400&q=80"
         alt="Barista pouring espresso into a ceramic cup"
         width="1400"
         height="933"
+        class="h-[min(70vh,36rem)] w-full object-cover lg:h-full"
       >
     </div>
-    <div class="story__copy">
+    <div class="grid content-center gap-4 p-[clamp(2.5rem,6vw,4.5rem)]">
       <p class="eyebrow">
         Our room
       </p>
-      <h2>A quiet counter for better coffee.</h2>
-      <p>
+      <h2 class="max-w-[12ch] text-[clamp(2rem,4vw,3rem)]">
+        A quiet counter for better coffee.
+      </h2>
+      <p class="max-w-md text-mute">
         {{ info.name }} is a specialty café built for unhurried mornings —
         single-origin lots, careful milk texture, and a room that feels like a
         pause in the day.
       </p>
-      <p>
-        This project is also a Nuxt 4 boilerplate: clear folders, typed data,
-        composables, and page sections you can remix for your own café brand.
+      <p class="max-w-md text-mute">
+        This codebase is production-shaped: typed content, composables, Tailwind
+        design tokens, and a Nitro contact API you can connect to email or CRM.
       </p>
-      <BaseButton to="/about">
-        Our story
-      </BaseButton>
+      <div class="pt-2">
+        <BaseButton to="/about">
+          Our story
+        </BaseButton>
+      </div>
     </div>
   </section>
 </template>
-
-<style scoped>
-.story {
-  display: grid;
-  background: var(--color-mist);
-}
-
-.story__image img {
-  width: 100%;
-  height: min(70vh, 36rem);
-  object-fit: cover;
-}
-
-.story__copy {
-  padding: clamp(2.5rem, 6vw, 4.5rem);
-  display: grid;
-  align-content: center;
-  gap: 1.1rem;
-}
-
-.story__copy h2 {
-  font-size: clamp(2rem, 4vw, 3rem);
-  max-width: 12ch;
-}
-
-.story__copy p {
-  color: var(--color-muted);
-  max-width: 36rem;
-}
-
-@media (min-width: 900px) {
-  .story {
-    grid-template-columns: 1.05fr 0.95fr;
-    min-height: 34rem;
-  }
-
-  .story__image img {
-    height: 100%;
-  }
-}
-</style>
