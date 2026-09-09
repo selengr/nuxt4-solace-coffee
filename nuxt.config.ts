@@ -90,6 +90,7 @@ export default defineNuxtConfig({
     lazy: true,
     langDir: 'locales',
     strategy: 'prefix_except_default',
+    baseUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://solace.coffee',
     detectBrowserLanguage: {
       cookieKey: 'solace_lang',
       redirectOn: 'root',
