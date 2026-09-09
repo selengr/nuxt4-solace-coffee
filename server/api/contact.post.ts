@@ -35,17 +35,26 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  // Demo inbox log — swap for Resend, Nodemailer, or a CRM webhook.
-  console.info('[contact]', {
-    to: config.contactInbox,
-    name,
-    email,
+  const text = [
+    `New message from ${name}`,
+    `Email: ${email}`,
+    '',
     message,
-    receivedAt: new Date().toISOString(),
+  ].join('\n')
+
+  const result = await sendCafeEmail({
+    to: config.contactInbox,
+    from: config.mailFrom,
+    replyTo: email,
+    subject: `[Solace] Message from ${name}`,
+    text,
   })
 
   return {
     ok: true,
-    message: 'Thanks — we received your note and will reply soon.',
+    demo: result.demo,
+    message: result.demo
+      ? 'Thanks — message saved in demo mode (add RESEND_API_KEY for real email).'
+      : 'Thanks — we received your note and will reply soon.',
   }
 })
