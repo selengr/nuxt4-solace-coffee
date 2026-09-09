@@ -29,6 +29,7 @@ watch(
       </NuxtLink>
 
       <nav
+        id="mobile-nav"
         class="nav"
         :class="{ 'nav--open': open }"
         aria-label="Primary"

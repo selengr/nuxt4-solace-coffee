@@ -1,75 +1,67 @@
-# Nuxt Minimal Starter
+# Northroom — Nuxt 4 Café Starter
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+A modern specialty-café website boilerplate built with **Nuxt 4**, Vue 3, and TypeScript.
 
-## Setup
+Demo brand: **Northroom**. Swap the name, menu, and photos to ship your own café site — or keep it as a clean Nuxt structure reference.
 
-Make sure to install dependencies:
+## What’s included
+
+- Full-bleed homepage (hero, featured menu, story, visit CTA)
+- Pages: Home · Menu · About · Visit
+- Typed café data + `useCafe()` composable
+- Layout shell with sticky header and footer
+- Design tokens (CSS variables) + expressive typography
+- Nuxt 4 `app/` directory best-practice layout
+
+## Quick start
 
 ```bash
-# npm
 npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
 npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
 ```
 
-## Production
+Open [http://localhost:3000](http://localhost:3000).
 
-Build the application for production:
+## Project structure
 
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
+```text
+app/
+  assets/css/        # Global tokens & base styles
+  components/
+    home/            # Homepage sections
+    layout/          # Header & footer
+    ui/              # Reusable UI (BaseButton)
+  composables/       # useCafe()
+  data/              # Café info & menu content
+  layouts/           # default layout
+  pages/             # File-based routes
+  types/             # Shared TypeScript types
+nuxt.config.ts
 ```
 
-Locally preview production build:
+## Customize
 
-```bash
-# npm
-npm run preview
+1. Edit `app/data/menu.ts` — café name, hours, menu items  
+2. Update colors/fonts in `app/assets/css/main.css`  
+3. Replace Unsplash images with your own in `public/` or a CDN  
+4. Drop a map embed into `app/pages/visit.vue`
 
-# pnpm
-pnpm preview
+## Scripts
 
-# yarn
-yarn preview
+| Command | Description |
+|---|---|
+| `npm run dev` | Development server |
+| `npm run build` | Production build |
+| `npm run preview` | Preview production build |
+| `npm run generate` | Static site generation |
 
-# bun
-bun run preview
-```
+## Stack
 
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
+- [Nuxt 4](https://nuxt.com)
+- Vue 3 + Vue Router
+- TypeScript
+- Plain CSS with design tokens (no UI framework lock-in)
+
+## License
+
+MIT — use it for client work, demos, or your own café brand.
