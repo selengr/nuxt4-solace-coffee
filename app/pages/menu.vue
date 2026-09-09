@@ -14,6 +14,7 @@ useSeoMeta({
 type Filter = 'all' | MenuItem['category']
 
 const filter = ref<Filter>('all')
+const query = ref('')
 
 const sections = [
   { key: 'espresso' as const, title: 'Espresso bar', note: 'Milk alternatives available.' },
@@ -28,10 +29,33 @@ const filters: { key: Filter, label: string }[] = [
   { key: 'food', label: 'Food' },
 ]
 
-const visibleSections = computed(() =>
-  filter.value === 'all'
+function matchesQuery(item: MenuItem) {
+  const q = query.value.trim().toLowerCase()
+  if (!q) {
+    return true
+  }
+  return (
+    item.name.toLowerCase().includes(q)
+    || item.description.toLowerCase().includes(q)
+    || item.category.includes(q)
+  )
+}
+
+const visibleSections = computed(() => {
+  const base = filter.value === 'all'
     ? sections
-    : sections.filter(section => section.key === filter.value),
+    : sections.filter(section => section.key === filter.value)
+
+  return base
+    .map(section => ({
+      ...section,
+      items: byCategory(section.key).filter(matchesQuery),
+    }))
+    .filter(section => section.items.length > 0)
+})
+
+const visibleCount = computed(() =>
+  visibleSections.value.reduce((sum, section) => sum + section.items.length, 0),
 )
 
 function addToOrder(item: MenuItem) {
@@ -50,10 +74,25 @@ function addToOrder(item: MenuItem) {
         What we’re pouring
       </h1>
       <p class="mb-8 max-w-xl text-mute">
-        A focused specialty menu. Add items to pickup, or browse by category.
+        Search the board, filter by category, and add items to pickup.
       </p>
 
-      <div class="mb-10 flex flex-wrap gap-2">
+      <label class="mb-6 block max-w-md">
+        <span class="mb-2 block text-sm font-medium">Search menu</span>
+        <input
+          v-model="query"
+          type="search"
+          name="menu-search"
+          placeholder="Latte, pour over, toast…"
+          class="w-full rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none transition focus:border-leaf"
+        >
+      </label>
+
+      <div
+        class="mb-10 flex flex-wrap gap-2"
+        role="group"
+        aria-label="Menu categories"
+      >
         <button
           v-for="option in filters"
           :key="option.key"
@@ -62,11 +101,19 @@ function addToOrder(item: MenuItem) {
           :class="filter === option.key
             ? 'border-ink bg-ink text-foam'
             : 'border-ink/15 text-mute hover:border-ink/40 hover:text-ink'"
+          :aria-pressed="filter === option.key"
           @click="filter = option.key"
         >
           {{ option.label }}
         </button>
       </div>
+
+      <p
+        v-if="!visibleSections.length"
+        class="mb-8 text-mute"
+      >
+        No items match “{{ query }}”. Try another search.
+      </p>
 
       <section
         v-for="section in visibleSections"
@@ -83,7 +130,7 @@ function addToOrder(item: MenuItem) {
         </div>
         <ul class="m-0 list-none p-0">
           <li
-            v-for="item in byCategory(section.key)"
+            v-for="item in section.items"
             :key="item.id"
             class="grid grid-cols-[1fr_auto] items-center gap-4 border-b border-ink/[0.08] py-4"
           >
@@ -110,7 +157,7 @@ function addToOrder(item: MenuItem) {
       </section>
 
       <p class="text-sm text-mute">
-        {{ menu.length }} items ·
+        Showing {{ visibleCount }} of {{ menu.length }} items ·
         <NuxtLink
           :to="localePath('/order')"
           class="text-leaf underline-offset-2 hover:underline"

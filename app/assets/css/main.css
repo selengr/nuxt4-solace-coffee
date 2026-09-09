@@ -33,8 +33,12 @@
     @apply no-underline;
   }
 
-  img {
-    @apply block max-w-full;
+  a:focus-visible,
+  button:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible,
+  select:focus-visible {
+    @apply outline outline-2 outline-offset-2 outline-leaf;
   }
 }
 
@@ -65,6 +69,10 @@
 
   .reveal-delay-3 {
     animation-delay: 360ms;
+  }
+
+  .skip-link {
+    @apply absolute start-4 top-0 z-[60] -translate-y-[120%] rounded-sm bg-ink px-4 py-2 text-sm text-foam transition focus:translate-y-4;
   }
 }
 

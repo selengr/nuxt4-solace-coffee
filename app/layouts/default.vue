@@ -1,8 +1,18 @@
 <template>
   <div class="flex min-h-screen flex-col">
+    <a
+      href="#main-content"
+      class="skip-link"
+    >
+      Skip to content
+    </a>
     <CafeJsonLd />
     <AppHeader />
-    <main class="flex-1">
+    <main
+      id="main-content"
+      class="flex-1"
+      tabindex="-1"
+    >
       <slot />
     </main>
     <AppFooter />
