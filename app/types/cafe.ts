@@ -15,4 +15,16 @@ export interface CafeInfo {
   hours: string[]
   phone: string
   email: string
+  instagram: string
+}
+
+export interface CafeValue {
+  title: string
+  description: string
+}
+
+export interface ContactPayload {
+  name: string
+  email: string
+  message: string
 }

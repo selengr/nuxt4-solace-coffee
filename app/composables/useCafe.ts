@@ -1,4 +1,4 @@
-import { cafeInfo, menuItems } from '~/data/menu'
+import { cafeInfo, cafeValues, menuItems } from '~/data/menu'
 import type { MenuItem } from '~/types/cafe'
 
 export function useCafe() {
@@ -11,6 +11,7 @@ export function useCafe() {
 
   return {
     info: cafeInfo,
+    values: cafeValues,
     menu: menuItems,
     featured,
     byCategory,
