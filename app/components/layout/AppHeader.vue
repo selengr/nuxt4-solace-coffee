@@ -13,6 +13,7 @@ const links = computed(() => [
   { to: localePath('/about'), label: t('nav.about') },
   { to: localePath('/order'), label: t('nav.order') },
   { to: localePath('/events'), label: t('nav.events') },
+  { to: localePath('/blog'), label: t('nav.blog') },
   { to: localePath('/visit'), label: t('nav.visit') },
   { to: localePath('/contact'), label: t('nav.contact') },
 ])
