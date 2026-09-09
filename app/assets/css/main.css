@@ -7,6 +7,11 @@
     scroll-behavior: smooth;
   }
 
+  html[dir='rtl'],
+  html[dir='ltr'] {
+    text-align: start;
+  }
+
   body {
     @apply bg-foam font-sans text-ink antialiased;
   }
@@ -15,7 +20,6 @@
     font-family: 'Vazirmatn', 'Sora', system-ui, sans-serif;
     line-height: 1.8;
     letter-spacing: 0;
-    text-align: start;
   }
 
   body.font-fa h1,
@@ -49,6 +53,11 @@
   [dir='rtl'] input,
   [dir='rtl'] textarea {
     text-align: right;
+  }
+
+  [dir='ltr'] input,
+  [dir='ltr'] textarea {
+    text-align: left;
   }
 }
 
@@ -123,6 +132,16 @@
   body.font-fa .prose-solace {
     text-align: justify;
     text-justify: inter-word;
+  }
+
+  .site-header__nav {
+    max-width: min(100%, 52rem);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .site-header__nav::-webkit-scrollbar {
+    display: none;
   }
 }
 

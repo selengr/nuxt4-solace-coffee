@@ -4,22 +4,30 @@ const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const switchLocalePath = useSwitchLocalePath()
 const { count } = useCart()
-const open = ref(false)
 const route = useRoute()
+const open = ref(false)
 
 const links = computed(() => [
-  { to: localePath('/'), label: t('nav.home') },
-  { to: localePath('/menu'), label: t('nav.menu') },
-  { to: localePath('/order'), label: t('nav.order') },
-  { to: localePath('/events'), label: t('nav.events') },
-  { to: localePath('/blog'), label: t('nav.blog') },
-  { to: localePath('/wholesale'), label: t('nav.wholesale') },
-  { to: localePath('/about'), label: t('nav.about') },
-  { to: localePath('/visit'), label: t('nav.visit') },
-  { to: localePath('/contact'), label: t('nav.contact') },
+  { path: '/', label: t('nav.home'), exact: true },
+  { path: '/menu', label: t('nav.menu') },
+  { path: '/order', label: t('nav.order') },
+  { path: '/events', label: t('nav.events') },
+  { path: '/blog', label: t('nav.blog') },
+  { path: '/wholesale', label: t('nav.wholesale') },
+  { path: '/about', label: t('nav.about') },
+  { path: '/visit', label: t('nav.visit') },
+  { path: '/contact', label: t('nav.contact') },
 ])
 
 const otherLocale = computed(() => (locale.value === 'en' ? 'fa' : 'en'))
+
+function isActive(path: string, exact = false) {
+  const resolved = localePath(path)
+  if (exact) {
+    return route.path === resolved
+  }
+  return route.path === resolved || route.path.startsWith(`${resolved}/`)
+}
 
 watch(
   () => route.fullPath,
@@ -27,102 +35,113 @@ watch(
     open.value = false
   },
 )
+
+watch(locale, () => {
+  open.value = false
+})
 </script>
 
 <template>
-  <header class="sticky top-0 z-40 border-b border-ink/5 bg-foam/90 backdrop-blur-md">
-    <div class="container-site flex min-h-[4.25rem] items-center gap-4 md:gap-6">
-      <NuxtLink
-        :to="localePath('/')"
-        class="me-auto font-display text-[1.45rem] font-semibold tracking-tight"
-      >
-        {{ info.name }}
-      </NuxtLink>
-
-      <nav
-        id="mobile-nav"
-        class="hidden items-center gap-5 xl:flex"
-        :aria-label="t('a11y.primaryNav')"
-      >
+  <header class="site-header sticky top-0 z-40 border-b border-ink/5 bg-foam/90 backdrop-blur-md">
+    <div class="container-site flex min-h-[4.25rem] items-center justify-between gap-3">
+      <div class="flex min-w-0 items-center gap-5">
         <NuxtLink
-          v-for="link in links"
-          :key="link.to"
-          :to="link.to"
-          class="text-sm text-mute transition hover:text-ink"
-          active-class="!text-ink"
+          :to="localePath('/')"
+          class="shrink-0 font-display text-[1.45rem] font-semibold tracking-tight"
         >
-          {{ link.label }}
+          {{ info.name }}
         </NuxtLink>
-      </nav>
 
-      <NuxtLink
-        :to="switchLocalePath(otherLocale)"
-        class="hidden text-xs font-medium uppercase tracking-wider text-mute hover:text-ink sm:inline"
-      >
-        {{ t(`lang.${otherLocale}`) }}
-      </NuxtLink>
-
-      <NuxtLink
-        :to="localePath('/order')"
-        class="relative hidden text-sm text-mute hover:text-ink md:inline"
-      >
-        {{ t('nav.order') }}
-        <span
-          v-if="count"
-          class="absolute -end-3 -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-leaf px-1 text-[10px] text-foam"
+        <nav
+          class="site-header__nav hidden items-center gap-4 2xl:flex"
+          :aria-label="t('a11y.primaryNav')"
         >
-          {{ count }}
-        </span>
-      </NuxtLink>
+          <NuxtLink
+            v-for="link in links"
+            :key="link.path"
+            :to="localePath(link.path)"
+            class="whitespace-nowrap text-sm text-mute transition hover:text-ink"
+            :class="{ '!text-ink': isActive(link.path, link.exact) }"
+          >
+            {{ link.label }}
+          </NuxtLink>
+        </nav>
+      </div>
 
-      <BaseButton
-        class="hidden md:inline-flex"
-        :to="localePath('/visit')"
-        variant="primary"
-      >
-        {{ t('nav.visitCta') }}
-      </BaseButton>
-
-      <button
-        class="grid h-10 w-10 place-content-center gap-1.5 xl:hidden"
-        type="button"
-        :aria-expanded="open"
-        aria-controls="mobile-nav-panel"
-        :aria-label="t('a11y.toggleMenu')"
-        @click="open = !open"
-      >
-        <span class="block h-0.5 w-5 bg-ink" />
-        <span class="block h-0.5 w-5 bg-ink" />
-      </button>
-    </div>
-
-    <nav
-      v-if="open"
-      id="mobile-nav-panel"
-      class="border-t border-ink/5 bg-foam px-5 py-4 xl:hidden"
-      :aria-label="t('a11y.mobileNav')"
-    >
-      <div class="flex flex-col gap-3">
-        <NuxtLink
-          v-for="link in links"
-          :key="link.to"
-          :to="link.to"
-          class="py-1 text-sm text-mute"
-        >
-          {{ link.label }}
-        </NuxtLink>
+      <div class="flex shrink-0 items-center gap-2 sm:gap-3">
         <NuxtLink
           :to="switchLocalePath(otherLocale)"
-          class="py-1 text-sm text-mute"
+          class="inline-flex h-9 min-w-9 items-center justify-center rounded-sm border border-ink/10 px-2 text-xs font-medium text-ink transition hover:border-ink/25"
+          :class="locale === 'fa' ? '' : 'uppercase tracking-wide'"
         >
           {{ t(`lang.${otherLocale}`) }}
         </NuxtLink>
+
+        <NuxtLink
+          :to="localePath('/order')"
+          class="relative hidden items-center text-sm text-mute transition hover:text-ink md:inline-flex"
+        >
+          {{ t('nav.order') }}
+          <span
+            v-if="count"
+            class="absolute -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-leaf px-1 text-[10px] text-foam inset-inline-end-[-0.7rem]"
+          >
+            {{ count }}
+          </span>
+        </NuxtLink>
+
         <BaseButton
+          class="hidden lg:inline-flex"
           :to="localePath('/visit')"
           variant="primary"
         >
           {{ t('nav.visitCta') }}
         </BaseButton>
+
+        <button
+          class="grid h-10 w-10 place-content-center gap-1.5 2xl:hidden"
+          type="button"
+          :aria-expanded="open"
+          aria-controls="mobile-nav-panel"
+          :aria-label="t('a11y.toggleMenu')"
+          @click="open = !open"
+        >
+          <span class="block h-0.5 w-5 bg-ink" />
+          <span class="block h-0.5 w-5 bg-ink" />
+        </button>
+      </div>
+    </div>
+
+    <nav
+      v-if="open"
+      id="mobile-nav-panel"
+      class="border-t border-ink/5 bg-foam 2xl:hidden"
+      :aria-label="t('a11y.mobileNav')"
+    >
+      <div class="container-site flex flex-col gap-1 py-4">
+        <NuxtLink
+          v-for="link in links"
+          :key="`m-${link.path}`"
+          :to="localePath(link.path)"
+          class="rounded-sm px-2 py-2.5 text-sm text-mute transition hover:bg-mist hover:text-ink"
+          :class="{ '!bg-mist !text-ink': isActive(link.path, link.exact) }"
+        >
+          {{ link.label }}
+        </NuxtLink>
+        <NuxtLink
+          :to="switchLocalePath(otherLocale)"
+          class="rounded-sm px-2 py-2.5 text-sm text-mute transition hover:bg-mist hover:text-ink"
+        >
+          {{ t(`lang.${otherLocale}`) }}
+        </NuxtLink>
+        <div class="pt-2">
+          <BaseButton
+            :to="localePath('/visit')"
+            variant="primary"
+          >
+            {{ t('nav.visitCta') }}
+          </BaseButton>
+        </div>
       </div>
     </nav>
   </header>

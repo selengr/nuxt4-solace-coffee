@@ -93,6 +93,7 @@ export default defineNuxtConfig({
     detectBrowserLanguage: {
       cookieKey: 'solace_lang',
       redirectOn: 'root',
+      useCookie: true,
     },
   },
   image: {
