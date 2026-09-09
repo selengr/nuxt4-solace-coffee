@@ -1,4 +1,4 @@
-import type { CafeInfo, MenuItem, CafeValue } from '~/types/cafe'
+import type { CafeEvent, CafeInfo, CafeValue, MenuItem, Testimonial } from '~/types/cafe'
 
 export const cafeInfo: CafeInfo = {
   name: 'Solace',
@@ -9,9 +9,17 @@ export const cafeInfo: CafeInfo = {
     'Mon–Fri · 7:00–19:00',
     'Sat–Sun · 8:00–18:00',
   ],
+  schedule: [
+    { days: [1, 2, 3, 4, 5], open: '07:00', close: '19:00', label: 'Mon–Fri' },
+    { days: [0, 6], open: '08:00', close: '18:00', label: 'Sat–Sun' },
+  ],
   phone: '+1 (206) 555-0192',
   email: 'hello@solace.coffee',
   instagram: '@solace.coffee',
+  geo: {
+    lat: 47.6245,
+    lng: -122.3362,
+  },
 }
 
 export const cafeValues: CafeValue[] = [
@@ -29,6 +37,54 @@ export const cafeValues: CafeValue[] = [
     title: 'Room to breathe',
     description:
       'Soft light, steady music, and tables meant for conversation — or none at all.',
+  },
+]
+
+export const testimonials: Testimonial[] = [
+  {
+    id: 'maya',
+    quote: 'The pour-over feels like a small ritual. I come for the coffee and stay for the quiet.',
+    name: 'Maya R.',
+    role: 'Neighbor · Capitol Hill',
+  },
+  {
+    id: 'jon',
+    quote: 'Best flat white in the neighborhood — and the staff actually remembers how you take it.',
+    name: 'Jon K.',
+    role: 'Regular · mornings',
+  },
+  {
+    id: 'sara',
+    quote: 'We hosted a private cupping here. Calm room, sharp tasting notes, zero fuss.',
+    name: 'Sara L.',
+    role: 'Events guest',
+  },
+]
+
+export const cafeEvents: CafeEvent[] = [
+  {
+    id: 'saturday-cupping',
+    title: 'Saturday Cupping',
+    date: 'Every Saturday',
+    time: '10:00',
+    description: 'Taste three current lots with our bar lead. Free with any brew bar drink.',
+    type: 'cupping',
+  },
+  {
+    id: 'milk-workshop',
+    title: 'Home Milk Texture Workshop',
+    date: 'First Friday monthly',
+    time: '18:30',
+    description: 'Learn steaming and pouring basics on our training machines. Limited seats.',
+    type: 'workshop',
+  },
+  {
+    id: 'private-morning',
+    title: 'Private Morning Hire',
+    date: 'By request',
+    time: '07:00–09:00',
+    description: 'Book the room before public hours for teams, tastings, or quiet kickoffs.',
+    type: 'private',
   },
 ]
 

@@ -6,6 +6,7 @@
     "visit": "Visit",
     "contact": "Contact",
     "order": "Order",
+    "events": "Events",
     "visitCta": "Visit us"
   },
   "hero": {
@@ -54,6 +55,10 @@
     "eyebrow": "Pickup",
     "title": "Order ahead",
     "lede": "Build a pickup order, then we’ll confirm by email. Payment stays at the counter for this demo flow."
+  },
+  "testimonials": {
+    "eyebrow": "From the room",
+    "title": "What neighbors say."
   },
   "lang": {
     "en": "EN",

@@ -7,6 +7,7 @@ const customerEmail = ref('')
 const phone = ref('')
 const notes = ref('')
 
+const toast = useToast()
 const status = ref<'idle' | 'loading' | 'success' | 'error'>('idle')
 const feedback = ref('')
 const fieldErrors = ref<string[]>([])
@@ -43,6 +44,7 @@ async function submitOrder() {
     status.value = 'success'
     feedback.value = result.message
     orderId.value = result.orderId
+    toast.success(result.message)
     clear()
     customerName.value = ''
     customerEmail.value = ''
@@ -58,6 +60,7 @@ async function submitOrder() {
     feedback.value = fieldErrors.value.length
       ? 'Please check your order details.'
       : 'Could not place the order. Try again.'
+    toast.error(feedback.value)
   }
 }
 </script>

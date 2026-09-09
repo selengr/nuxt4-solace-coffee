@@ -5,6 +5,7 @@ const form = reactive({
   message: '',
 })
 
+const toast = useToast()
 const status = ref<'idle' | 'loading' | 'success' | 'error'>('idle')
 const feedback = ref('')
 const fieldErrors = ref<string[]>([])
@@ -22,6 +23,7 @@ async function onSubmit() {
 
     status.value = 'success'
     feedback.value = result.message
+    toast.success(result.message)
     form.name = ''
     form.email = ''
     form.message = ''
@@ -36,6 +38,7 @@ async function onSubmit() {
     feedback.value = fieldErrors.value.length
       ? 'Please check the form and try again.'
       : 'Something went wrong. Please try again or email us directly.'
+    toast.error(feedback.value)
   }
 }
 </script>

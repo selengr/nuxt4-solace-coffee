@@ -1,52 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
-  compatibilityDate: '2025-07-15',
-  future: {
-    compatibilityVersion: 4,
-  },
-  modules: ['@nuxtjs/tailwindcss', '@nuxtjs/i18n'],
-  devtools: { enabled: true },
-  css: ['~/assets/css/main.css'],
+  modules: [
+    '@nuxt/eslint',
+    '@nuxtjs/tailwindcss',
+    '@nuxtjs/i18n',
+    '@nuxt/image',
+    '@nuxtjs/sitemap',
+  ],
   components: [
     {
       path: '~/components',
       pathPrefix: false,
     },
   ],
-  runtimeConfig: {
-    contactInbox: process.env.NUXT_CONTACT_INBOX || 'hello@solace.coffee',
-    resendApiKey: process.env.NUXT_RESEND_API_KEY || '',
-    mailFrom: process.env.NUXT_MAIL_FROM || 'Solace Coffee <onboarding@resend.dev>',
-    public: {
-      siteName: 'Solace',
-    },
-  },
-  i18n: {
-    locales: [
-      {
-        code: 'en',
-        language: 'en-US',
-        name: 'English',
-        file: 'en.json',
-        dir: 'ltr',
-      },
-      {
-        code: 'fa',
-        language: 'fa-IR',
-        name: 'فارسی',
-        file: 'fa.json',
-        dir: 'rtl',
-      },
-    ],
-    defaultLocale: 'en',
-    lazy: true,
-    langDir: 'locales',
-    strategy: 'prefix_except_default',
-    detectBrowserLanguage: {
-      cookieKey: 'solace_lang',
-      redirectOn: 'root',
-    },
-  },
+  devtools: { enabled: true },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
@@ -78,5 +45,61 @@ export default defineNuxtConfig({
         },
       ],
     },
+  },
+  css: ['~/assets/css/main.css'],
+  site: {
+    url: process.env.NUXT_PUBLIC_SITE_URL || 'https://solace.coffee',
+    name: 'Solace Coffee',
+  },
+  runtimeConfig: {
+    contactInbox: process.env.NUXT_CONTACT_INBOX || 'hello@solace.coffee',
+    resendApiKey: process.env.NUXT_RESEND_API_KEY || '',
+    mailFrom: process.env.NUXT_MAIL_FROM || 'Solace Coffee <onboarding@resend.dev>',
+    public: {
+      siteName: 'Solace',
+      siteUrl: process.env.NUXT_PUBLIC_SITE_URL || 'https://solace.coffee',
+    },
+  },
+  future: {
+    compatibilityVersion: 4,
+  },
+  compatibilityDate: '2025-07-15',
+  eslint: {
+    config: {
+      stylistic: true,
+    },
+  },
+  i18n: {
+    locales: [
+      {
+        code: 'en',
+        language: 'en-US',
+        name: 'English',
+        file: 'en.json',
+        dir: 'ltr',
+      },
+      {
+        code: 'fa',
+        language: 'fa-IR',
+        name: 'فارسی',
+        file: 'fa.json',
+        dir: 'rtl',
+      },
+    ],
+    defaultLocale: 'en',
+    lazy: true,
+    langDir: 'locales',
+    strategy: 'prefix_except_default',
+    detectBrowserLanguage: {
+      cookieKey: 'solace_lang',
+      redirectOn: 'root',
+    },
+  },
+  image: {
+    domains: ['images.unsplash.com'],
+    quality: 80,
+  },
+  sitemap: {
+    autoLastmod: true,
   },
 })

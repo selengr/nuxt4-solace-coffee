@@ -1,10 +1,12 @@
 <template>
   <div class="flex min-h-screen flex-col">
+    <CafeJsonLd />
     <AppHeader />
     <main class="flex-1">
       <slot />
     </main>
     <AppFooter />
+    <ToastHost />
   </div>
 </template>
 

@@ -30,7 +30,7 @@ export default {
         out: 'cubic-bezier(0.22, 1, 0.36, 1)',
       },
       keyframes: {
-        rise: {
+        'rise': {
           from: { opacity: '0', transform: 'translateY(1.25rem)' },
           to: { opacity: '1', transform: 'translateY(0)' },
         },
@@ -40,7 +40,7 @@ export default {
         },
       },
       animation: {
-        rise: 'rise 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards',
+        'rise': 'rise 700ms cubic-bezier(0.22, 1, 0.36, 1) forwards',
         'ease-zoom': 'ease-zoom 14s cubic-bezier(0.22, 1, 0.36, 1) forwards',
       },
     },

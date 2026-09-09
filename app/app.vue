@@ -3,7 +3,7 @@ const { locale, locales } = useI18n()
 
 const htmlDir = computed(() => {
   const current = locales.value.find(
-    (entry) => typeof entry !== 'string' && entry.code === locale.value,
+    entry => typeof entry !== 'string' && entry.code === locale.value,
   )
   return current && typeof current !== 'string' && current.dir
     ? current.dir
