@@ -15,16 +15,16 @@ export default defineEventHandler(async (event) => {
   const errors: string[] = []
 
   if (name.length < 2) {
-    errors.push('Please enter your name.')
+    errors.push('form.errors.name')
   }
   if (!isEmail(email)) {
-    errors.push('Please enter a valid email address.')
+    errors.push('form.errors.email')
   }
   if (message.length < 10) {
-    errors.push('Please write a slightly longer message.')
+    errors.push('form.errors.message')
   }
   if (message.length > 2000) {
-    errors.push('Message is too long (max 2000 characters).')
+    errors.push('form.errors.messageLong')
   }
 
   if (errors.length) {
@@ -53,8 +53,6 @@ export default defineEventHandler(async (event) => {
   return {
     ok: true,
     demo: result.demo,
-    message: result.demo
-      ? 'Thanks — message saved in demo mode (add RESEND_API_KEY for real email).'
-      : 'Thanks — we received your note and will reply soon.',
+    messageKey: result.demo ? 'form.successDemo' : 'form.success',
   }
 })

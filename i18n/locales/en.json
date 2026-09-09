@@ -8,6 +8,7 @@
     "order": "Order",
     "events": "Events",
     "blog": "Journal",
+    "wholesale": "Wholesale",
     "visitCta": "Visit us"
   },
   "hero": {
@@ -39,7 +40,11 @@
   "gallery": {
     "eyebrow": "Atmosphere",
     "title": "The room, the light, the cup.",
-    "note": "Photography placeholders — replace with your own café shots in production."
+    "note": "Photography placeholders — replace with your own café shots in production.",
+    "alt1": "Café interior with warm light",
+    "alt2": "Espresso in a white cup",
+    "alt3": "Coffee shop seating area",
+    "storyAlt": "Barista pouring espresso into a ceramic cup"
   },
   "visitBlock": {
     "eyebrow": "Come by",
@@ -76,6 +81,7 @@
     "foodTitle": "Kitchen",
     "foodNote": "Pastries bake through the morning.",
     "add": "Add",
+    "added": "{name} added to your bag",
     "showing": "Showing {visible} of {total} items",
     "reviewOrder": "Review pickup order"
   },
@@ -115,6 +121,7 @@
     "details": "Event details…",
     "send": "Send inquiry",
     "sending": "Sending…",
+    "success": "Thanks — we received your events inquiry.",
     "types": {
       "cupping": "cupping",
       "workshop": "workshop",
@@ -158,10 +165,65 @@
     "email": "Email",
     "placeholder": "you@email.com",
     "cta": "Subscribe",
-    "sending": "Sending…"
+    "sending": "Sending…",
+    "success": "You’re on the list — thanks for joining Solace notes.",
+    "error": "Could not subscribe. Try again.",
+    "errors": {
+      "email": "Please enter a valid email address."
+    }
+  },
+  "form": {
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "namePlaceholder": "Your name",
+    "emailPlaceholder": "you@email.com",
+    "messagePlaceholder": "Private events, catering, feedback, or just hello…",
+    "send": "Send message",
+    "sending": "Sending…",
+    "checkForm": "Please check the form and try again.",
+    "genericError": "Something went wrong. Please try again or email us directly.",
+    "success": "Thanks — we received your note and will reply soon.",
+    "successDemo": "Thanks — message saved in demo mode.",
+    "errors": {
+      "name": "Please enter your name.",
+      "email": "Please enter a valid email address.",
+      "message": "Please write a slightly longer message.",
+      "messageLong": "Message is too long (max 2000 characters).",
+      "emptyOrder": "Your order is empty.",
+      "invalidItems": "One or more order items are invalid.",
+      "orderCheck": "Please check your order details."
+    }
+  },
+  "orderApi": {
+    "success": "Order {orderId} received — we’ll confirm by email.",
+    "successDemo": "Order {orderId} recorded in demo mode."
+  },
+  "site": {
+    "title": "{name} — Specialty Coffee",
+    "mapTitle": "Solace Coffee location map"
   },
   "a11y": {
-    "skip": "Skip to content"
+    "skip": "Skip to content",
+    "toggleMenu": "Toggle menu",
+    "primaryNav": "Primary",
+    "mobileNav": "Mobile"
+  },
+  "journalTeaser": {
+    "eyebrow": "Journal",
+    "title": "Notes from the counter.",
+    "cta": "Read the journal"
+  },
+  "wholesalePage": {
+    "eyebrow": "Wholesale",
+    "title": "Beans for cafés, offices, and homes.",
+    "lede": "We supply roasted coffee in small, consistent lots — with tasting notes and dial-in support.",
+    "offerTitle": "What you get",
+    "offer1": "Fresh roasted microlots on a weekly schedule",
+    "offer2": "Recipe cards and bar training sessions",
+    "offer3": "Flexible bag sizes for café and office accounts",
+    "cta": "Ask about wholesale",
+    "seoDescription": "Wholesale coffee from Solace — microlots, training, and consistent supply."
   },
   "error": {
     "brand": "Solace",
@@ -169,7 +231,8 @@
     "generic": "Something went wrong",
     "notFoundLede": "That route wandered off. Let’s get you back to the counter.",
     "home": "Back home",
-    "clear": "Clear error"
+    "clear": "Clear error",
+    "postNotFound": "Post not found"
   },
   "lang": {
     "en": "EN",

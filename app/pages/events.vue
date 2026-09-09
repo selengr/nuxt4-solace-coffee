@@ -29,7 +29,7 @@ async function submitInquiry() {
         message: `[Events inquiry]\n${inquiry.message}`,
       },
     })
-    toast.success(t('eventsPage.send'))
+    toast.success(t('eventsPage.success'))
     inquiry.name = ''
     inquiry.email = ''
     inquiry.message = ''

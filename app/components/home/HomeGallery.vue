@@ -1,20 +1,20 @@
 <script setup lang="ts">
 const { t } = useI18n()
 
-const images = [
+const images = computed(() => [
   {
     src: 'https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1000&q=80',
-    alt: 'Café interior with warm light',
+    alt: t('gallery.alt1'),
   },
   {
     src: 'https://images.unsplash.com/photo-1511920170033-f8396924c348?auto=format&fit=crop&w=1000&q=80',
-    alt: 'Espresso in a white cup',
+    alt: t('gallery.alt2'),
   },
   {
     src: 'https://images.unsplash.com/photo-1554118811-1e0d58224f24?auto=format&fit=crop&w=1000&q=80',
-    alt: 'Coffee shop seating area',
+    alt: t('gallery.alt3'),
   },
-]
+])
 </script>
 
 <template>
@@ -24,11 +24,11 @@ const images = [
         <p class="eyebrow">
           {{ t('gallery.eyebrow') }}
         </p>
-        <h2 class="text-[clamp(2rem,4vw,2.75rem)]">
+        <h2 class="text-[clamp(2rem,4vw,2.75rem)] leading-snug">
           {{ t('gallery.title') }}
         </h2>
       </div>
-      <p class="max-w-sm text-sm text-mute">
+      <p class="max-w-sm text-sm leading-relaxed text-mute">
         {{ t('gallery.note') }}
       </p>
     </div>

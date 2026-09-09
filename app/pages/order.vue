@@ -1,6 +1,6 @@
 <script setup lang="ts">
 const { info, menu } = useCafe()
-const { t } = useI18n()
+const { t, te } = useI18n()
 const { tx } = useLocaleText()
 const { lines, count, subtotalLabel, addItem, setQty, clear } = useCart()
 
@@ -30,7 +30,7 @@ async function submitOrder() {
     const result = await $fetch<{
       ok: boolean
       orderId: string
-      message: string
+      messageKey: string
       demo?: boolean
     }>('/api/order', {
       method: 'POST',
@@ -44,9 +44,9 @@ async function submitOrder() {
     })
 
     status.value = 'success'
-    feedback.value = result.message
+    feedback.value = t(result.messageKey, { orderId: result.orderId })
     orderId.value = result.orderId
-    toast.success(result.message)
+    toast.success(feedback.value)
     clear()
     customerName.value = ''
     customerEmail.value = ''
@@ -58,10 +58,12 @@ async function submitOrder() {
     const err = error as {
       data?: { data?: { errors?: string[] }, errors?: string[] }
     }
-    fieldErrors.value = err.data?.data?.errors ?? err.data?.errors ?? []
+    fieldErrors.value = (err.data?.data?.errors ?? err.data?.errors ?? []).map((key) => {
+      return te(key) ? t(key) : key
+    })
     feedback.value = fieldErrors.value.length
-      ? t('error.generic')
-      : t('error.generic')
+      ? t('form.errors.orderCheck')
+      : t('form.genericError')
     toast.error(feedback.value)
   }
 }

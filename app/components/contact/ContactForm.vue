@@ -1,4 +1,5 @@
 <script setup lang="ts">
+const { t, te } = useI18n()
 const form = reactive({
   name: '',
   email: '',
@@ -10,20 +11,24 @@ const status = ref<'idle' | 'loading' | 'success' | 'error'>('idle')
 const feedback = ref('')
 const fieldErrors = ref<string[]>([])
 
+function translateKey(key: string) {
+  return te(key) ? t(key) : key
+}
+
 async function onSubmit() {
   status.value = 'loading'
   feedback.value = ''
   fieldErrors.value = []
 
   try {
-    const result = await $fetch<{ ok: boolean, message: string }>('/api/contact', {
+    const result = await $fetch<{ ok: boolean, messageKey: string }>('/api/contact', {
       method: 'POST',
       body: { ...form },
     })
 
     status.value = 'success'
-    feedback.value = result.message
-    toast.success(result.message)
+    feedback.value = t(result.messageKey)
+    toast.success(feedback.value)
     form.name = ''
     form.email = ''
     form.message = ''
@@ -31,13 +36,13 @@ async function onSubmit() {
   catch (error: unknown) {
     status.value = 'error'
     const err = error as {
-      data?: { data?: { errors?: string[] }, errors?: string[], message?: string }
-      message?: string
+      data?: { data?: { errors?: string[] }, errors?: string[] }
     }
-    fieldErrors.value = err.data?.data?.errors ?? err.data?.errors ?? []
+    const keys = err.data?.data?.errors ?? err.data?.errors ?? []
+    fieldErrors.value = keys.map(translateKey)
     feedback.value = fieldErrors.value.length
-      ? 'Please check the form and try again.'
-      : 'Something went wrong. Please try again or email us directly.'
+      ? t('form.checkForm')
+      : t('form.genericError')
     toast.error(feedback.value)
   }
 }
@@ -50,7 +55,7 @@ async function onSubmit() {
   >
     <div class="grid gap-5 sm:grid-cols-2">
       <label class="grid gap-2 text-sm">
-        <span class="font-medium">Name</span>
+        <span class="font-medium">{{ t('form.name') }}</span>
         <input
           v-model="form.name"
           type="text"
@@ -58,12 +63,12 @@ async function onSubmit() {
           autocomplete="name"
           required
           class="rounded-sm border border-ink/15 bg-foam px-3 py-3 outline-none transition focus:border-leaf"
-          placeholder="Your name"
+          :placeholder="t('form.namePlaceholder')"
         >
       </label>
 
       <label class="grid gap-2 text-sm">
-        <span class="font-medium">Email</span>
+        <span class="font-medium">{{ t('form.email') }}</span>
         <input
           v-model="form.email"
           type="email"
@@ -71,26 +76,26 @@ async function onSubmit() {
           autocomplete="email"
           required
           class="rounded-sm border border-ink/15 bg-foam px-3 py-3 outline-none transition focus:border-leaf"
-          placeholder="you@email.com"
+          :placeholder="t('form.emailPlaceholder')"
         >
       </label>
     </div>
 
     <label class="grid gap-2 text-sm">
-      <span class="font-medium">Message</span>
+      <span class="font-medium">{{ t('form.message') }}</span>
       <textarea
         v-model="form.message"
         name="message"
         rows="6"
         required
         class="resize-y rounded-sm border border-ink/15 bg-foam px-3 py-3 outline-none transition focus:border-leaf"
-        placeholder="Private events, catering, feedback, or just hello…"
+        :placeholder="t('form.messagePlaceholder')"
       />
     </label>
 
     <ul
       v-if="fieldErrors.length"
-      class="list-disc space-y-1 pl-5 text-sm text-red-800"
+      class="list-disc space-y-1 pe-5 ps-5 text-sm text-red-800"
     >
       <li
         v-for="error in fieldErrors"
@@ -115,7 +120,7 @@ async function onSubmit() {
         variant="ink"
         :disabled="status === 'loading'"
       >
-        {{ status === 'loading' ? 'Sending…' : 'Send message' }}
+        {{ status === 'loading' ? t('form.sending') : t('form.send') }}
       </BaseButton>
     </div>
   </form>

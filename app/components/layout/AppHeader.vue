@@ -10,10 +10,11 @@ const route = useRoute()
 const links = computed(() => [
   { to: localePath('/'), label: t('nav.home') },
   { to: localePath('/menu'), label: t('nav.menu') },
-  { to: localePath('/about'), label: t('nav.about') },
   { to: localePath('/order'), label: t('nav.order') },
   { to: localePath('/events'), label: t('nav.events') },
   { to: localePath('/blog'), label: t('nav.blog') },
+  { to: localePath('/wholesale'), label: t('nav.wholesale') },
+  { to: localePath('/about'), label: t('nav.about') },
   { to: localePath('/visit'), label: t('nav.visit') },
   { to: localePath('/contact'), label: t('nav.contact') },
 ])
@@ -40,8 +41,8 @@ watch(
 
       <nav
         id="mobile-nav"
-        class="hidden items-center gap-6 lg:flex"
-        aria-label="Primary"
+        class="hidden items-center gap-5 xl:flex"
+        :aria-label="t('a11y.primaryNav')"
       >
         <NuxtLink
           v-for="link in links"
@@ -83,11 +84,11 @@ watch(
       </BaseButton>
 
       <button
-        class="grid h-10 w-10 place-content-center gap-1.5 lg:hidden"
+        class="grid h-10 w-10 place-content-center gap-1.5 xl:hidden"
         type="button"
         :aria-expanded="open"
         aria-controls="mobile-nav-panel"
-        aria-label="Toggle menu"
+        :aria-label="t('a11y.toggleMenu')"
         @click="open = !open"
       >
         <span class="block h-0.5 w-5 bg-ink" />
@@ -98,8 +99,8 @@ watch(
     <nav
       v-if="open"
       id="mobile-nav-panel"
-      class="border-t border-ink/5 bg-foam px-5 py-4 lg:hidden"
-      aria-label="Mobile"
+      class="border-t border-ink/5 bg-foam px-5 py-4 xl:hidden"
+      :aria-label="t('a11y.mobileNav')"
     >
       <div class="flex flex-col gap-3">
         <NuxtLink

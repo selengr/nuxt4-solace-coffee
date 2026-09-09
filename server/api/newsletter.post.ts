@@ -11,11 +11,10 @@ export default defineEventHandler(async (event) => {
     throw createError({
       statusCode: 400,
       statusMessage: 'Validation failed',
-      data: { errors: ['Please enter a valid email address.'] },
+      data: { errors: ['newsletter.errors.email'] },
     })
   }
 
-  // Demo store: log subscription. Swap for a mailing list provider later.
   console.info('[newsletter]', {
     email,
     inbox: config.contactInbox,
@@ -33,6 +32,6 @@ export default defineEventHandler(async (event) => {
 
   return {
     ok: true,
-    message: 'You’re on the list — thanks for joining Solace notes.',
+    messageKey: 'newsletter.success',
   }
 })

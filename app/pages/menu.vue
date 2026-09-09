@@ -63,7 +63,7 @@ const visibleCount = computed(() =>
 function addToOrder(item: MenuItem) {
   const name = tx(item.name)
   addItem(item, name)
-  toast.success(`${name} · ${t('menuPage.add')}`)
+  toast.success(t('menuPage.added', { name }))
 }
 </script>
 

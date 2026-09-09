@@ -9,7 +9,7 @@ const localePath = useLocalePath()
     <div>
       <img
         src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=1400&q=80"
-        alt="Barista pouring espresso into a ceramic cup"
+        :alt="t('gallery.storyAlt')"
         width="1400"
         height="933"
         class="h-[min(70vh,36rem)] w-full object-cover lg:h-full"

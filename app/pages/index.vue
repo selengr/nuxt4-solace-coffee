@@ -1,11 +1,12 @@
 <script setup lang="ts">
 const { info } = useCafe()
+const { t } = useI18n()
 const { tx } = useLocaleText()
 
 useSeoMeta({
-  title: `${info.name} — Specialty Coffee`,
+  title: () => t('site.title', { name: info.name }),
   description: () => tx(info.tagline),
-  ogTitle: `${info.name} — Specialty Coffee`,
+  ogTitle: () => t('site.title', { name: info.name }),
   ogDescription: () => tx(info.tagline),
 })
 </script>
@@ -18,6 +19,7 @@ useSeoMeta({
     <HomeStory />
     <HomeTestimonials />
     <HomeGallery />
+    <HomeJournal />
     <HomeNewsletter />
     <HomeVisit />
   </div>

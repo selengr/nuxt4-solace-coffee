@@ -30,16 +30,16 @@ export default defineEventHandler(async (event) => {
   const errors: string[] = []
 
   if (customerName.length < 2) {
-    errors.push('Please enter your name.')
+    errors.push('form.errors.name')
   }
   if (!isEmail(customerEmail)) {
-    errors.push('Please enter a valid email address.')
+    errors.push('form.errors.email')
   }
   if (!items.length) {
-    errors.push('Your order is empty.')
+    errors.push('form.errors.emptyOrder')
   }
   if (items.some(item => !item.id || !item.qty || item.qty < 1)) {
-    errors.push('One or more order items are invalid.')
+    errors.push('form.errors.invalidItems')
   }
 
   if (errors.length) {
@@ -80,8 +80,6 @@ export default defineEventHandler(async (event) => {
     ok: true,
     orderId,
     demo: result.demo,
-    message: result.demo
-      ? `Order ${orderId} recorded in demo mode.`
-      : `Order ${orderId} received — we’ll confirm by email.`,
+    messageKey: result.demo ? 'orderApi.successDemo' : 'orderApi.success',
   }
 })

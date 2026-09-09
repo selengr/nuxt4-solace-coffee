@@ -12,7 +12,7 @@ const slug = computed(() => {
 const post = computed(() => getPostBySlug(slug.value, current.value))
 
 if (!getPostBySlug(slug.value, current.value)) {
-  throw createError({ statusCode: 404, statusMessage: 'Post not found' })
+  throw createError({ statusCode: 404, statusMessage: t('error.postNotFound') })
 }
 
 useSeoMeta({
