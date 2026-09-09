@@ -1,7 +1,8 @@
 {
-  "name": "nuxt-cafe-starter",
+  "name": "solace-coffee",
   "type": "module",
   "private": true,
+  "description": "Solace — a production-ready specialty café website built with Nuxt 4",
   "scripts": {
     "build": "nuxt build",
     "dev": "nuxt dev",

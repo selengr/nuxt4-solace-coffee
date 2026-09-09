@@ -4,6 +4,7 @@ export default defineNuxtConfig({
   future: {
     compatibilityVersion: 4,
   },
+  modules: ['@nuxtjs/tailwindcss'],
   devtools: { enabled: true },
   css: ['~/assets/css/main.css'],
   components: [
@@ -12,17 +13,30 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
+  runtimeConfig: {
+    contactInbox: process.env.NUXT_CONTACT_INBOX || 'hello@solace.coffee',
+    public: {
+      siteName: 'Solace',
+    },
+  },
   app: {
+    pageTransition: { name: 'page', mode: 'out-in' },
     head: {
       htmlAttrs: { lang: 'en' },
-      title: 'Northroom — Specialty Coffee',
+      title: 'Solace — Specialty Coffee',
       meta: [
         {
           name: 'description',
           content:
-            'A modern Nuxt 4 café boilerplate — specialty coffee, clean structure, and production-ready patterns.',
+            'Solace is a specialty café experience — quiet mornings, dialed espresso, and a production-ready Nuxt 4 website.',
         },
-        { name: 'theme-color', content: '#1a1714' },
+        { name: 'theme-color', content: '#14110f' },
+        { property: 'og:title', content: 'Solace — Specialty Coffee' },
+        {
+          property: 'og:description',
+          content: 'Quiet specialty coffee for people who linger.',
+        },
+        { property: 'og:type', content: 'website' },
       ],
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
