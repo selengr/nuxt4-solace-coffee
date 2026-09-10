@@ -17,6 +17,14 @@ const inquiry = reactive({
 })
 
 const status = ref<'idle' | 'loading'>('idle')
+const interested = useState<string[]>('solace-event-interest', () => [])
+
+function markInterest(eventId: string, title: string) {
+  if (!interested.value.includes(eventId)) {
+    interested.value = [...interested.value, eventId]
+  }
+  toast.success(t('eventsPage.interestSent', { title }))
+}
 
 async function submitInquiry() {
   status.value = 'loading'
@@ -60,7 +68,7 @@ async function submitInquiry() {
         <li
           v-for="event in events"
           :key="event.id"
-          class="border border-ink/10 p-6"
+          class="flex flex-col border border-ink/10 p-6"
         >
           <p class="mb-3 text-[0.7rem] text-leaf label-meta">
             {{ t(`eventsPage.types.${event.type}`) }}
@@ -71,9 +79,17 @@ async function submitInquiry() {
           <p class="mb-1 text-sm font-medium">
             {{ tx(event.date) }} · {{ event.time }}
           </p>
-          <p class="text-sm leading-relaxed text-mute">
+          <p class="mb-6 grow text-sm leading-relaxed text-mute">
             {{ tx(event.description) }}
           </p>
+          <BaseButton
+            type="button"
+            :variant="interested.includes(event.id) ? 'primary' : 'ink'"
+            :disabled="interested.includes(event.id)"
+            @click="markInterest(event.id, tx(event.title))"
+          >
+            {{ interested.includes(event.id) ? t('eventsPage.interestDone') : t('eventsPage.interest') }}
+          </BaseButton>
         </li>
       </ul>
 
@@ -94,27 +110,35 @@ async function submitInquiry() {
           class="grid gap-3"
           @submit.prevent="submitInquiry"
         >
-          <input
-            v-model="inquiry.name"
-            required
-            type="text"
-            :placeholder="t('eventsPage.name')"
-            class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
-          >
-          <input
-            v-model="inquiry.email"
-            required
-            type="email"
-            :placeholder="t('eventsPage.email')"
-            class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
-          >
-          <textarea
-            v-model="inquiry.message"
-            required
-            rows="5"
-            :placeholder="t('eventsPage.details')"
-            class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
-          />
+          <label class="grid gap-1.5 text-sm">
+            <span class="font-medium">{{ t('eventsPage.name') }}</span>
+            <input
+              v-model="inquiry.name"
+              required
+              type="text"
+              autocomplete="name"
+              class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
+            >
+          </label>
+          <label class="grid gap-1.5 text-sm">
+            <span class="font-medium">{{ t('eventsPage.email') }}</span>
+            <input
+              v-model="inquiry.email"
+              required
+              type="email"
+              autocomplete="email"
+              class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
+            >
+          </label>
+          <label class="grid gap-1.5 text-sm">
+            <span class="font-medium">{{ t('eventsPage.details') }}</span>
+            <textarea
+              v-model="inquiry.message"
+              required
+              rows="5"
+              class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
+            />
+          </label>
           <BaseButton
             type="submit"
             variant="ink"

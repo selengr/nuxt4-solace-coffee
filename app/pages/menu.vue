@@ -65,22 +65,40 @@ function addToOrder(item: MenuItem) {
   addItem(item, name)
   toast.success(t('menuPage.added', { name }))
 }
+
+function printMenu() {
+  if (import.meta.client) {
+    window.print()
+  }
+}
 </script>
 
 <template>
-  <div class="section-space">
+  <div class="section-space menu-page">
     <div class="container-site">
-      <p class="eyebrow">
-        {{ t('menuPage.eyebrow') }}
-      </p>
-      <h1 class="mb-3 text-[clamp(2.4rem,6vw,3.5rem)]">
-        {{ t('menuPage.title') }}
-      </h1>
-      <p class="mb-8 max-w-xl text-mute">
-        {{ t('menuPage.lede') }}
-      </p>
+      <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="eyebrow">
+            {{ t('menuPage.eyebrow') }}
+          </p>
+          <h1 class="mb-3 text-[clamp(2.4rem,6vw,3.5rem)]">
+            {{ t('menuPage.title') }}
+          </h1>
+          <p class="max-w-xl text-mute print:hidden">
+            {{ t('menuPage.lede') }}
+          </p>
+        </div>
+        <BaseButton
+          class="print:hidden"
+          type="button"
+          variant="ink"
+          @click="printMenu"
+        >
+          {{ t('menuPage.print') }}
+        </BaseButton>
+      </div>
 
-      <label class="mb-6 block max-w-md">
+      <label class="mb-6 block max-w-md print:hidden">
         <span class="mb-2 block text-sm font-medium">{{ t('menuPage.search') }}</span>
         <input
           v-model="query"
@@ -92,7 +110,7 @@ function addToOrder(item: MenuItem) {
       </label>
 
       <div
-        class="mb-10 flex flex-wrap gap-2"
+        class="mb-10 flex flex-wrap gap-2 print:hidden"
         role="group"
         :aria-label="t('menuPage.categories')"
       >
@@ -113,7 +131,7 @@ function addToOrder(item: MenuItem) {
 
       <p
         v-if="!visibleSections.length"
-        class="mb-8 text-mute"
+        class="mb-8 text-mute print:hidden"
       >
         {{ t('menuPage.empty', { query }) }}
       </p>
@@ -149,6 +167,7 @@ function addToOrder(item: MenuItem) {
               </p>
             </div>
             <BaseButton
+              class="print:hidden"
               type="button"
               variant="ink"
               @click="addToOrder(item)"
@@ -159,7 +178,7 @@ function addToOrder(item: MenuItem) {
         </ul>
       </section>
 
-      <p class="text-sm text-mute">
+      <p class="text-sm text-mute print:hidden">
         {{ t('menuPage.showing', { visible: visibleCount, total: menu.length }) }} ·
         <NuxtLink
           :to="localePath('/order')"

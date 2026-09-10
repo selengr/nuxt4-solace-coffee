@@ -7,7 +7,7 @@ const year = new Date().getFullYear()
 </script>
 
 <template>
-  <footer class="bg-ink pb-8 pt-16 text-foam/80">
+  <footer class="no-print bg-ink pb-8 pt-16 text-foam/80">
     <div class="container-site grid gap-8 border-b border-foam/10 pb-12 md:grid-cols-[1.4fr_1fr_1fr_1fr]">
       <div>
         <p class="mb-3 font-display text-3xl text-foam">
@@ -53,6 +53,22 @@ const year = new Date().getFullYear()
             class="transition hover:text-foam"
           >
             {{ t('footer.write') }}
+          </NuxtLink>
+        </p>
+        <p class="text-sm">
+          <NuxtLink
+            :to="localePath('/gift-cards')"
+            class="transition hover:text-foam"
+          >
+            {{ t('nav.giftCards') }}
+          </NuxtLink>
+        </p>
+        <p class="text-sm">
+          <NuxtLink
+            :to="localePath('/wholesale')"
+            class="transition hover:text-foam"
+          >
+            {{ t('nav.wholesale') }}
           </NuxtLink>
         </p>
         <p class="text-sm">

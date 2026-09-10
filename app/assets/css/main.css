@@ -190,3 +190,34 @@
     transition: none !important;
   }
 }
+
+@media print {
+  .no-print,
+  .skip-link,
+  .site-header,
+  footer,
+  [aria-live='polite'] {
+    display: none !important;
+  }
+
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  .menu-page {
+    padding-top: 0 !important;
+  }
+
+  .menu-page a {
+    text-decoration: none !important;
+    color: inherit !important;
+  }
+
+  .container-site {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+}
