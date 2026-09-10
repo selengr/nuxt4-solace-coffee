@@ -2,6 +2,7 @@
 const { info, menu } = useCafe()
 const { t, te } = useI18n()
 const { tx } = useLocaleText()
+const localePath = useLocalePath()
 const { lines, count, subtotalLabel, addItem, setQty, clear } = useCart()
 
 const customerName = ref('')
@@ -144,14 +145,19 @@ async function submitOrder() {
                 <button
                   type="button"
                   class="h-8 w-8 rounded-sm border border-ink/15"
+                  :aria-label="t('order.decrease', { name: line.name })"
                   @click="setQty(line.id, line.qty - 1)"
                 >
                   −
                 </button>
-                <span class="w-6 text-center text-sm">{{ line.qty }}</span>
+                <span
+                  class="w-6 text-center text-sm"
+                  :aria-label="t('order.quantity', { name: line.name, qty: line.qty })"
+                >{{ line.qty }}</span>
                 <button
                   type="button"
                   class="h-8 w-8 rounded-sm border border-ink/15"
+                  :aria-label="t('order.increase', { name: line.name })"
                   @click="setQty(line.id, line.qty + 1)"
                 >
                   +
@@ -159,12 +165,20 @@ async function submitOrder() {
               </div>
             </li>
           </ul>
-          <p
+          <div
             v-else
-            class="mb-5 text-sm text-mute"
+            class="mb-5 rounded-sm border border-dashed border-ink/15 bg-foam/70 px-4 py-5"
           >
-            {{ t('order.empty') }}
-          </p>
+            <p class="mb-3 text-sm leading-relaxed text-mute">
+              {{ t('order.empty') }}
+            </p>
+            <BaseButton
+              :to="localePath('/menu')"
+              variant="ink"
+            >
+              {{ t('order.browseMenu') }}
+            </BaseButton>
+          </div>
 
           <p class="mb-5 flex justify-between font-medium">
             <span>{{ t('order.subtotal') }}</span>
@@ -175,32 +189,43 @@ async function submitOrder() {
             class="grid gap-3"
             @submit.prevent="submitOrder"
           >
-            <input
-              v-model="customerName"
-              required
-              type="text"
-              :placeholder="t('order.name')"
-              class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
-            >
-            <input
-              v-model="customerEmail"
-              required
-              type="email"
-              :placeholder="t('order.email')"
-              class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
-            >
-            <input
-              v-model="phone"
-              type="tel"
-              :placeholder="t('order.phone')"
-              class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
-            >
-            <textarea
-              v-model="notes"
-              rows="3"
-              :placeholder="t('order.notes')"
-              class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
-            />
+            <label class="grid gap-1.5 text-sm">
+              <span class="font-medium">{{ t('order.name') }}</span>
+              <input
+                v-model="customerName"
+                required
+                type="text"
+                autocomplete="name"
+                class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
+              >
+            </label>
+            <label class="grid gap-1.5 text-sm">
+              <span class="font-medium">{{ t('order.email') }}</span>
+              <input
+                v-model="customerEmail"
+                required
+                type="email"
+                autocomplete="email"
+                class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
+              >
+            </label>
+            <label class="grid gap-1.5 text-sm">
+              <span class="font-medium">{{ t('order.phone') }}</span>
+              <input
+                v-model="phone"
+                type="tel"
+                autocomplete="tel"
+                class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
+              >
+            </label>
+            <label class="grid gap-1.5 text-sm">
+              <span class="font-medium">{{ t('order.notes') }}</span>
+              <textarea
+                v-model="notes"
+                rows="3"
+                class="rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none focus:border-leaf"
+              />
+            </label>
 
             <ul
               v-if="fieldErrors.length"

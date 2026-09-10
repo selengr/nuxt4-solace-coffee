@@ -9,6 +9,8 @@
     "events": "Events",
     "blog": "Journal",
     "wholesale": "Wholesale",
+    "giftCards": "Gift cards",
+    "bag": "Bag",
     "visitCta": "Visit us"
   },
   "hero": {
@@ -92,14 +94,30 @@
     "add": "Add",
     "added": "{name} added to your bag",
     "showing": "Showing {visible} of {total} items",
-    "reviewOrder": "Review pickup order"
+    "reviewOrder": "Review pickup order",
+    "print": "Print menu"
   },
   "aboutPage": {
     "eyebrow": "About",
     "title": "Built for better mornings.",
     "p1": "{name} began as a small counter with one espresso machine and a stubborn belief that coffee shops should feel calm — not rushed, not loud for the sake of it.",
     "p2": "We roast relationships first: rotating microlots, dialed recipes, and a short food list that pairs with what’s in the cup.",
-    "p3": "Today the room on Mercer Street is where neighbors start their day, meet mid-afternoon, or simply sit with a pour-over and a book."
+    "p3": "Today the room on Mercer Street is where neighbors start their day, meet mid-afternoon, or simply sit with a pour-over and a book.",
+    "imageAlt": "Warm café interior with soft morning light",
+    "timelineEyebrow": "Timeline",
+    "timelineTitle": "How the room grew.",
+    "step1Year": "2019",
+    "step1Title": "A narrow counter",
+    "step1Body": "One machine, twelve seats, and a weekly rotating filter coffee.",
+    "step2Year": "2021",
+    "step2Title": "Dialed for the neighborhood",
+    "step2Body": "We shortened the menu, added a quiet kitchen, and began hosting small cuppings.",
+    "step3Year": "2024",
+    "step3Title": "Room to linger",
+    "step3Body": "More window light, softer music, and wholesale beans for cafés that share the same pace.",
+    "sourcingEyebrow": "Sourcing",
+    "sourcingTitle": "Coffee with a clear story.",
+    "sourcingBody": "We buy small lots from importers we trust, taste every arrival, and keep tasting cards honest — origin, process, and what we actually taste in the cup."
   },
   "visitPage": {
     "eyebrow": "Visit",
@@ -131,6 +149,9 @@
     "send": "Send inquiry",
     "sending": "Sending…",
     "success": "Thanks — we received your events inquiry.",
+    "interest": "I’m interested",
+    "interestDone": "Interest saved",
+    "interestSent": "Noted — we’ll email if seats open for {title}.",
     "types": {
       "cupping": "cupping",
       "workshop": "workshop",
@@ -154,14 +175,18 @@
     "bag": "Your bag",
     "item": "item",
     "items": "items",
-    "empty": "Add drinks or food from the menu.",
+    "empty": "Your bag is empty — start from the menu.",
+    "browseMenu": "Browse the menu",
     "subtotal": "Subtotal",
     "name": "Your name",
     "email": "Email for confirmation",
     "phone": "Phone (optional)",
     "notes": "Notes (oat milk, extra hot…)",
     "place": "Place pickup order",
-    "sending": "Sending…"
+    "sending": "Sending…",
+    "increase": "Increase quantity of {name}",
+    "decrease": "Decrease quantity of {name}",
+    "quantity": "{name}, quantity {qty}"
   },
   "testimonials": {
     "eyebrow": "From the room",
@@ -217,7 +242,8 @@
     "skip": "Skip to content",
     "toggleMenu": "Toggle menu",
     "primaryNav": "Primary",
-    "mobileNav": "Mobile"
+    "mobileNav": "Mobile",
+    "cartWithCount": "Order bag, {count} items"
   },
   "journalTeaser": {
     "eyebrow": "Journal",
@@ -234,6 +260,17 @@
     "offer3": "Flexible bag sizes for café and office accounts",
     "cta": "Ask about wholesale",
     "seoDescription": "Wholesale coffee from Solace — microlots, training, and consistent supply."
+  },
+  "giftCardsPage": {
+    "eyebrow": "Gift cards",
+    "title": "Give a quieter morning.",
+    "lede": "Solace gift cards work for anything on the board — espresso, pour-over, pastry, or a slow hour by the window.",
+    "offerTitle": "How it works",
+    "offer1": "Buy in-café or ask us to send a digital note",
+    "offer2": "Balances never expire in this demo policy",
+    "offer3": "Perfect for neighbors, hosts, and quiet thank-yous",
+    "cta": "Ask about gift cards",
+    "seoDescription": "Solace café gift cards for specialty coffee, pastry, and unhurried mornings."
   },
   "error": {
     "brand": "Solace",

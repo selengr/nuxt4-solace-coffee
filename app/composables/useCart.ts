@@ -7,12 +7,30 @@ export interface CartLine {
   qty: number
 }
 
+const CART_KEY = 'solace-cart-v1'
+
 function priceToNumber(price: string) {
   return Number(price.replace(/[^0-9.]/g, '')) || 0
 }
 
+function isCartLine(value: unknown): value is CartLine {
+  if (!value || typeof value !== 'object') {
+    return false
+  }
+  const line = value as CartLine
+  return (
+    typeof line.id === 'string'
+    && typeof line.name === 'string'
+    && typeof line.price === 'string'
+    && typeof line.qty === 'number'
+    && line.qty > 0
+  )
+}
+
 export function useCart() {
   const lines = useState<CartLine[]>('solace-cart', () => [])
+  const hydrated = useState('solace-cart-hydrated', () => false)
+  const watching = useState('solace-cart-watching', () => false)
 
   const count = computed(() =>
     lines.value.reduce((sum, line) => sum + line.qty, 0),
@@ -26,6 +44,46 @@ export function useCart() {
   )
 
   const subtotalLabel = computed(() => `$${subtotal.value.toFixed(2)}`)
+
+  function persist() {
+    if (!import.meta.client) {
+      return
+    }
+    try {
+      localStorage.setItem(CART_KEY, JSON.stringify(lines.value))
+    }
+    catch {
+      // Private mode / quota — keep in-memory cart only.
+    }
+  }
+
+  function hydrate() {
+    if (!import.meta.client || hydrated.value) {
+      return
+    }
+    hydrated.value = true
+    try {
+      const raw = localStorage.getItem(CART_KEY)
+      if (!raw) {
+        return
+      }
+      const parsed = JSON.parse(raw) as unknown
+      if (Array.isArray(parsed)) {
+        lines.value = parsed.filter(isCartLine)
+      }
+    }
+    catch {
+      lines.value = []
+    }
+  }
+
+  if (import.meta.client) {
+    hydrate()
+    if (!watching.value) {
+      watching.value = true
+      watch(lines, persist, { deep: true })
+    }
+  }
 
   function addItem(item: MenuItem, displayName?: string) {
     const { tx } = useLocaleText()

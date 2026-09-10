@@ -14,6 +14,7 @@ const links = computed(() => [
   { path: '/events', label: t('nav.events') },
   { path: '/blog', label: t('nav.blog') },
   { path: '/wholesale', label: t('nav.wholesale') },
+  { path: '/gift-cards', label: t('nav.giftCards') },
   { path: '/about', label: t('nav.about') },
   { path: '/visit', label: t('nav.visit') },
   { path: '/contact', label: t('nav.contact') },
@@ -42,7 +43,7 @@ watch(locale, () => {
 </script>
 
 <template>
-  <header class="site-header sticky top-0 z-40 border-b border-ink/5 bg-foam/90 backdrop-blur-md">
+  <header class="site-header no-print sticky top-0 z-40 border-b border-ink/5 bg-foam/90 backdrop-blur-md">
     <div class="container-site flex min-h-[4.25rem] items-center justify-between gap-3">
       <div class="flex min-w-0 items-center gap-5">
         <NuxtLink
@@ -79,12 +80,15 @@ watch(locale, () => {
 
         <NuxtLink
           :to="localePath('/order')"
-          class="relative hidden items-center text-sm text-mute transition hover:text-ink md:inline-flex"
+          class="relative inline-flex items-center text-sm text-mute transition hover:text-ink"
+          :aria-label="count ? t('a11y.cartWithCount', { count }) : t('nav.order')"
         >
-          {{ t('nav.order') }}
+          <span class="hidden sm:inline">{{ t('nav.order') }}</span>
+          <span class="sm:hidden">{{ t('nav.bag') }}</span>
           <span
             v-if="count"
             class="absolute -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-leaf px-1 text-[10px] text-foam inset-inline-end-[-0.7rem]"
+            aria-hidden="true"
           >
             {{ count }}
           </span>
