@@ -447,5 +447,19 @@
     "media": "Media desk",
     "cta": "Request an interview",
     "seoDescription": "Press kit for Solace Coffee — brand voice, assets, and media contact."
+  },
+  "wifiPage": {
+    "eyebrow": "Wi‑Fi",
+    "title": "Join the quiet network.",
+    "lede": "Guest Wi‑Fi for unhurried mornings. Reveal the password, sip something, and stay as long as the cup lasts.",
+    "network": "Network",
+    "password": "Password",
+    "reveal": "Reveal & copy",
+    "copyAgain": "Copy again",
+    "copied": "Password copied",
+    "revealed": "Password revealed",
+    "note": "Please keep volumes soft and leave a seat free during the afternoon rush. Laptops are welcome until then.",
+    "faqLink": "More about the room in FAQ",
+    "seoDescription": "Guest Wi‑Fi details for Solace Coffee in Seattle."
   }
 }

@@ -57,6 +57,14 @@ const year = new Date().getFullYear()
         </p>
         <p class="text-sm">
           <NuxtLink
+            :to="localePath('/wifi')"
+            class="transition hover:text-foam"
+          >
+            {{ t('nav.wifi') }}
+          </NuxtLink>
+        </p>
+        <p class="text-sm">
+          <NuxtLink
             :to="localePath('/press')"
             class="transition hover:text-foam"
           >
