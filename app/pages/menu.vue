@@ -6,6 +6,7 @@ const { t } = useI18n()
 const { tx } = useLocaleText()
 const localePath = useLocalePath()
 const { addItem } = useCart()
+const { favorites, recent, isFavorite, toggleFavorite, trackView } = useMenuPrefs()
 const toast = useToast()
 
 useSeoMeta({
@@ -15,9 +16,11 @@ useSeoMeta({
 
 type Filter = 'all' | MenuItem['category']
 type DietFilter = 'all' | DietaryTag
+type PrefsFilter = 'all' | 'favorites' | 'recent'
 
 const filter = ref<Filter>('all')
 const dietFilter = ref<DietFilter>('all')
+const prefsFilter = ref<PrefsFilter>('all')
 const query = ref('')
 
 const sections = computed(() => [
@@ -42,6 +45,12 @@ const dietFilters = computed(() => [
   { key: 'nuts' as const, label: t('menuPage.tags.nuts') },
 ])
 
+const prefsFilters = computed(() => [
+  { key: 'all' as const, label: t('menuPage.prefsAll') },
+  { key: 'favorites' as const, label: t('menuPage.favorites', { count: favorites.value.length }) },
+  { key: 'recent' as const, label: t('menuPage.recent') },
+])
+
 function matchesQuery(item: MenuItem) {
   const q = query.value.trim().toLowerCase()
   if (!q) {
@@ -61,6 +70,16 @@ function matchesDiet(item: MenuItem) {
   return item.dietary?.includes(dietFilter.value) ?? false
 }
 
+function matchesPrefs(item: MenuItem) {
+  if (prefsFilter.value === 'favorites') {
+    return favorites.value.includes(item.id)
+  }
+  if (prefsFilter.value === 'recent') {
+    return recent.value.includes(item.id)
+  }
+  return true
+}
+
 const visibleSections = computed(() => {
   const base = filter.value === 'all'
     ? sections.value
@@ -69,7 +88,9 @@ const visibleSections = computed(() => {
   return base
     .map(section => ({
       ...section,
-      items: byCategory(section.key).filter(item => matchesQuery(item) && matchesDiet(item)),
+      items: byCategory(section.key).filter(item =>
+        matchesQuery(item) && matchesDiet(item) && matchesPrefs(item),
+      ),
     }))
     .filter(section => section.items.length > 0)
 })
@@ -80,8 +101,19 @@ const visibleCount = computed(() =>
 
 function addToOrder(item: MenuItem) {
   const name = tx(item.name)
+  trackView(item.id)
   addItem(item, name)
   toast.success(t('menuPage.added', { name }))
+}
+
+function onToggleFavorite(item: MenuItem) {
+  trackView(item.id)
+  toggleFavorite(item.id)
+  toast.success(
+    isFavorite(item.id)
+      ? t('menuPage.favorited', { name: tx(item.name) })
+      : t('menuPage.unfavorited', { name: tx(item.name) }),
+  )
 }
 
 function printMenu() {
@@ -126,6 +158,26 @@ function printMenu() {
           class="w-full rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none transition focus:border-leaf"
         >
       </label>
+
+      <div
+        class="mb-4 flex flex-wrap gap-2 print:hidden"
+        role="group"
+        :aria-label="t('menuPage.prefs')"
+      >
+        <button
+          v-for="option in prefsFilters"
+          :key="option.key"
+          type="button"
+          class="rounded-sm border px-3 py-2 text-sm transition"
+          :class="prefsFilter === option.key
+            ? 'border-brass bg-brass/10 text-ink'
+            : 'border-ink/15 text-mute hover:border-ink/40 hover:text-ink'"
+          :aria-pressed="prefsFilter === option.key"
+          @click="prefsFilter = option.key"
+        >
+          {{ option.label }}
+        </button>
+      </div>
 
       <div
         class="mb-4 flex flex-wrap gap-2 print:hidden"
@@ -205,14 +257,25 @@ function printMenu() {
                 {{ item.price }}
               </p>
             </div>
-            <BaseButton
-              class="print:hidden"
-              type="button"
-              variant="ink"
-              @click="addToOrder(item)"
-            >
-              {{ t('menuPage.add') }}
-            </BaseButton>
+            <div class="flex flex-col gap-2 print:hidden sm:flex-row">
+              <button
+                type="button"
+                class="inline-flex h-11 min-w-11 items-center justify-center rounded-sm border border-ink/15 text-sm transition hover:border-ink/30"
+                :class="isFavorite(item.id) ? 'border-brass/40 bg-brass/10 text-ink' : 'text-mute'"
+                :aria-pressed="isFavorite(item.id)"
+                :aria-label="isFavorite(item.id) ? t('menuPage.unfavoriteAria', { name: tx(item.name) }) : t('menuPage.favoriteAria', { name: tx(item.name) })"
+                @click="onToggleFavorite(item)"
+              >
+                ★
+              </button>
+              <BaseButton
+                type="button"
+                variant="ink"
+                @click="addToOrder(item)"
+              >
+                {{ t('menuPage.add') }}
+              </BaseButton>
+            </div>
           </li>
         </ul>
       </section>
