@@ -15,6 +15,7 @@ const links = computed(() => [
   { path: '/blog', label: t('nav.blog') },
   { path: '/wholesale', label: t('nav.wholesale') },
   { path: '/gift-cards', label: t('nav.giftCards') },
+  { path: '/faq', label: t('nav.faq') },
   { path: '/about', label: t('nav.about') },
   { path: '/visit', label: t('nav.visit') },
   { path: '/contact', label: t('nav.contact') },

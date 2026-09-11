@@ -11,6 +11,7 @@
     "wholesale": "Wholesale",
     "giftCards": "Gift cards",
     "bag": "Bag",
+    "faq": "FAQ",
     "visitCta": "Visit us"
   },
   "hero": {
@@ -286,6 +287,30 @@
     "offer3": "Perfect for neighbors, hosts, and quiet thank-yous",
     "cta": "Ask about gift cards",
     "seoDescription": "Solace café gift cards for specialty coffee, pastry, and unhurried mornings."
+  },
+  "faqPage": {
+    "eyebrow": "FAQ",
+    "title": "Common questions from the counter.",
+    "lede": "Short answers about hours, milk, allergens, pickup, and the room — ask us anything else in person or by note.",
+    "more": "Still curious?",
+    "contact": "Write to us",
+    "seoDescription": "FAQ for Solace Coffee — hours, dietary options, pickup, private hire, and the room.",
+    "q1": "What are your hours?",
+    "a1": "Weekdays 7:00–19:00 and weekends 8:00–18:00. The live open status on Visit updates through the day.",
+    "q2": "Do you have oat or other alternative milks?",
+    "a2": "Yes — oat is always on the bar, with rotating dairy-free options. Ask for today’s list.",
+    "q3": "How do you handle allergens?",
+    "a3": "The kitchen handles dairy, eggs, gluten, and tree nuts. Tell the bar about allergies; menu tags are a guide, not a guarantee.",
+    "q4": "Is there Wi‑Fi?",
+    "a4": "Yes. Laptops are welcome until the afternoon rush — we keep music soft so the room stays calm.",
+    "q5": "How does pickup ordering work?",
+    "a5": "Build a bag on the Order page. We’ll confirm by email; payment stays at the counter in this demo flow.",
+    "q6": "Can I book a private tasting or hire the room?",
+    "a6": "Yes. See Events for public cuppings and the private-hire section for capacity and packages.",
+    "q7": "Is the café accessible?",
+    "a7": "The entrance and main seating are step-free. Reach out if you need a quieter table or other accommodations.",
+    "q8": "Are dogs welcome?",
+    "a8": "Dogs are welcome on the patio when weather allows. Inside stays reserved for guests without pets."
   },
   "error": {
     "brand": "Solace",

@@ -2,7 +2,7 @@
 const { info } = useCafe()
 const { t } = useI18n()
 const localePath = useLocalePath()
-const { weekRows, statusLabel, isOpen } = useCafeHours()
+const { weekRows, statusLabel } = useCafeHours()
 
 useSeoMeta({
   title: () => `${t('visitPage.eyebrow')} — ${info.name}`,
@@ -54,7 +54,7 @@ useSeoMeta({
                 </li>
               </ul>
               <p class="mt-3 text-xs text-mute">
-                {{ isOpen ? statusLabel : statusLabel }}
+                {{ statusLabel }}
               </p>
             </dd>
           </div>
