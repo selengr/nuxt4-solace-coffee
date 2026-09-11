@@ -14,6 +14,8 @@
     "faq": "FAQ",
     "care": "Care",
     "careers": "Careers",
+    "press": "Press",
+    "wifi": "Wi‑Fi",
     "visitCta": "Visit us"
   },
   "hero": {
@@ -421,5 +423,25 @@
     "role3Body": "Floor pacing, training support, and closing the loop between tasting notes and service.",
     "cta": "Send an application note",
     "seoDescription": "Careers at Solace Coffee — barista, kitchen, and shift lead roles in Seattle."
+  },
+  "pressPage": {
+    "eyebrow": "Press",
+    "title": "Brand notes for media.",
+    "lede": "A short kit for writers and partners — tone, facts, and placeholder assets you can replace with your own files.",
+    "voiceTitle": "Voice",
+    "voiceBody": "Solace sounds calm, specific, and unhurried. Prefer concrete tasting language over hype. Never shouty, never corporate-casual.",
+    "assetsTitle": "Assets",
+    "asset1Title": "Mark / favicon",
+    "asset1Body": "Temporary mark file for demos. Swap with a vector logo pack.",
+    "asset2Title": "Allergen one-pager",
+    "asset2Body": "Demo PDF stub used across Care and Menu.",
+    "asset3Title": "Story page",
+    "asset3Body": "Timeline and sourcing copy for backgrounders.",
+    "open": "Open",
+    "factsTitle": "Boilerplate",
+    "location": "Location",
+    "media": "Media desk",
+    "cta": "Request an interview",
+    "seoDescription": "Press kit for Solace Coffee — brand voice, assets, and media contact."
   }
 }
