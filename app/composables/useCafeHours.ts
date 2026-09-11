@@ -7,7 +7,7 @@ function toMinutes(value: string) {
 
 export function useCafeHours() {
   const { info } = useCafe()
-  const { t, locale } = useI18n()
+  const { t } = useI18n()
   const { tx } = useLocaleText()
 
   const now = useState('cafe-now', () => new Date())
@@ -79,7 +79,6 @@ export function useCafeHours() {
     if (!schedule) {
       return t('hours.unavailable')
     }
-    const today = now.value.getDay()
     const opensToday = todaySchedule.value === schedule
       && currentMinutes.value < toMinutes(schedule.open)
     if (opensToday) {
@@ -118,8 +117,7 @@ export function useCafeHours() {
     if (!schedule) {
       return t('hours.unavailable')
     }
-    const dayLabel = locale.value === 'fa' ? t('hours.today') : t('hours.today')
-    return `${dayLabel} · ${schedule.open}–${schedule.close}`
+    return `${t('hours.today')} · ${schedule.open}–${schedule.close}`
   })
 
   return {
