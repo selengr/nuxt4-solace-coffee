@@ -282,6 +282,18 @@ function printMenu() {
 
       <p class="mb-4 max-w-2xl text-sm leading-relaxed text-mute">
         {{ t('menuPage.allergenNote') }}
+        <a
+          href="/allergen-card.pdf"
+          class="ms-1 text-leaf underline-offset-2 hover:underline"
+          download
+        >{{ t('menuPage.allergenPdf') }}</a>
+        ·
+        <NuxtLink
+          :to="localePath('/care')"
+          class="text-leaf underline-offset-2 hover:underline"
+        >
+          {{ t('menuPage.careLink') }}
+        </NuxtLink>
       </p>
 
       <p class="text-sm text-mute print:hidden">

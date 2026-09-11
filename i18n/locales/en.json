@@ -12,6 +12,7 @@
     "giftCards": "Gift cards",
     "bag": "Bag",
     "faq": "FAQ",
+    "care": "Care",
     "visitCta": "Visit us"
   },
   "hero": {
@@ -103,6 +104,8 @@
     "reviewOrder": "Review pickup order",
     "print": "Print menu",
     "allergenNote": "Allergen care: kitchen handles dairy, eggs, gluten, and tree nuts. Tell the bar about allergies — tags are a guide, not a guarantee.",
+    "allergenPdf": "Download allergen card",
+    "careLink": "Care notes",
     "dietary": "Dietary",
     "dietaryAll": "Any diet",
     "prefs": "Saved picks",
@@ -382,5 +385,22 @@
     "alt4": "Latte art close-up",
     "alt5": "Barista pour",
     "alt6": "Morning seating"
+  },
+  "carePage": {
+    "eyebrow": "Care",
+    "title": "Access, allergens, and a quieter room.",
+    "lede": "How we try to make Solace workable for more bodies, diets, and rhythms — ask the bar anytime if you need something we missed.",
+    "accessTitle": "Getting in",
+    "accessBody": "Step-free entrance and main seating. Reach out ahead if you need a quieter table or other accommodations.",
+    "quietTitle": "Sound & pace",
+    "quietBody": "Music stays soft. Laptops are welcome until the afternoon rush so conversation can still find space.",
+    "allergenTitle": "Allergen care",
+    "allergenBody": "The kitchen handles dairy, eggs, gluten, and tree nuts. Menu tags guide — they are not a guarantee. Download the stub allergen card or tell the bar.",
+    "serviceTitle": "Service notes",
+    "serviceBody": "We can walk through oat and other milks, GF pastry availability that day, and seating that feels calmer.",
+    "pdfCta": "Download allergen card",
+    "faqCta": "Read the FAQ",
+    "contactCta": "Write to us",
+    "seoDescription": "Accessibility, allergen care, and quiet-room notes for Solace Coffee."
   }
 }
