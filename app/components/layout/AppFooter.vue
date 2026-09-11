@@ -57,6 +57,14 @@ const year = new Date().getFullYear()
         </p>
         <p class="text-sm">
           <NuxtLink
+            :to="localePath('/careers')"
+            class="transition hover:text-foam"
+          >
+            {{ t('nav.careers') }}
+          </NuxtLink>
+        </p>
+        <p class="text-sm">
+          <NuxtLink
             :to="localePath('/care')"
             class="transition hover:text-foam"
           >

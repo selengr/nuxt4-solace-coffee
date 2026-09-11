@@ -13,6 +13,7 @@
     "bag": "Bag",
     "faq": "FAQ",
     "care": "Care",
+    "careers": "Careers",
     "visitCta": "Visit us"
   },
   "hero": {
@@ -402,5 +403,21 @@
     "faqCta": "Read the FAQ",
     "contactCta": "Write to us",
     "seoDescription": "Accessibility, allergen care, and quiet-room notes for Solace Coffee."
+  },
+  "careersPage": {
+    "eyebrow": "Careers",
+    "title": "Work at a quieter counter.",
+    "lede": "We’re a small Seattle team that values calm service, dialed espresso, and honest feedback. Demo openings below — write to us with a short note.",
+    "role1Title": "Barista",
+    "role1Type": "Full-time · Floor",
+    "role1Body": "Open and close shifts, milk texture, guest care, and keeping the board honest through the day.",
+    "role2Title": "Kitchen lead",
+    "role2Type": "Part-time · Kitchen",
+    "role2Body": "Short seasonal menu, pastry partners, and allergen-aware prep in a calm kitchen.",
+    "role3Title": "Shift supervisor",
+    "role3Type": "Full-time · Lead",
+    "role3Body": "Floor pacing, training support, and closing the loop between tasting notes and service.",
+    "cta": "Send an application note",
+    "seoDescription": "Careers at Solace Coffee — barista, kitchen, and shift lead roles in Seattle."
   }
 }
