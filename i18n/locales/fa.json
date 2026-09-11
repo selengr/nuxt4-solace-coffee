@@ -21,7 +21,12 @@
   "hours": {
     "openNow": "اکنون باز است · تا {time}",
     "closed": "بسته است · باز می‌شود {time}",
-    "unavailable": "ساعات کاری در دسترس نیست"
+    "unavailable": "ساعات کاری در دسترس نیست",
+    "closesSoon": "به‌زودی بسته می‌شود · {minutes} دقیقه مانده",
+    "opensToday": "امروز ساعت {time} باز می‌شود",
+    "opensNext": "{day} ساعت {time} باز می‌شود",
+    "today": "امروز",
+    "weekTitle": "این هفته"
   },
   "featured": {
     "eyebrow": "روی بار",

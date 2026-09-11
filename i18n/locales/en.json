@@ -21,7 +21,12 @@
   "hours": {
     "openNow": "Open now · until {time}",
     "closed": "Closed · opens {time}",
-    "unavailable": "Hours unavailable"
+    "unavailable": "Hours unavailable",
+    "closesSoon": "Closing soon · {minutes} min left",
+    "opensToday": "Opens today at {time}",
+    "opensNext": "Opens {day} at {time}",
+    "today": "Today",
+    "weekTitle": "This week"
   },
   "featured": {
     "eyebrow": "On the bar",

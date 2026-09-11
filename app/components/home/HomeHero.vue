@@ -30,7 +30,10 @@ const localePath = useLocalePath()
           <p class="eyebrow !mb-0 !text-brass">
             {{ t('hero.eyebrow') }}
           </p>
-          <OpenStatus tone="dark" />
+          <OpenStatus
+            tone="dark"
+            detailed
+          />
         </div>
 
         <h1 class="reveal reveal-delay-1 hero__title mb-5 font-display tracking-[-0.04em]">

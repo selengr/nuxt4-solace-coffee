@@ -7,7 +7,8 @@ function toMinutes(value: string) {
 
 export function useCafeHours() {
   const { info } = useCafe()
-  const { t } = useI18n()
+  const { t, locale } = useI18n()
+  const { tx } = useLocaleText()
 
   const now = useState('cafe-now', () => new Date())
 
@@ -26,13 +27,68 @@ export function useCafeHours() {
     return info.schedule.find(entry => entry.days.includes(day))
   })
 
+  const currentMinutes = computed(() =>
+    now.value.getHours() * 60 + now.value.getMinutes(),
+  )
+
   const isOpen = computed(() => {
     const schedule = todaySchedule.value
     if (!schedule) {
       return false
     }
-    const current = now.value.getHours() * 60 + now.value.getMinutes()
-    return current >= toMinutes(schedule.open) && current < toMinutes(schedule.close)
+    return (
+      currentMinutes.value >= toMinutes(schedule.open)
+      && currentMinutes.value < toMinutes(schedule.close)
+    )
+  })
+
+  const minutesUntilClose = computed(() => {
+    const schedule = todaySchedule.value
+    if (!schedule || !isOpen.value) {
+      return null
+    }
+    return toMinutes(schedule.close) - currentMinutes.value
+  })
+
+  const closesSoon = computed(() => {
+    const remaining = minutesUntilClose.value
+    return remaining !== null && remaining > 0 && remaining <= 60
+  })
+
+  const nextOpenSchedule = computed<DayHours | undefined>(() => {
+    if (isOpen.value) {
+      return todaySchedule.value
+    }
+    const today = now.value.getDay()
+    const schedule = todaySchedule.value
+    if (schedule && currentMinutes.value < toMinutes(schedule.open)) {
+      return schedule
+    }
+    for (let offset = 1; offset <= 7; offset += 1) {
+      const day = (today + offset) % 7
+      const entry = info.schedule.find(item => item.days.includes(day))
+      if (entry) {
+        return entry
+      }
+    }
+    return undefined
+  })
+
+  const nextOpenLabel = computed(() => {
+    const schedule = nextOpenSchedule.value
+    if (!schedule) {
+      return t('hours.unavailable')
+    }
+    const today = now.value.getDay()
+    const opensToday = todaySchedule.value === schedule
+      && currentMinutes.value < toMinutes(schedule.open)
+    if (opensToday) {
+      return t('hours.opensToday', { time: schedule.open })
+    }
+    return t('hours.opensNext', {
+      day: tx(schedule.label),
+      time: schedule.open,
+    })
   })
 
   const statusLabel = computed(() => {
@@ -40,14 +96,40 @@ export function useCafeHours() {
     if (!schedule) {
       return t('hours.unavailable')
     }
-    return isOpen.value
-      ? t('hours.openNow', { time: schedule.close })
-      : t('hours.closed', { time: schedule.open })
+    if (isOpen.value) {
+      if (closesSoon.value && minutesUntilClose.value !== null) {
+        return t('hours.closesSoon', { minutes: minutesUntilClose.value })
+      }
+      return t('hours.openNow', { time: schedule.close })
+    }
+    return t('hours.closed', { time: schedule.open })
+  })
+
+  const weekRows = computed(() =>
+    info.schedule.map(entry => ({
+      label: tx(entry.label),
+      range: `${entry.open}–${entry.close}`,
+      isToday: entry.days.includes(now.value.getDay()),
+    })),
+  )
+
+  const todayRangeLabel = computed(() => {
+    const schedule = todaySchedule.value
+    if (!schedule) {
+      return t('hours.unavailable')
+    }
+    const dayLabel = locale.value === 'fa' ? t('hours.today') : t('hours.today')
+    return `${dayLabel} · ${schedule.open}–${schedule.close}`
   })
 
   return {
     isOpen,
     statusLabel,
     todaySchedule,
+    closesSoon,
+    minutesUntilClose,
+    nextOpenLabel,
+    weekRows,
+    todayRangeLabel,
   }
 }

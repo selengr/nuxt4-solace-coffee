@@ -1,8 +1,8 @@
 <script setup lang="ts">
 const { info } = useCafe()
 const { t } = useI18n()
-const { txList } = useLocaleText()
 const localePath = useLocalePath()
+const { weekRows, statusLabel, isOpen } = useCafeHours()
 
 useSeoMeta({
   title: () => `${t('visitPage.eyebrow')} — ${info.name}`,
@@ -20,9 +20,13 @@ useSeoMeta({
         <h1 class="mb-4 max-w-[16ch] text-[clamp(2.4rem,6vw,3.4rem)] leading-snug">
           {{ t('visitPage.title') }}
         </h1>
-        <p class="mb-8 max-w-md leading-relaxed text-mute">
+        <p class="mb-6 max-w-md leading-relaxed text-mute">
           {{ t('visitPage.lede') }}
         </p>
+
+        <div class="mb-8">
+          <OpenStatus detailed />
+        </div>
 
         <dl class="grid gap-6">
           <div>
@@ -35,14 +39,22 @@ useSeoMeta({
           </div>
           <div>
             <dt class="mb-1 text-[0.7rem] text-leaf label-meta">
-              {{ t('visitPage.hours') }}
+              {{ t('hours.weekTitle') }}
             </dt>
             <dd class="m-0">
-              <p
-                v-for="line in txList(info.hours)"
-                :key="line"
-              >
-                {{ line }}
+              <ul class="m-0 list-none space-y-2 p-0">
+                <li
+                  v-for="row in weekRows"
+                  :key="row.label"
+                  class="flex justify-between gap-4 text-sm"
+                  :class="row.isToday ? 'font-medium text-ink' : 'text-mute'"
+                >
+                  <span>{{ row.label }}</span>
+                  <span class="tabular-nums">{{ row.range }}</span>
+                </li>
+              </ul>
+              <p class="mt-3 text-xs text-mute">
+                {{ isOpen ? statusLabel : statusLabel }}
               </p>
             </dd>
           </div>
