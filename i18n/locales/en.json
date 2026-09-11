@@ -95,7 +95,17 @@
     "added": "{name} added to your bag",
     "showing": "Showing {visible} of {total} items",
     "reviewOrder": "Review pickup order",
-    "print": "Print menu"
+    "print": "Print menu",
+    "allergenNote": "Allergen care: kitchen handles dairy, eggs, gluten, and tree nuts. Tell the bar about allergies — tags are a guide, not a guarantee.",
+    "dietary": "Dietary",
+    "dietaryAll": "Any diet",
+    "tags": {
+      "vegan": "Vegan",
+      "vegetarian": "Vegetarian",
+      "gf": "Gluten-free",
+      "dairy-free": "Dairy-free",
+      "nuts": "Contains nuts"
+    }
   },
   "aboutPage": {
     "eyebrow": "About",

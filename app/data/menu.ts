@@ -180,6 +180,7 @@ export const menuItems: MenuItem[] = [
     },
     price: '$3.75',
     category: 'espresso',
+    dietary: ['vegan', 'gf', 'dairy-free'],
     featured: true,
     image: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=900&q=80',
   },
@@ -195,6 +196,7 @@ export const menuItems: MenuItem[] = [
     },
     price: '$5.25',
     category: 'espresso',
+    dietary: ['vegan', 'dairy-free'],
     featured: true,
     image: 'https://images.unsplash.com/photo-1572442388796-11668a67e53d?auto=format&fit=crop&w=900&q=80',
   },
@@ -210,6 +212,7 @@ export const menuItems: MenuItem[] = [
     },
     price: '$4.75',
     category: 'espresso',
+    dietary: ['vegetarian'],
   },
   {
     id: 'cortado',
@@ -223,6 +226,7 @@ export const menuItems: MenuItem[] = [
     },
     price: '$4.25',
     category: 'espresso',
+    dietary: ['vegetarian'],
   },
   {
     id: 'pour-over',
@@ -236,6 +240,7 @@ export const menuItems: MenuItem[] = [
     },
     price: '$6.00',
     category: 'brew',
+    dietary: ['vegan', 'gf', 'dairy-free'],
     featured: true,
     image: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=900&q=80',
   },
@@ -251,6 +256,7 @@ export const menuItems: MenuItem[] = [
     },
     price: '$4.75',
     category: 'brew',
+    dietary: ['vegan', 'gf', 'dairy-free'],
   },
   {
     id: 'batch-filter',
@@ -264,6 +270,7 @@ export const menuItems: MenuItem[] = [
     },
     price: '$3.50',
     category: 'brew',
+    dietary: ['vegan', 'gf', 'dairy-free'],
   },
   {
     id: 'tea',
@@ -277,6 +284,7 @@ export const menuItems: MenuItem[] = [
     },
     price: '$4.00',
     category: 'brew',
+    dietary: ['vegan', 'gf', 'dairy-free'],
   },
   {
     id: 'sourdough',
@@ -290,6 +298,7 @@ export const menuItems: MenuItem[] = [
     },
     price: '$7.00',
     category: 'food',
+    dietary: ['vegetarian', 'nuts'],
     featured: true,
     image: 'https://images.unsplash.com/photo-1484723091739-30a097e8f929?auto=format&fit=crop&w=900&q=80',
   },
@@ -305,6 +314,7 @@ export const menuItems: MenuItem[] = [
     },
     price: '$9.50',
     category: 'food',
+    dietary: ['vegetarian', 'nuts'],
   },
   {
     id: 'croissant',
@@ -318,6 +328,7 @@ export const menuItems: MenuItem[] = [
     },
     price: '$4.50',
     category: 'food',
+    dietary: ['vegetarian'],
   },
   {
     id: 'egg-sandwich',
@@ -331,5 +342,6 @@ export const menuItems: MenuItem[] = [
     },
     price: '$11.00',
     category: 'food',
+    dietary: ['vegetarian'],
   },
 ]

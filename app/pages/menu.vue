@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import type { MenuItem } from '~/types/cafe'
+import type { DietaryTag, MenuItem } from '~/types/cafe'
 
 const { info, menu, byCategory } = useCafe()
 const { t } = useI18n()
@@ -14,8 +14,10 @@ useSeoMeta({
 })
 
 type Filter = 'all' | MenuItem['category']
+type DietFilter = 'all' | DietaryTag
 
 const filter = ref<Filter>('all')
+const dietFilter = ref<DietFilter>('all')
 const query = ref('')
 
 const sections = computed(() => [
@@ -31,6 +33,15 @@ const filters = computed(() => [
   { key: 'food' as const, label: t('menuPage.food') },
 ])
 
+const dietFilters = computed(() => [
+  { key: 'all' as const, label: t('menuPage.dietaryAll') },
+  { key: 'vegan' as const, label: t('menuPage.tags.vegan') },
+  { key: 'vegetarian' as const, label: t('menuPage.tags.vegetarian') },
+  { key: 'gf' as const, label: t('menuPage.tags.gf') },
+  { key: 'dairy-free' as const, label: t('menuPage.tags.dairy-free') },
+  { key: 'nuts' as const, label: t('menuPage.tags.nuts') },
+])
+
 function matchesQuery(item: MenuItem) {
   const q = query.value.trim().toLowerCase()
   if (!q) {
@@ -43,6 +54,13 @@ function matchesQuery(item: MenuItem) {
   )
 }
 
+function matchesDiet(item: MenuItem) {
+  if (dietFilter.value === 'all') {
+    return true
+  }
+  return item.dietary?.includes(dietFilter.value) ?? false
+}
+
 const visibleSections = computed(() => {
   const base = filter.value === 'all'
     ? sections.value
@@ -51,7 +69,7 @@ const visibleSections = computed(() => {
   return base
     .map(section => ({
       ...section,
-      items: byCategory(section.key).filter(matchesQuery),
+      items: byCategory(section.key).filter(item => matchesQuery(item) && matchesDiet(item)),
     }))
     .filter(section => section.items.length > 0)
 })
@@ -110,7 +128,7 @@ function printMenu() {
       </label>
 
       <div
-        class="mb-10 flex flex-wrap gap-2 print:hidden"
+        class="mb-4 flex flex-wrap gap-2 print:hidden"
         role="group"
         :aria-label="t('menuPage.categories')"
       >
@@ -124,6 +142,26 @@ function printMenu() {
             : 'border-ink/15 text-mute hover:border-ink/40 hover:text-ink'"
           :aria-pressed="filter === option.key"
           @click="filter = option.key"
+        >
+          {{ option.label }}
+        </button>
+      </div>
+
+      <div
+        class="mb-10 flex flex-wrap gap-2 print:hidden"
+        role="group"
+        :aria-label="t('menuPage.dietary')"
+      >
+        <button
+          v-for="option in dietFilters"
+          :key="option.key"
+          type="button"
+          class="rounded-sm border px-3 py-2 text-sm transition"
+          :class="dietFilter === option.key
+            ? 'border-leaf bg-leaf/10 text-leaf'
+            : 'border-ink/15 text-mute hover:border-ink/40 hover:text-ink'"
+          :aria-pressed="dietFilter === option.key"
+          @click="dietFilter = option.key"
         >
           {{ option.label }}
         </button>
@@ -162,6 +200,7 @@ function printMenu() {
               <p class="text-[0.92rem] text-mute">
                 {{ tx(item.description) }}
               </p>
+              <DietaryTags :tags="item.dietary" />
               <p class="mt-2 text-sm font-medium">
                 {{ item.price }}
               </p>
@@ -177,6 +216,10 @@ function printMenu() {
           </li>
         </ul>
       </section>
+
+      <p class="mb-4 max-w-2xl text-sm leading-relaxed text-mute">
+        {{ t('menuPage.allergenNote') }}
+      </p>
 
       <p class="text-sm text-mute print:hidden">
         {{ t('menuPage.showing', { visible: visibleCount, total: menu.length }) }} ·

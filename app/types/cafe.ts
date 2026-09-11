@@ -2,6 +2,8 @@ export type AppLocale = 'en' | 'fa'
 
 export type LocalizedText = string | Record<AppLocale, string>
 
+export type DietaryTag = 'vegan' | 'vegetarian' | 'gf' | 'dairy-free' | 'nuts'
+
 export interface MenuItem {
   id: string
   name: Record<AppLocale, string>
@@ -10,6 +12,7 @@ export interface MenuItem {
   category: 'espresso' | 'brew' | 'food'
   featured?: boolean
   image?: string
+  dietary?: DietaryTag[]
 }
 
 export interface DayHours {
