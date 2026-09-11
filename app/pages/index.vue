@@ -19,6 +19,7 @@ useSeoMeta({
     <HomeStory />
     <HomeValues />
     <HomeGallery />
+    <HomeInstagram />
     <HomeTestimonials />
     <HomeJournal />
     <HomeNewsletter />

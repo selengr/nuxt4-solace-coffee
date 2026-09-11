@@ -365,5 +365,17 @@
     "lede": "We store your language choice and a small preference cookie so the café site stays calm on return visits. Demo only — no tracking pixels.",
     "accept": "Got it",
     "switchLang": "Continue in {lang}"
+  },
+  "instagram": {
+    "eyebrow": "On Instagram",
+    "title": "Quiet frames from the room.",
+    "follow": "Follow Solace",
+    "stubNote": "Static demo grid — swap for a live feed later",
+    "alt1": "Coffee pour detail",
+    "alt2": "Espresso in ceramic",
+    "alt3": "Café interior light",
+    "alt4": "Latte art close-up",
+    "alt5": "Barista pour",
+    "alt6": "Morning seating"
   }
 }
