@@ -232,7 +232,12 @@
     "sending": "Sending…",
     "increase": "Increase quantity of {name}",
     "decrease": "Decrease quantity of {name}",
-    "quantity": "{name}, quantity {qty}"
+    "quantity": "{name}, quantity {qty}",
+    "etaReady": "Ready in about {min}–{max} min",
+    "etaEmpty": "Add items to see a pickup estimate",
+    "etaClosed": "We’re closed — pickup opens with the café",
+    "etaClosedHint": "Pickup orders open again when Solace is open.",
+    "etaNote": "Demo estimate based on bag size and open hours."
   },
   "testimonials": {
     "eyebrow": "From the room",

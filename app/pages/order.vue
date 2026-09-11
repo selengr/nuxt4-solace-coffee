@@ -4,6 +4,8 @@ const { t, te } = useI18n()
 const { tx } = useLocaleText()
 const localePath = useLocalePath()
 const { lines, count, subtotalLabel, addItem, setQty, clear } = useCart()
+const { etaLabel } = usePickupEta()
+const { isOpen } = useCafeHours()
 
 const customerName = ref('')
 const customerEmail = ref('')
@@ -120,8 +122,12 @@ async function submitOrder() {
           <h2 class="mb-1 text-2xl">
             {{ t('order.bag') }}
           </h2>
-          <p class="mb-5 text-sm text-mute">
+          <p class="mb-2 text-sm text-mute">
             {{ count }} {{ count === 1 ? t('order.item') : t('order.items') }}
+          </p>
+          <p class="mb-5 text-xs leading-relaxed text-mute">
+            {{ etaLabel }}
+            <span class="mt-1 block text-mute/80">{{ t('order.etaNote') }}</span>
           </p>
 
           <ul
@@ -254,10 +260,16 @@ async function submitOrder() {
             <BaseButton
               type="submit"
               variant="primary"
-              :disabled="status === 'loading' || !lines.length"
+              :disabled="status === 'loading' || !lines.length || !isOpen"
             >
               {{ status === 'loading' ? t('order.sending') : t('order.place') }}
             </BaseButton>
+            <p
+              v-if="!isOpen"
+              class="text-xs text-mute"
+            >
+              {{ t('order.etaClosedHint') }}
+            </p>
           </form>
         </aside>
       </div>
