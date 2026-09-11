@@ -351,5 +351,11 @@
   "lang": {
     "en": "EN",
     "fa": "FA"
+  },
+  "consent": {
+    "title": "Language & cookies",
+    "lede": "We store your language choice and a small preference cookie so the café site stays calm on return visits. Demo only — no tracking pixels.",
+    "accept": "Got it",
+    "switchLang": "Continue in {lang}"
   }
 }
