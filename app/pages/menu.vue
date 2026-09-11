@@ -22,6 +22,23 @@ const filter = ref<Filter>('all')
 const dietFilter = ref<DietFilter>('all')
 const prefsFilter = ref<PrefsFilter>('all')
 const query = ref('')
+const selected = ref<MenuItem | null>(null)
+const detailOpen = ref(false)
+
+function openDetail(item: MenuItem) {
+  selected.value = item
+  detailOpen.value = true
+  trackView(item.id)
+}
+
+function closeDetail() {
+  detailOpen.value = false
+}
+
+function addFromDetail(item: MenuItem) {
+  addToOrder(item)
+  closeDetail()
+}
 
 const sections = computed(() => [
   { key: 'espresso' as const, title: t('menuPage.espressoTitle'), note: t('menuPage.espressoNote') },
@@ -247,7 +264,13 @@ function printMenu() {
           >
             <div>
               <h3 class="mb-1 text-[1.15rem]">
-                {{ tx(item.name) }}
+                <button
+                  type="button"
+                  class="text-start transition hover:text-leaf"
+                  @click="openDetail(item)"
+                >
+                  {{ tx(item.name) }}
+                </button>
               </h3>
               <p class="text-[0.92rem] text-mute">
                 {{ tx(item.description) }}
@@ -256,6 +279,13 @@ function printMenu() {
               <p class="mt-2 text-sm font-medium">
                 {{ item.price }}
               </p>
+              <button
+                type="button"
+                class="mt-2 text-xs text-leaf underline-offset-2 hover:underline print:hidden"
+                @click="openDetail(item)"
+              >
+                {{ t('menuPage.viewDetails') }}
+              </button>
             </div>
             <div class="flex flex-col gap-2 print:hidden sm:flex-row">
               <button
@@ -306,5 +336,13 @@ function printMenu() {
         </NuxtLink>
       </p>
     </div>
+
+    <MenuItemDetail
+      :item="selected"
+      :open="detailOpen"
+      @close="closeDetail"
+      @add="addFromDetail"
+      @favorite="onToggleFavorite"
+    />
   </div>
 </template>

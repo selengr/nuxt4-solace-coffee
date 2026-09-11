@@ -119,6 +119,10 @@
     "unfavorited": "{name} از علاقه‌مندی‌ها حذف شد",
     "favoriteAria": "ذخیره {name} در علاقه‌مندی‌ها",
     "unfavoriteAria": "حذف {name} از علاقه‌مندی‌ها",
+    "viewDetails": "مشاهده جزئیات",
+    "closeDetail": "بستن جزئیات آیتم",
+    "detailFavorite": "ذخیره در علاقه‌مندی‌ها",
+    "detailUnfavorite": "حذف از علاقه‌مندی‌ها",
     "tags": {
       "vegan": "وگان",
       "vegetarian": "گیاهی",

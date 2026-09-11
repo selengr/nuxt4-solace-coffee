@@ -119,6 +119,10 @@
     "unfavorited": "{name} removed from favorites",
     "favoriteAria": "Save {name} to favorites",
     "unfavoriteAria": "Remove {name} from favorites",
+    "viewDetails": "View details",
+    "closeDetail": "Close item details",
+    "detailFavorite": "Save to favorites",
+    "detailUnfavorite": "Remove from favorites",
     "tags": {
       "vegan": "Vegan",
       "vegetarian": "Vegetarian",
