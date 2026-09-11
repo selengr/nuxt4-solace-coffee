@@ -338,10 +338,15 @@
     "brand": "Solace",
     "notFound": "Page not found",
     "generic": "Something went wrong",
+    "genericLede": "The counter hit a snag. Try again, or head back home.",
     "notFoundLede": "That route wandered off. Let’s get you back to the counter.",
     "home": "Back home",
-    "clear": "Clear error",
-    "postNotFound": "Post not found"
+    "clear": "Try again",
+    "postNotFound": "Post not found",
+    "toMenu": "Menu",
+    "toVisit": "Visit",
+    "toOrder": "Order",
+    "toFaq": "FAQ"
   },
   "lang": {
     "en": "EN",
