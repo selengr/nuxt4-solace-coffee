@@ -162,7 +162,8 @@
     "lede": "Questions about the café, private mornings, or wholesale beans — send a note and we’ll get back within one or two business days.",
     "email": "Email",
     "phone": "Phone",
-    "social": "Social"
+    "social": "Social",
+    "visitLink": "Plan your visit"
   },
   "eventsPage": {
     "eyebrow": "Events",
