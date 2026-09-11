@@ -333,7 +333,20 @@
     "offer2": "Balances never expire in this demo policy",
     "offer3": "Perfect for neighbors, hosts, and quiet thank-yous",
     "cta": "Ask about gift cards",
-    "seoDescription": "Solace café gift cards for specialty coffee, pastry, and unhurried mornings."
+    "seoDescription": "Solace café gift cards for specialty coffee, pastry, and unhurried mornings.",
+    "pickerTitle": "Choose an amount",
+    "pickerLede": "Demo checkout stub — no payment yet. Pick a value and we’ll toast a confirmation.",
+    "amount": "Gift card amount",
+    "custom": "Custom",
+    "customAmount": "Custom amount (USD)",
+    "recipient": "Recipient email (optional)",
+    "recipientPlaceholder": "friend{'@'}email.com",
+    "note": "Gift note",
+    "notePlaceholder": "For quiet mornings…",
+    "selected": "Selected: ${amount}",
+    "stubCta": "Continue (demo)",
+    "stubReady": "Demo gift card for ${amount} ready — connect payments later.",
+    "minError": "Please choose at least $10."
   },
   "faqPage": {
     "eyebrow": "FAQ",
