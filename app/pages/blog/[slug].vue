@@ -11,6 +11,21 @@ const slug = computed(() => {
 
 const post = computed(() => getPostBySlug(slug.value, current.value))
 
+const related = computed(() => {
+  if (!post.value) {
+    return []
+  }
+  const currentTags = new Set(post.value.tags)
+  return getAllPosts(current.value)
+    .filter(entry => entry.slug !== post.value!.slug)
+    .map(entry => ({
+      ...entry,
+      score: entry.tags.filter(tag => currentTags.has(tag)).length,
+    }))
+    .sort((a, b) => b.score - a.score || +new Date(b.date) - +new Date(a.date))
+    .slice(0, 2)
+})
+
 if (!getPostBySlug(slug.value, current.value)) {
   throw createError({ statusCode: 404, statusMessage: t('error.postNotFound') })
 }
@@ -49,6 +64,34 @@ useSeoMeta({
         class="prose-solace"
         v-html="post.html"
       />
+
+      <section
+        v-if="related.length"
+        class="mt-16 border-t border-ink/10 pt-10"
+      >
+        <h2 class="mb-6 text-2xl tracking-tight">
+          {{ t('blogPage.related') }}
+        </h2>
+        <ul class="m-0 grid list-none gap-4 p-0 sm:grid-cols-2">
+          <li
+            v-for="item in related"
+            :key="item.slug"
+            class="border border-ink/10 p-5 transition hover:border-ink/25"
+          >
+            <p class="mb-2 text-xs text-leaf label-meta">
+              {{ formatDate(item.date) }}
+            </p>
+            <h3 class="text-lg leading-snug">
+              <NuxtLink
+                :to="localePath(item.path)"
+                class="hover:text-leaf"
+              >
+                {{ item.title }}
+              </NuxtLink>
+            </h3>
+          </li>
+        </ul>
+      </section>
     </div>
   </article>
 </template>
