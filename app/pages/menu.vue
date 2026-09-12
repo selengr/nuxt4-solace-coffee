@@ -5,7 +5,7 @@ const { info, byCategory } = useCafe()
 const { t } = useI18n()
 const { tx } = useLocaleText()
 const localePath = useLocalePath()
-const { addItem, count } = useCart()
+const { addItem, count, subtotalLabel, qtyOf, setQty } = useCart()
 const { isFavorite, toggleFavorite, trackView } = useMenuPrefs()
 const toast = useToast()
 
@@ -89,77 +89,61 @@ function onToggleFavorite(item: MenuItem) {
       : t('menuPage.unfavorited', { name: tx(item.name) }),
   )
 }
-
-function printMenu() {
-  if (!import.meta.client) {
-    return
-  }
-  const prevFilter = filter.value
-  const prevQuery = query.value
-  filter.value = 'all'
-  query.value = ''
-  nextTick(() => {
-    window.print()
-    filter.value = prevFilter
-    query.value = prevQuery
-  })
-}
 </script>
 
 <template>
-  <div class="menu-page section-space pb-28 sm:pb-[clamp(4.5rem,10vw,7.5rem)]">
-    <div class="container-site max-w-4xl">
-      <header class="mb-10 border-b border-ink/10 pb-8 text-center sm:text-start">
-        <p class="eyebrow mb-3">
-          {{ info.name }}
+  <div class="menu-page section-space pb-32 sm:pb-[clamp(4.5rem,10vw,7.5rem)]">
+    <div class="container-site">
+      <header class="mb-8 max-w-2xl">
+        <p class="eyebrow">
+          {{ t('menuPage.eyebrow') }}
         </p>
-        <h1 class="mb-3 font-display text-[clamp(2.4rem,5.5vw,3.4rem)] leading-[1.05] tracking-tight">
+        <h1 class="mb-2 font-display text-[clamp(2.3rem,5vw,3.2rem)] leading-[1.05] tracking-tight">
           {{ t('menuPage.title') }}
         </h1>
-        <p class="mx-auto max-w-lg text-mute print:hidden sm:mx-0">
+        <p class="text-mute">
           {{ t('menuPage.lede') }}
-        </p>
-        <p class="mt-2 hidden text-sm text-mute print:block">
-          {{ info.address }}, {{ info.city }}
         </p>
       </header>
 
-      <div class="print:hidden sticky top-[4rem] z-30 mb-10 border border-ink/10 bg-foam/95 p-3 backdrop-blur-md sm:p-4">
-        <label class="mb-3 block">
-          <span class="sr-only">{{ t('menuPage.search') }}</span>
-          <input
-            v-model="query"
-            type="search"
-            name="menu-search"
-            :placeholder="t('menuPage.searchPlaceholder')"
-            class="w-full rounded-sm border border-ink/15 bg-mist/40 px-3 py-2.5 text-sm outline-none transition focus:border-leaf focus:bg-foam"
+      <div class="print:hidden sticky top-[4rem] z-30 mb-8 border border-ink/10 bg-foam/95 shadow-sm backdrop-blur-md">
+        <div class="flex flex-col gap-3 p-3 sm:flex-row sm:items-center sm:gap-4 sm:p-3.5">
+          <label class="block min-w-0 flex-1">
+            <span class="sr-only">{{ t('menuPage.search') }}</span>
+            <input
+              v-model="query"
+              type="search"
+              name="menu-search"
+              :placeholder="t('menuPage.searchPlaceholder')"
+              class="w-full rounded-sm border border-ink/15 bg-mist/50 px-3 py-2.5 text-sm outline-none transition focus:border-leaf focus:bg-foam"
+            >
+          </label>
+          <div
+            class="flex gap-1 overflow-x-auto sm:shrink-0"
+            role="tablist"
+            :aria-label="t('menuPage.categories')"
           >
-        </label>
-        <div
-          class="flex gap-2 overflow-x-auto"
-          role="tablist"
-          :aria-label="t('menuPage.categories')"
-        >
-          <button
-            v-for="option in filters"
-            :key="option.key"
-            type="button"
-            role="tab"
-            class="shrink-0 border-b-2 px-3 py-2 text-sm tracking-wide transition"
-            :class="filter === option.key
-              ? 'border-ink font-medium text-ink'
-              : 'border-transparent text-mute hover:text-ink'"
-            :aria-selected="filter === option.key"
-            @click="filter = option.key"
-          >
-            {{ option.label }}
-          </button>
+            <button
+              v-for="option in filters"
+              :key="option.key"
+              type="button"
+              role="tab"
+              class="shrink-0 rounded-sm px-3 py-2 text-sm transition"
+              :class="filter === option.key
+                ? 'bg-ink text-foam'
+                : 'bg-mist text-mute hover:text-ink'"
+              :aria-selected="filter === option.key"
+              @click="filter = option.key"
+            >
+              {{ option.label }}
+            </button>
+          </div>
         </div>
       </div>
 
       <p
         v-if="!visibleSections.length"
-        class="mb-8 text-center text-mute print:hidden"
+        class="mb-8 text-mute"
       >
         {{ t('menuPage.empty', { query }) }}
       </p>
@@ -167,124 +151,130 @@ function printMenu() {
       <section
         v-for="section in visibleSections"
         :key="section.key"
-        class="mb-14"
+        class="mb-12"
       >
-        <div class="mb-6 flex items-end gap-4">
-          <h2 class="shrink-0 font-display text-[1.35rem] tracking-[0.04em] uppercase text-ink">
-            {{ section.title }}
-          </h2>
-          <span
-            class="mb-2 h-px min-w-[2rem] flex-1 bg-ink/15"
-            aria-hidden="true"
-          />
-        </div>
+        <h2 class="mb-5 font-display text-xl tracking-tight text-ink">
+          {{ section.title }}
+        </h2>
 
-        <ul class="m-0 list-none space-y-0 p-0">
+        <ul class="m-0 grid list-none gap-3 p-0 sm:grid-cols-2 lg:grid-cols-3">
           <li
             v-for="item in section.items"
             :key="item.id"
-            class="group border-b border-ink/[0.07] py-5 first:pt-0 last:border-b-0"
+            class="flex flex-col overflow-hidden border border-ink/10 bg-foam transition hover:border-ink/25"
           >
-            <div class="flex gap-4 sm:gap-5">
-              <button
+            <button
+              type="button"
+              class="relative block aspect-[4/3] w-full overflow-hidden bg-[#2a221c] text-start"
+              :aria-label="tx(item.name)"
+              @click="openDetail(item)"
+            >
+              <img
                 v-if="item.image"
-                type="button"
-                class="print:hidden relative hidden h-20 w-20 shrink-0 overflow-hidden bg-[#2a221c] sm:block"
-                :aria-label="tx(item.name)"
-                @click="openDetail(item)"
+                :src="item.image"
+                :alt="tx(item.name)"
+                width="640"
+                height="480"
+                loading="lazy"
+                decoding="async"
+                class="h-full w-full object-cover transition duration-500 hover:scale-[1.03]"
               >
-                <img
-                  :src="item.image"
-                  alt=""
-                  width="160"
-                  height="160"
-                  loading="lazy"
-                  decoding="async"
-                  class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+              <span
+                v-if="qtyOf(item.id)"
+                class="absolute end-2 top-2 rounded-sm bg-leaf px-2 py-1 text-[0.7rem] font-medium text-foam"
+              >
+                {{ t('menuPage.inBag', { count: qtyOf(item.id) }) }}
+              </span>
+            </button>
+
+            <div class="flex flex-1 flex-col p-4">
+              <div class="mb-1 flex items-start justify-between gap-3">
+                <button
+                  type="button"
+                  class="min-w-0 text-start"
+                  @click="openDetail(item)"
                 >
-              </button>
+                  <span class="font-display text-lg leading-snug tracking-tight">
+                    {{ tx(item.name) }}
+                  </span>
+                </button>
+                <span class="shrink-0 pt-0.5 text-sm font-medium tabular-nums text-leaf">
+                  {{ item.price }}
+                </span>
+              </div>
+              <p class="mb-3 line-clamp-2 flex-1 text-sm leading-relaxed text-mute">
+                {{ tx(item.description) }}
+              </p>
+              <DietaryTags :tags="item.dietary" />
 
-              <div class="min-w-0 flex-1">
-                <div class="flex items-start gap-3">
-                  <button
-                    type="button"
-                    class="min-w-0 flex-1 text-start print:pointer-events-none"
-                    @click="openDetail(item)"
-                  >
-                    <span class="menu-item-row flex items-baseline gap-2">
-                      <span class="font-display text-[1.15rem] tracking-tight text-ink transition group-hover:text-leaf sm:text-[1.25rem]">
-                        {{ tx(item.name) }}
-                      </span>
-                      <span
-                        class="menu-item-dots hidden min-w-[1.5rem] flex-1 sm:block"
-                        aria-hidden="true"
-                      />
-                      <span class="shrink-0 font-medium tabular-nums text-ink">
-                        {{ item.price }}
-                      </span>
+              <div class="mt-4 flex items-center gap-2">
+                <template v-if="qtyOf(item.id)">
+                  <div class="flex flex-1 items-center justify-between rounded-sm border border-ink/15">
+                    <button
+                      type="button"
+                      class="grid h-11 w-11 place-items-center text-lg transition hover:bg-mist"
+                      :aria-label="t('order.decrease', { name: tx(item.name) })"
+                      @click="setQty(item.id, qtyOf(item.id) - 1)"
+                    >
+                      −
+                    </button>
+                    <span class="text-sm font-medium tabular-nums">
+                      {{ qtyOf(item.id) }}
                     </span>
-                    <span class="mt-1.5 block max-w-xl text-sm leading-relaxed text-mute">
-                      {{ tx(item.description) }}
-                    </span>
-                  </button>
-
-                  <button
-                    type="button"
-                    class="print:hidden shrink-0 self-start border border-ink/15 px-3.5 py-2 text-xs font-medium uppercase tracking-[0.08em] text-ink transition hover:border-ink hover:bg-ink hover:text-foam"
-                    @click="addToOrder(item)"
-                  >
-                    {{ t('menuPage.add') }}
-                  </button>
-                </div>
+                    <button
+                      type="button"
+                      class="grid h-11 w-11 place-items-center text-lg transition hover:bg-mist"
+                      :aria-label="t('order.increase', { name: tx(item.name) })"
+                      @click="addToOrder(item)"
+                    >
+                      +
+                    </button>
+                  </div>
+                </template>
+                <button
+                  v-else
+                  type="button"
+                  class="flex h-11 flex-1 items-center justify-center rounded-sm bg-ink text-sm font-medium text-foam transition hover:bg-roast"
+                  @click="addToOrder(item)"
+                >
+                  {{ t('menuPage.add') }}
+                </button>
               </div>
             </div>
           </li>
         </ul>
       </section>
 
-      <footer class="print:hidden border-t border-ink/10 pt-8">
-        <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
-          <BaseButton
-            :to="localePath('/order')"
-            variant="ink"
-          >
-            {{ t('menuPage.reviewOrder') }}
-            <template v-if="count">
-              · {{ count }}
-            </template>
-          </BaseButton>
-          <div class="flex flex-wrap gap-4 text-sm text-mute">
-            <button
-              type="button"
-              class="underline-offset-2 hover:text-ink hover:underline"
-              @click="printMenu"
-            >
-              {{ t('menuPage.print') }}
-            </button>
-            <a
-              href="/allergen-card.pdf"
-              class="underline-offset-2 hover:text-ink hover:underline"
-              download
-            >{{ t('menuPage.allergenPdf') }}</a>
-          </div>
-        </div>
-        <p class="max-w-xl text-xs leading-relaxed text-mute">
-          {{ t('menuPage.allergenNote') }}
-        </p>
-      </footer>
+      <p class="max-w-xl text-xs leading-relaxed text-mute">
+        {{ t('menuPage.allergenNote') }}
+        <a
+          href="/allergen-card.pdf"
+          class="ms-1 underline-offset-2 hover:underline"
+          download
+        >{{ t('menuPage.allergenPdf') }}</a>
+      </p>
     </div>
 
     <div
-      v-if="count"
-      class="print:hidden fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-foam/95 p-3 backdrop-blur-md sm:hidden"
+      class="print:hidden fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-foam/95 p-3 backdrop-blur-md"
     >
-      <BaseButton
-        class="w-full"
-        :to="localePath('/order')"
-        variant="primary"
-      >
-        {{ t('menuPage.reviewOrder') }} · {{ count }}
-      </BaseButton>
+      <div class="container-site flex items-center justify-between gap-3">
+        <div class="min-w-0 text-sm">
+          <p class="font-medium text-ink">
+            {{ count ? t('menuPage.bagSummary', { count, total: subtotalLabel }) : t('menuPage.bagEmpty') }}
+          </p>
+          <p class="truncate text-mute">
+            {{ info.name }} · {{ t('order.eyebrow') }}
+          </p>
+        </div>
+        <BaseButton
+          :to="localePath('/order')"
+          :variant="count ? 'primary' : 'ink'"
+          :class="count ? '' : 'opacity-80'"
+        >
+          {{ count ? t('menuPage.reviewOrder') : t('menuPage.goOrder') }}
+        </BaseButton>
+      </div>
     </div>
 
     <MenuItemDetail
@@ -296,16 +286,3 @@ function printMenu() {
     />
   </div>
 </template>
-
-<style scoped>
-.menu-item-dots {
-  border-bottom: 1px dotted rgb(20 17 15 / 0.28);
-  transform: translateY(-0.35em);
-}
-
-@media print {
-  .menu-item-dots {
-    display: block !important;
-  }
-}
-</style>

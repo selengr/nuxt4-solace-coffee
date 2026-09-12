@@ -114,6 +114,18 @@ export function useCart() {
     line.qty = qty
   }
 
+  function removeItem(id: string) {
+    setQty(id, 0)
+  }
+
+  function qtyOf(id: string) {
+    return lines.value.find(entry => entry.id === id)?.qty ?? 0
+  }
+
+  function lineTotalLabel(line: CartLine) {
+    return `$${(priceToNumber(line.price) * line.qty).toFixed(2)}`
+  }
+
   function clear() {
     lines.value = []
   }
@@ -125,6 +137,9 @@ export function useCart() {
     subtotalLabel,
     addItem,
     setQty,
+    removeItem,
+    qtyOf,
+    lineTotalLabel,
     clear,
   }
 }
