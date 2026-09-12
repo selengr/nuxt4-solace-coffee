@@ -209,6 +209,8 @@
     "interest": "علاقه‌مندم",
     "interestDone": "علاقه ثبت شد",
     "interestSent": "ثبت شد — اگر برای «{title}» جا باز شود ایمیل می‌زنیم.",
+    "addToCalendar": "افزودن به تقویم",
+    "calendarSaved": "فایل تقویم برای «{title}» دانلود شد.",
     "types": {
       "cupping": "کاپینگ",
       "workshop": "کارگاه",

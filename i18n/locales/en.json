@@ -209,6 +209,8 @@
     "interest": "I’m interested",
     "interestDone": "Interest saved",
     "interestSent": "Noted — we’ll email if seats open for {title}.",
+    "addToCalendar": "Add to calendar",
+    "calendarSaved": "Calendar file downloaded for {title}.",
     "types": {
       "cupping": "cupping",
       "workshop": "workshop",

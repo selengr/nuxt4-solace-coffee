@@ -42,6 +42,26 @@ function markInterest(eventId: string, title: string) {
   toast.success(t('eventsPage.interestSent', { title }))
 }
 
+function addToCalendar(event: (typeof events)[number]) {
+  if (event.calendarWeekday == null) {
+    return
+  }
+  const { hours, minutes } = parseTimeHHMM(event.time)
+  const start = nextWeekdayLocal(event.calendarWeekday, hours, minutes)
+  const end = new Date(start.getTime() + (event.durationMinutes ?? 90) * 60_000)
+  const title = tx(event.title)
+  const ics = buildIcs({
+    uid: `${event.id}@solace.coffee`,
+    title,
+    description: tx(event.description),
+    location: `${info.address}, ${info.city}`,
+    start,
+    end,
+  })
+  downloadIcs(`solace-${event.id}`, ics)
+  toast.success(t('eventsPage.calendarSaved', { title }))
+}
+
 async function submitInquiry() {
   status.value = 'loading'
   try {
@@ -114,14 +134,24 @@ onMounted(() => {
           <p class="mb-6 grow text-sm leading-relaxed text-mute">
             {{ tx(event.description) }}
           </p>
-          <BaseButton
-            type="button"
-            :variant="interested.includes(event.id) ? 'primary' : 'ink'"
-            :disabled="interested.includes(event.id)"
-            @click="markInterest(event.id, tx(event.title))"
-          >
-            {{ interested.includes(event.id) ? t('eventsPage.interestDone') : t('eventsPage.interest') }}
-          </BaseButton>
+          <div class="flex flex-wrap gap-2">
+            <BaseButton
+              type="button"
+              :variant="interested.includes(event.id) ? 'primary' : 'ink'"
+              :disabled="interested.includes(event.id)"
+              @click="markInterest(event.id, tx(event.title))"
+            >
+              {{ interested.includes(event.id) ? t('eventsPage.interestDone') : t('eventsPage.interest') }}
+            </BaseButton>
+            <BaseButton
+              v-if="event.calendarWeekday != null"
+              type="button"
+              variant="ghost"
+              @click="addToCalendar(event)"
+            >
+              {{ t('eventsPage.addToCalendar') }}
+            </BaseButton>
+          </div>
         </li>
       </ul>
 

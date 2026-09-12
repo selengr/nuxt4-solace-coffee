@@ -64,4 +64,8 @@ export interface CafeEvent {
   time: string
   description: Record<AppLocale, string>
   type: 'cupping' | 'workshop' | 'private'
+  /** 0 = Sunday … 6 = Saturday — enables Add to calendar for the next occurrence. */
+  calendarWeekday?: number
+  /** Length of the ICS event; defaults to 90 minutes when weekday is set. */
+  durationMinutes?: number
 }

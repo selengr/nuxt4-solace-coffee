@@ -130,6 +130,8 @@ export const cafeEvents: CafeEvent[] = [
       fa: 'سه لات جاری را با سرآشپز بار بچشید. با هر نوشیدنی برو بار رایگان است.',
     },
     type: 'cupping',
+    calendarWeekday: 6,
+    durationMinutes: 90,
   },
   {
     id: 'milk-workshop',
@@ -147,6 +149,8 @@ export const cafeEvents: CafeEvent[] = [
       fa: 'بخاردهی و پورینگ پایه را روی دستگاه‌های آموزشی یاد بگیرید. ظرفیت محدود.',
     },
     type: 'workshop',
+    calendarWeekday: 5,
+    durationMinutes: 120,
   },
   {
     id: 'private-morning',
