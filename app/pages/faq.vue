@@ -3,11 +3,12 @@ const { info } = useCafe()
 const { t } = useI18n()
 const localePath = useLocalePath()
 
-useSeoMeta({
+useCafeSeo({
   title: () => `${t('faqPage.eyebrow')} — ${info.name}`,
   description: () => t('faqPage.seoDescription'),
 })
 
+const query = ref('')
 const openId = ref<string | null>('hours')
 
 const items = computed(() => [
@@ -20,6 +21,26 @@ const items = computed(() => [
   { id: 'access', q: t('faqPage.q7'), a: t('faqPage.a7') },
   { id: 'dogs', q: t('faqPage.q8'), a: t('faqPage.a8') },
 ])
+
+const visibleItems = computed(() => {
+  const q = query.value.trim().toLowerCase()
+  if (!q) {
+    return items.value
+  }
+  return items.value.filter(item =>
+    item.q.toLowerCase().includes(q) || item.a.toLowerCase().includes(q),
+  )
+})
+
+watch(visibleItems, (list) => {
+  if (!list.length) {
+    openId.value = null
+    return
+  }
+  if (!list.some(item => item.id === openId.value)) {
+    openId.value = list[0]!.id
+  }
+})
 
 function toggle(id: string) {
   openId.value = openId.value === id ? null : id
@@ -35,13 +56,34 @@ function toggle(id: string) {
       <h1 class="mb-3 max-w-[16ch] text-[clamp(2.4rem,6vw,3.5rem)] leading-snug">
         {{ t('faqPage.title') }}
       </h1>
-      <p class="mb-12 max-w-xl leading-relaxed text-mute">
+      <p class="mb-8 max-w-xl leading-relaxed text-mute">
         {{ t('faqPage.lede') }}
       </p>
 
-      <div class="divide-y divide-ink/10 border-y border-ink/10">
+      <label class="mb-8 block max-w-md">
+        <span class="sr-only">{{ t('faqPage.search') }}</span>
+        <input
+          v-model="query"
+          type="search"
+          name="faq-search"
+          :placeholder="t('faqPage.searchPlaceholder')"
+          class="w-full rounded-sm border border-ink/15 bg-foam px-3 py-3 text-sm outline-none transition focus:border-leaf"
+        >
+      </label>
+
+      <p
+        v-if="!visibleItems.length"
+        class="mb-8 text-mute"
+      >
+        {{ t('faqPage.empty', { query }) }}
+      </p>
+
+      <div
+        v-else
+        class="divide-y divide-ink/10 border-y border-ink/10"
+      >
         <div
-          v-for="item in items"
+          v-for="item in visibleItems"
           :key="item.id"
         >
           <h2>
