@@ -287,6 +287,19 @@
       "email": "Please enter a valid email address."
     }
   },
+  "newsletterThanks": {
+    "eyebrow": "You’re in",
+    "title": "Thanks for joining Solace notes.",
+    "titleGeneric": "Solace notes",
+    "lede": "We’ll send quiet updates on new lots and events — a few times a month, never noisy.",
+    "ledeGeneric": "Seasonal café notes for people who linger. Subscribe from the homepage when you’re ready.",
+    "seoDescription": "Confirmation for Solace Coffee newsletter signup.",
+    "note1": "No ads, no tracking pixels in this demo flow.",
+    "note2": "You can write hello@solace.coffee anytime to leave the list.",
+    "note3": "Meanwhile, cuppings and workshops live on the Events page.",
+    "home": "Back home",
+    "events": "See events"
+  },
   "form": {
     "name": "Name",
     "email": "Email",

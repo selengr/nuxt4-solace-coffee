@@ -1,10 +1,12 @@
 <script setup lang="ts">
 const { t, te } = useI18n()
+const localePath = useLocalePath()
 const toast = useToast()
 const { el, visible } = useReveal()
 
 const email = ref('')
 const status = ref<'idle' | 'loading'>('idle')
+const justJoined = useState<boolean>('solace-newsletter-joined', () => false)
 
 function translateKey(key: string) {
   return te(key) ? t(key) : key
@@ -13,12 +15,13 @@ function translateKey(key: string) {
 async function subscribe() {
   status.value = 'loading'
   try {
-    const result = await $fetch<{ messageKey: string }>('/api/newsletter', {
+    await $fetch<{ messageKey: string }>('/api/newsletter', {
       method: 'POST',
       body: { email: email.value },
     })
-    toast.success(t(result.messageKey))
+    justJoined.value = true
     email.value = ''
+    await navigateTo(localePath('/newsletter/thanks'))
   }
   catch (error: unknown) {
     const err = error as { data?: { data?: { errors?: string[] }, errors?: string[] } }
