@@ -74,6 +74,8 @@ useSeoMeta({
             </dd>
           </div>
         </dl>
+
+        <VisitDirections />
       </div>
 
       <VisitMap />

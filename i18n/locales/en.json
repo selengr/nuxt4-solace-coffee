@@ -166,7 +166,15 @@
     "address": "Address",
     "hours": "Hours",
     "contact": "Contact",
-    "message": "Send a message"
+    "message": "Send a message",
+    "directions": "Get here",
+    "directionsLede": "Open the café in Maps, or copy the street address to share.",
+    "openGoogle": "Google Maps",
+    "openApple": "Apple Maps",
+    "copyAddress": "Copy address",
+    "copied": "Address copied.",
+    "transit": "Transit: ~6 min walk from Westlake Station (demo).",
+    "parking": "Parking: street spots nearby; paid garage one block south (demo)."
   },
   "contactPage": {
     "eyebrow": "Contact",
