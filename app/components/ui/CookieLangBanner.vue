@@ -1,6 +1,7 @@
 <script setup lang="ts">
 const { t, locale } = useI18n()
 const switchLocalePath = useSwitchLocalePath()
+const localePath = useLocalePath()
 const { showBanner, accept, hydrate } = useConsent()
 
 const otherLocale = computed(() => (locale.value === 'en' ? 'fa' : 'en'))
@@ -24,6 +25,12 @@ onMounted(() => {
         </p>
         <p class="text-sm leading-relaxed text-mute">
           {{ t('consent.lede') }}
+          <NuxtLink
+            :to="localePath('/privacy')"
+            class="ms-1 text-leaf underline-offset-2 hover:underline"
+          >
+            {{ t('consent.privacy') }}
+          </NuxtLink>
         </p>
       </div>
       <div class="flex flex-wrap gap-2">

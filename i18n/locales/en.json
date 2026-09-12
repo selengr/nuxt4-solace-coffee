@@ -19,6 +19,7 @@
     "loyalty": "Loyalty",
     "catering": "Catering",
     "more": "More",
+    "privacy": "Privacy",
     "visitCta": "Visit us"
   },
   "hero": {
@@ -467,6 +468,7 @@
   "consent": {
     "title": "Language & cookies",
     "lede": "We store your language choice and a small preference cookie so the café site stays calm on return visits. Demo only — no tracking pixels.",
+    "privacy": "Privacy policy",
     "accept": "Got it",
     "switchLang": "Continue in {lang}"
   },
@@ -548,5 +550,21 @@
     "note": "Please keep volumes soft and leave a seat free during the afternoon rush. Laptops are welcome until then.",
     "faqLink": "More about the room in FAQ",
     "seoDescription": "Guest Wi‑Fi details for Solace Coffee in Seattle."
+  },
+  "privacyPage": {
+    "eyebrow": "Privacy",
+    "title": "What we keep on this demo site.",
+    "lede": "Plain language for guests. This café website is a demo — we do not sell data or run ad trackers.",
+    "seoDescription": "Privacy policy for the Solace Coffee demo website — cookies, cart, and contact forms.",
+    "s1Title": "Cookies & language",
+    "s1Body": "We save a language preference cookie and a small consent flag so the banner does not return every visit. No analytics pixels ship with this demo.",
+    "s2Title": "Cart, loyalty & favorites",
+    "s2Body": "Pickup bag items, loyalty stamps, and menu favorites live in your browser (local storage). Clearing site data removes them.",
+    "s3Title": "Forms you send us",
+    "s3Body": "Contact, catering, events, newsletter, and order forms collect the details you type so we can reply. In production those messages go to the café inbox; in demo mode they may only be logged.",
+    "s4Title": "Third parties",
+    "s4Body": "Maps embeds, fonts, and image CDNs may set their own cookies when those services load. We do not embed social tracking widgets on this demo.",
+    "contactHint": "Questions about privacy:",
+    "cta": "Contact us"
   }
 }

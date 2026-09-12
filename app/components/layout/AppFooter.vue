@@ -19,6 +19,7 @@ const helpLinks = computed(() => [
   { path: '/faq', label: t('nav.faq') },
   { path: '/wifi', label: t('nav.wifi') },
   { path: '/gift-cards', label: t('nav.giftCards') },
+  { path: '/privacy', label: t('nav.privacy') },
 ])
 </script>
 

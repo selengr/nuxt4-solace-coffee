@@ -28,6 +28,7 @@ const moreLinks = computed(() => [
   { path: '/care', label: t('nav.care') },
   { path: '/careers', label: t('nav.careers') },
   { path: '/press', label: t('nav.press') },
+  { path: '/privacy', label: t('nav.privacy') },
 ])
 
 const otherLocale = computed(() => (locale.value === 'en' ? 'fa' : 'en'))
