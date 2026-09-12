@@ -195,7 +195,7 @@ function printMenu() {
               >
                 <img
                   :src="item.image"
-                  :alt=""
+                  alt=""
                   width="160"
                   height="160"
                   loading="lazy"
