@@ -1,23 +1,41 @@
-export function useReveal(options: IntersectionObserverInit = { threshold: 0.16, rootMargin: '0px 0px -8% 0px' }) {
+export function useReveal(options: IntersectionObserverInit = { threshold: 0.12, rootMargin: '0px 0px -4% 0px' }) {
   const el = ref<HTMLElement | null>(null)
   const visible = ref(false)
+  let observer: IntersectionObserver | null = null
 
   onMounted(() => {
-    if (!el.value || import.meta.server) {
+    if (!import.meta.client || !el.value) {
+      visible.value = true
       return
     }
+
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       visible.value = true
       return
     }
-    const observer = new IntersectionObserver(([entry]) => {
+
+    const markVisible = () => {
+      visible.value = true
+      observer?.disconnect()
+      observer = null
+    }
+
+    observer = new IntersectionObserver(([entry]) => {
       if (entry?.isIntersecting) {
-        visible.value = true
-        observer.disconnect()
+        markVisible()
       }
     }, options)
     observer.observe(el.value)
-    onUnmounted(() => observer.disconnect())
+
+    // If already in (or near) the viewport on mount, reveal immediately.
+    const rect = el.value.getBoundingClientRect()
+    if (rect.top < window.innerHeight * 0.92 && rect.bottom > 0) {
+      markVisible()
+    }
+  })
+
+  onUnmounted(() => {
+    observer?.disconnect()
   })
 
   return { el, visible }

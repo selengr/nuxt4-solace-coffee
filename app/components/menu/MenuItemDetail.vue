@@ -80,17 +80,17 @@ onUnmounted(() => {
 
         <div
           v-if="item.image"
-          class="aspect-[5/4] overflow-hidden"
+          class="aspect-[5/4] overflow-hidden bg-[#2a221c]"
         >
-          <NuxtImg
+          <img
             :src="item.image"
             :alt="tx(item.name)"
             width="900"
             height="720"
-            format="webp"
-            sizes="100vw"
+            loading="lazy"
+            decoding="async"
             class="h-full w-full object-cover"
-          />
+          >
         </div>
 
         <div class="flex flex-1 flex-col px-5 py-6">

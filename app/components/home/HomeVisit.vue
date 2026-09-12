@@ -12,18 +12,18 @@ const { el, visible } = useReveal()
     class="relative isolate overflow-hidden py-[clamp(5rem,11vw,8rem)] text-foam"
   >
     <div
-      class="absolute inset-0"
+      class="absolute inset-0 bg-[#2a221c]"
       aria-hidden="true"
     >
-      <NuxtImg
+      <img
         src="https://images.unsplash.com/photo-1559305616-3f99cd43e353?auto=format&fit=crop&w=2200&q=80"
         :alt="t('visitBlock.alt')"
         width="2200"
         height="1400"
-        format="webp"
-        sizes="100vw"
+        loading="lazy"
+        decoding="async"
         class="h-full w-full object-cover"
-      />
+      >
       <div class="absolute inset-0 bg-ink/78" />
       <div class="absolute inset-0 bg-[radial-gradient(circle_at_20%_30%,rgb(156_135_96_/_0.22),transparent_45%),radial-gradient(circle_at_85%_70%,rgb(53_86_72_/_0.2),transparent_40%)]" />
     </div>

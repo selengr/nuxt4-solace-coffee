@@ -42,17 +42,17 @@ const { el, visible } = useReveal()
         >
           <div
             v-if="item.image"
-            class="mb-5 overflow-hidden"
+            class="mb-5 overflow-hidden bg-[#2a221c]"
           >
-            <NuxtImg
+            <img
               :src="item.image"
               :alt="tx(item.name)"
               width="900"
               height="700"
-              format="webp"
-              sizes="(max-width: 768px) 100vw, 45vw"
+              loading="lazy"
+              decoding="async"
               class="aspect-[5/4] w-full object-cover transition duration-[900ms] ease-out group-hover:scale-[1.03]"
-            />
+            >
           </div>
           <div class="mb-2 flex items-center justify-between gap-4 border-t border-ink/10 pt-4">
             <p class="category-label text-[0.7rem] text-mute">

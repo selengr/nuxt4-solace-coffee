@@ -48,16 +48,16 @@ const timeline = computed(() => [
           {{ t('aboutPage.p3') }}
         </p>
       </div>
-      <aside>
-        <NuxtImg
+      <aside class="bg-[#2a221c]">
+        <img
           src="https://images.unsplash.com/photo-1501339847302-ac426a4a7cbb?auto=format&fit=crop&w=1400&q=80"
           :alt="t('aboutPage.imageAlt')"
           width="1400"
           height="933"
-          format="webp"
-          sizes="(max-width: 1024px) 100vw, 50vw"
+          loading="lazy"
+          decoding="async"
           class="h-[min(28rem,70vw)] w-full object-cover"
-        />
+        >
       </aside>
     </div>
 
@@ -120,15 +120,17 @@ const timeline = computed(() => [
           {{ t('aboutPage.sourcingBody') }}
         </p>
       </div>
-      <NuxtImg
-        src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1200&q=80"
-        :alt="t('aboutPage.sourcingTitle')"
-        width="1200"
-        height="800"
-        format="webp"
-        sizes="(max-width: 1024px) 100vw, 40vw"
-        class="h-[min(18rem,55vw)] w-full object-cover lg:h-[22rem]"
-      />
+      <div class="bg-[#2a221c]">
+        <img
+          src="https://images.unsplash.com/photo-1447933601403-0c6688de566e?auto=format&fit=crop&w=1200&q=80"
+          :alt="t('aboutPage.sourcingTitle')"
+          width="1200"
+          height="800"
+          loading="lazy"
+          decoding="async"
+          class="h-[min(18rem,55vw)] w-full object-cover lg:h-[22rem]"
+        >
+      </div>
     </div>
   </div>
 </template>

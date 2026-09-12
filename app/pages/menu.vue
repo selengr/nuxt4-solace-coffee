@@ -107,21 +107,24 @@ function printMenu() {
 </script>
 
 <template>
-  <div class="section-space menu-page pb-28 sm:pb-[clamp(4.5rem,10vw,7.5rem)]">
-    <div class="container-site">
-      <div class="mb-6 max-w-xl">
-        <h1 class="mb-2 text-[clamp(2.2rem,5vw,3.2rem)] leading-snug">
+  <div class="menu-page section-space pb-28 sm:pb-[clamp(4.5rem,10vw,7.5rem)]">
+    <div class="container-site max-w-4xl">
+      <header class="mb-10 border-b border-ink/10 pb-8 text-center sm:text-start">
+        <p class="eyebrow mb-3">
+          {{ info.name }}
+        </p>
+        <h1 class="mb-3 font-display text-[clamp(2.4rem,5.5vw,3.4rem)] leading-[1.05] tracking-tight">
           {{ t('menuPage.title') }}
         </h1>
-        <p class="text-mute print:hidden">
+        <p class="mx-auto max-w-lg text-mute print:hidden sm:mx-0">
           {{ t('menuPage.lede') }}
         </p>
         <p class="mt-2 hidden text-sm text-mute print:block">
-          {{ info.name }} · {{ info.address }}, {{ info.city }}
+          {{ info.address }}, {{ info.city }}
         </p>
-      </div>
+      </header>
 
-      <div class="print:hidden sticky top-[4rem] z-30 -mx-4 mb-8 border-b border-ink/5 bg-foam/95 px-4 py-3 backdrop-blur-md sm:mx-0 sm:rounded-sm sm:border sm:border-ink/10 sm:px-4">
+      <div class="print:hidden sticky top-[4rem] z-30 mb-10 border border-ink/10 bg-foam/95 p-3 backdrop-blur-md sm:p-4">
         <label class="mb-3 block">
           <span class="sr-only">{{ t('menuPage.search') }}</span>
           <input
@@ -129,23 +132,24 @@ function printMenu() {
             type="search"
             name="menu-search"
             :placeholder="t('menuPage.searchPlaceholder')"
-            class="w-full rounded-sm border border-ink/15 bg-foam px-3 py-2.5 text-sm outline-none transition focus:border-leaf"
+            class="w-full rounded-sm border border-ink/15 bg-mist/40 px-3 py-2.5 text-sm outline-none transition focus:border-leaf focus:bg-foam"
           >
         </label>
         <div
-          class="flex gap-2 overflow-x-auto pb-0.5"
-          role="group"
+          class="flex gap-2 overflow-x-auto"
+          role="tablist"
           :aria-label="t('menuPage.categories')"
         >
           <button
             v-for="option in filters"
             :key="option.key"
             type="button"
-            class="shrink-0 rounded-sm border px-3.5 py-2 text-sm transition"
+            role="tab"
+            class="shrink-0 border-b-2 px-3 py-2 text-sm tracking-wide transition"
             :class="filter === option.key
-              ? 'border-ink bg-ink text-foam'
-              : 'border-ink/15 text-mute hover:border-ink/40 hover:text-ink'"
-            :aria-pressed="filter === option.key"
+              ? 'border-ink font-medium text-ink'
+              : 'border-transparent text-mute hover:text-ink'"
+            :aria-selected="filter === option.key"
             @click="filter = option.key"
           >
             {{ option.label }}
@@ -155,7 +159,7 @@ function printMenu() {
 
       <p
         v-if="!visibleSections.length"
-        class="mb-8 text-mute print:hidden"
+        class="mb-8 text-center text-mute print:hidden"
       >
         {{ t('menuPage.empty', { query }) }}
       </p>
@@ -163,62 +167,111 @@ function printMenu() {
       <section
         v-for="section in visibleSections"
         :key="section.key"
-        class="mb-10"
+        class="mb-14"
       >
-        <h2 class="mb-3 text-xl tracking-tight text-mute">
-          {{ section.title }}
-        </h2>
-        <ul class="m-0 list-none divide-y divide-ink/10 border-y border-ink/10 p-0">
+        <div class="mb-6 flex items-end gap-4">
+          <h2 class="shrink-0 font-display text-[1.35rem] tracking-[0.04em] uppercase text-ink">
+            {{ section.title }}
+          </h2>
+          <span
+            class="mb-2 h-px min-w-[2rem] flex-1 bg-ink/15"
+            aria-hidden="true"
+          />
+        </div>
+
+        <ul class="m-0 list-none space-y-0 p-0">
           <li
             v-for="item in section.items"
             :key="item.id"
-            class="flex items-start justify-between gap-4 py-4"
+            class="group border-b border-ink/[0.07] py-5 first:pt-0 last:border-b-0"
           >
-            <button
-              type="button"
-              class="min-w-0 flex-1 text-start print:pointer-events-none"
-              @click="openDetail(item)"
-            >
-              <span class="mb-1 flex flex-wrap items-baseline justify-between gap-x-3 gap-y-1">
-                <span class="font-display text-lg tracking-tight">
-                  {{ tx(item.name) }}
-                </span>
-                <span class="shrink-0 text-sm font-medium tabular-nums">
-                  {{ item.price }}
-                </span>
-              </span>
-              <span class="block text-sm leading-relaxed text-mute">
-                {{ tx(item.description) }}
-              </span>
-            </button>
-            <button
-              type="button"
-              class="print:hidden mt-0.5 shrink-0 rounded-sm bg-ink px-4 py-2.5 text-sm font-medium text-foam transition hover:bg-roast"
-              @click="addToOrder(item)"
-            >
-              {{ t('menuPage.add') }}
-            </button>
+            <div class="flex gap-4 sm:gap-5">
+              <button
+                v-if="item.image"
+                type="button"
+                class="print:hidden relative hidden h-20 w-20 shrink-0 overflow-hidden bg-[#2a221c] sm:block"
+                :aria-label="tx(item.name)"
+                @click="openDetail(item)"
+              >
+                <img
+                  :src="item.image"
+                  :alt=""
+                  width="160"
+                  height="160"
+                  loading="lazy"
+                  decoding="async"
+                  class="h-full w-full object-cover transition duration-500 group-hover:scale-105"
+                >
+              </button>
+
+              <div class="min-w-0 flex-1">
+                <div class="flex items-start gap-3">
+                  <button
+                    type="button"
+                    class="min-w-0 flex-1 text-start print:pointer-events-none"
+                    @click="openDetail(item)"
+                  >
+                    <span class="menu-item-row flex items-baseline gap-2">
+                      <span class="font-display text-[1.15rem] tracking-tight text-ink transition group-hover:text-leaf sm:text-[1.25rem]">
+                        {{ tx(item.name) }}
+                      </span>
+                      <span
+                        class="menu-item-dots hidden min-w-[1.5rem] flex-1 sm:block"
+                        aria-hidden="true"
+                      />
+                      <span class="shrink-0 font-medium tabular-nums text-ink">
+                        {{ item.price }}
+                      </span>
+                    </span>
+                    <span class="mt-1.5 block max-w-xl text-sm leading-relaxed text-mute">
+                      {{ tx(item.description) }}
+                    </span>
+                  </button>
+
+                  <button
+                    type="button"
+                    class="print:hidden shrink-0 self-start border border-ink/15 px-3.5 py-2 text-xs font-medium uppercase tracking-[0.08em] text-ink transition hover:border-ink hover:bg-ink hover:text-foam"
+                    @click="addToOrder(item)"
+                  >
+                    {{ t('menuPage.add') }}
+                  </button>
+                </div>
+              </div>
+            </div>
           </li>
         </ul>
       </section>
 
-      <div class="print:hidden flex flex-wrap items-center gap-x-4 gap-y-2 text-sm text-mute">
-        <button
-          type="button"
-          class="underline-offset-2 hover:text-ink hover:underline"
-          @click="printMenu"
-        >
-          {{ t('menuPage.print') }}
-        </button>
-        <a
-          href="/allergen-card.pdf"
-          class="underline-offset-2 hover:text-ink hover:underline"
-          download
-        >{{ t('menuPage.allergenPdf') }}</a>
-      </div>
-      <p class="mt-4 max-w-xl text-xs leading-relaxed text-mute">
-        {{ t('menuPage.allergenNote') }}
-      </p>
+      <footer class="print:hidden border-t border-ink/10 pt-8">
+        <div class="mb-6 flex flex-wrap items-center justify-between gap-4">
+          <BaseButton
+            :to="localePath('/order')"
+            variant="ink"
+          >
+            {{ t('menuPage.reviewOrder') }}
+            <template v-if="count">
+              · {{ count }}
+            </template>
+          </BaseButton>
+          <div class="flex flex-wrap gap-4 text-sm text-mute">
+            <button
+              type="button"
+              class="underline-offset-2 hover:text-ink hover:underline"
+              @click="printMenu"
+            >
+              {{ t('menuPage.print') }}
+            </button>
+            <a
+              href="/allergen-card.pdf"
+              class="underline-offset-2 hover:text-ink hover:underline"
+              download
+            >{{ t('menuPage.allergenPdf') }}</a>
+          </div>
+        </div>
+        <p class="max-w-xl text-xs leading-relaxed text-mute">
+          {{ t('menuPage.allergenNote') }}
+        </p>
+      </footer>
     </div>
 
     <div
@@ -230,19 +283,7 @@ function printMenu() {
         :to="localePath('/order')"
         variant="primary"
       >
-        {{ t('menuPage.reviewOrder') }} ({{ count }})
-      </BaseButton>
-    </div>
-
-    <div class="print:hidden container-site mt-8 hidden sm:block">
-      <BaseButton
-        :to="localePath('/order')"
-        variant="primary"
-      >
-        {{ t('menuPage.reviewOrder') }}
-        <template v-if="count">
-          ({{ count }})
-        </template>
+        {{ t('menuPage.reviewOrder') }} · {{ count }}
       </BaseButton>
     </div>
 
@@ -255,3 +296,16 @@ function printMenu() {
     />
   </div>
 </template>
+
+<style scoped>
+.menu-item-dots {
+  border-bottom: 1px dotted rgb(20 17 15 / 0.28);
+  transform: translateY(-0.35em);
+}
+
+@media print {
+  .menu-item-dots {
+    display: block !important;
+  }
+}
+</style>

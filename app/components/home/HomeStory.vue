@@ -11,16 +11,16 @@ const { el, visible } = useReveal()
     class="relative isolate overflow-hidden bg-ink lg:grid lg:min-h-[min(88vh,46rem)] lg:grid-cols-2"
     :class="{ 'is-visible': visible }"
   >
-    <div class="relative min-h-[22rem] lg:order-2 lg:min-h-full">
-      <NuxtImg
+    <div class="relative min-h-[22rem] bg-[#2a221c] lg:order-2 lg:min-h-full">
+      <img
         src="https://images.unsplash.com/photo-1442512595331-e89e73853f31?auto=format&fit=crop&w=1600&q=80"
         :alt="t('gallery.storyAlt')"
         width="1600"
         height="1067"
-        format="webp"
-        sizes="(max-width: 1024px) 100vw, 50vw"
+        loading="lazy"
+        decoding="async"
         class="story-media absolute inset-0 h-full w-full object-cover"
-      />
+      >
       <div class="absolute inset-0 bg-gradient-to-t from-ink/50 to-transparent lg:bg-gradient-to-l lg:from-transparent lg:to-ink/25" />
     </div>
 
