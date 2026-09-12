@@ -6,28 +6,35 @@ const switchLocalePath = useSwitchLocalePath()
 const { count } = useCart()
 const route = useRoute()
 const open = ref(false)
+const moreOpen = ref(false)
 
-const links = computed(() => [
-  { path: '/', label: t('nav.home'), exact: true },
+const primaryLinks = computed(() => [
   { path: '/menu', label: t('nav.menu') },
   { path: '/order', label: t('nav.order') },
-  { path: '/events', label: t('nav.events') },
-  { path: '/blog', label: t('nav.blog') },
-  { path: '/wholesale', label: t('nav.wholesale') },
-  { path: '/gift-cards', label: t('nav.giftCards') },
-  { path: '/loyalty', label: t('nav.loyalty') },
-  { path: '/catering', label: t('nav.catering') },
-  { path: '/faq', label: t('nav.faq') },
-  { path: '/care', label: t('nav.care') },
-  { path: '/careers', label: t('nav.careers') },
-  { path: '/press', label: t('nav.press') },
-  { path: '/wifi', label: t('nav.wifi') },
-  { path: '/about', label: t('nav.about') },
   { path: '/visit', label: t('nav.visit') },
+  { path: '/about', label: t('nav.about') },
   { path: '/contact', label: t('nav.contact') },
 ])
 
+const moreLinks = computed(() => [
+  { path: '/events', label: t('nav.events') },
+  { path: '/blog', label: t('nav.blog') },
+  { path: '/catering', label: t('nav.catering') },
+  { path: '/gift-cards', label: t('nav.giftCards') },
+  { path: '/loyalty', label: t('nav.loyalty') },
+  { path: '/wholesale', label: t('nav.wholesale') },
+  { path: '/faq', label: t('nav.faq') },
+  { path: '/wifi', label: t('nav.wifi') },
+  { path: '/care', label: t('nav.care') },
+  { path: '/careers', label: t('nav.careers') },
+  { path: '/press', label: t('nav.press') },
+])
+
 const otherLocale = computed(() => (locale.value === 'en' ? 'fa' : 'en'))
+
+const moreActive = computed(() =>
+  moreLinks.value.some(link => isActive(link.path)),
+)
 
 function isActive(path: string, exact = false) {
   const resolved = localePath(path)
@@ -41,11 +48,13 @@ watch(
   () => route.fullPath,
   () => {
     open.value = false
+    moreOpen.value = false
   },
 )
 
 watch(locale, () => {
   open.value = false
+  moreOpen.value = false
 })
 </script>
 
@@ -61,18 +70,45 @@ watch(locale, () => {
         </NuxtLink>
 
         <nav
-          class="site-header__nav hidden items-center gap-4 2xl:flex"
+          class="site-header__nav hidden items-center gap-4 lg:flex"
           :aria-label="t('a11y.primaryNav')"
         >
           <NuxtLink
-            v-for="link in links"
+            v-for="link in primaryLinks"
             :key="link.path"
             :to="localePath(link.path)"
             class="whitespace-nowrap text-sm text-mute transition hover:text-ink"
-            :class="{ '!text-ink': isActive(link.path, link.exact) }"
+            :class="{ '!text-ink': isActive(link.path) }"
           >
             {{ link.label }}
           </NuxtLink>
+
+          <div class="relative">
+            <button
+              type="button"
+              class="whitespace-nowrap text-sm text-mute transition hover:text-ink"
+              :class="{ '!text-ink': moreActive || moreOpen }"
+              :aria-expanded="moreOpen"
+              aria-haspopup="true"
+              @click="moreOpen = !moreOpen"
+            >
+              {{ t('nav.more') }}
+            </button>
+            <div
+              v-if="moreOpen"
+              class="absolute start-0 top-full z-50 mt-2 min-w-[11rem] rounded-sm border border-ink/10 bg-foam py-2 shadow-sm"
+            >
+              <NuxtLink
+                v-for="link in moreLinks"
+                :key="link.path"
+                :to="localePath(link.path)"
+                class="block px-3 py-2 text-sm text-mute transition hover:bg-mist hover:text-ink"
+                :class="{ '!bg-mist !text-ink': isActive(link.path) }"
+              >
+                {{ link.label }}
+              </NuxtLink>
+            </div>
+          </div>
         </nav>
       </div>
 
@@ -87,30 +123,21 @@ watch(locale, () => {
 
         <NuxtLink
           :to="localePath('/order')"
-          class="relative inline-flex items-center text-sm text-mute transition hover:text-ink"
-          :aria-label="count ? t('a11y.cartWithCount', { count }) : t('nav.order')"
+          class="relative inline-flex h-9 items-center rounded-sm border border-ink/10 px-3 text-sm font-medium text-ink transition hover:border-ink/25"
+          :aria-label="count ? t('a11y.cartWithCount', { count }) : t('nav.bag')"
         >
-          <span class="hidden sm:inline">{{ t('nav.order') }}</span>
-          <span class="sm:hidden">{{ t('nav.bag') }}</span>
+          {{ t('nav.bag') }}
           <span
             v-if="count"
-            class="absolute -top-2 grid h-4 min-w-4 place-items-center rounded-full bg-leaf px-1 text-[10px] text-foam inset-inline-end-[-0.7rem]"
+            class="ms-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-leaf px-1 text-[10px] text-foam"
             aria-hidden="true"
           >
             {{ count }}
           </span>
         </NuxtLink>
 
-        <BaseButton
-          class="hidden lg:inline-flex"
-          :to="localePath('/visit')"
-          variant="primary"
-        >
-          {{ t('nav.visitCta') }}
-        </BaseButton>
-
         <button
-          class="grid h-10 w-10 place-content-center gap-1.5 2xl:hidden"
+          class="grid h-10 w-10 place-content-center gap-1.5 lg:hidden"
           type="button"
           :aria-expanded="open"
           aria-controls="mobile-nav-panel"
@@ -126,33 +153,39 @@ watch(locale, () => {
     <nav
       v-if="open"
       id="mobile-nav-panel"
-      class="border-t border-ink/5 bg-foam 2xl:hidden"
+      class="border-t border-ink/5 bg-foam lg:hidden"
       :aria-label="t('a11y.mobileNav')"
     >
       <div class="container-site flex flex-col gap-1 py-4">
         <NuxtLink
-          v-for="link in links"
+          v-for="link in primaryLinks"
           :key="`m-${link.path}`"
           :to="localePath(link.path)"
-          class="rounded-sm px-2 py-2.5 text-sm text-mute transition hover:bg-mist hover:text-ink"
-          :class="{ '!bg-mist !text-ink': isActive(link.path, link.exact) }"
+          class="rounded-sm px-2 py-2.5 text-sm font-medium text-ink transition hover:bg-mist"
+          :class="{ '!bg-mist': isActive(link.path) }"
         >
           {{ link.label }}
         </NuxtLink>
+
+        <p class="mb-1 mt-3 px-2 text-xs text-mute">
+          {{ t('nav.more') }}
+        </p>
+        <NuxtLink
+          v-for="link in moreLinks"
+          :key="`m-more-${link.path}`"
+          :to="localePath(link.path)"
+          class="rounded-sm px-2 py-2 text-sm text-mute transition hover:bg-mist hover:text-ink"
+          :class="{ '!bg-mist !text-ink': isActive(link.path) }"
+        >
+          {{ link.label }}
+        </NuxtLink>
+
         <NuxtLink
           :to="switchLocalePath(otherLocale)"
-          class="rounded-sm px-2 py-2.5 text-sm text-mute transition hover:bg-mist hover:text-ink"
+          class="mt-2 rounded-sm px-2 py-2.5 text-sm text-mute transition hover:bg-mist hover:text-ink"
         >
           {{ t(`lang.${otherLocale}`) }}
         </NuxtLink>
-        <div class="pt-2">
-          <BaseButton
-            :to="localePath('/visit')"
-            variant="primary"
-          >
-            {{ t('nav.visitCta') }}
-          </BaseButton>
-        </div>
       </div>
     </nav>
   </header>

@@ -73,7 +73,7 @@ const images = computed(() => [
           sizes="(max-width: 768px) 100vw, 55vw"
           class="h-full w-full object-cover transition duration-[1100ms] ease-out group-hover:scale-[1.04]"
         />
-        <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 via-ink/20 to-transparent px-4 pb-4 pt-12 text-sm text-foam opacity-0 transition duration-500 group-hover:opacity-100">
+        <figcaption class="pointer-events-none absolute inset-x-0 bottom-0 bg-gradient-to-t from-ink/70 via-ink/25 to-transparent px-4 pb-4 pt-12 text-sm text-foam opacity-100 md:opacity-0 md:transition md:duration-500 md:group-hover:opacity-100">
           {{ image.caption }}
         </figcaption>
       </figure>

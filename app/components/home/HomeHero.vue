@@ -26,14 +26,8 @@ const localePath = useLocalePath()
 
     <div class="container-site relative z-10 flex min-h-[100svh] flex-col justify-end pb-[clamp(3.5rem,9vw,6.5rem)] pt-28">
       <div class="max-w-3xl">
-        <div class="reveal mb-6 flex flex-wrap items-center gap-3">
-          <p class="eyebrow !mb-0 !text-brass">
-            {{ t('hero.eyebrow') }}
-          </p>
-          <OpenStatus
-            tone="dark"
-            detailed
-          />
+        <div class="reveal mb-6">
+          <OpenStatus tone="dark" />
         </div>
 
         <h1 class="reveal reveal-delay-1 hero__title mb-5 font-display tracking-[-0.04em]">
@@ -52,10 +46,10 @@ const localePath = useLocalePath()
             {{ t('hero.ctaMenu') }}
           </BaseButton>
           <BaseButton
-            :to="localePath('/visit')"
+            :to="localePath('/order')"
             variant="ghost"
           >
-            {{ t('hero.ctaVisit') }}
+            {{ t('hero.ctaOrder') }}
           </BaseButton>
         </div>
       </div>

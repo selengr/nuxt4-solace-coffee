@@ -4,6 +4,22 @@ const { t } = useI18n()
 const { tx, txList } = useLocaleText()
 const localePath = useLocalePath()
 const year = new Date().getFullYear()
+
+const exploreLinks = computed(() => [
+  { path: '/menu', label: t('nav.menu') },
+  { path: '/order', label: t('nav.order') },
+  { path: '/events', label: t('nav.events') },
+  { path: '/blog', label: t('nav.blog') },
+  { path: '/about', label: t('nav.about') },
+])
+
+const helpLinks = computed(() => [
+  { path: '/visit', label: t('nav.visit') },
+  { path: '/contact', label: t('nav.contact') },
+  { path: '/faq', label: t('nav.faq') },
+  { path: '/wifi', label: t('nav.wifi') },
+  { path: '/gift-cards', label: t('nav.giftCards') },
+])
 </script>
 
 <template>
@@ -19,122 +35,63 @@ const year = new Date().getFullYear()
       </div>
 
       <div>
-        <p class="mb-3 text-[0.7rem] text-brass label-meta">
+        <p class="mb-3 text-sm font-medium text-brass">
           {{ t('footer.visit') }}
         </p>
         <p class="text-sm">
           {{ info.address }}
         </p>
-        <p class="text-sm">
+        <p class="mb-3 text-sm">
           {{ info.city }}
-        </p>
-      </div>
-
-      <div>
-        <p class="mb-3 text-[0.7rem] text-brass label-meta">
-          {{ t('footer.hours') }}
         </p>
         <p
           v-for="line in txList(info.hours)"
           :key="line"
-          class="text-sm"
+          class="text-sm text-foam/60"
         >
           {{ line }}
         </p>
       </div>
 
       <div>
-        <p class="mb-3 text-[0.7rem] text-brass label-meta">
-          {{ t('footer.contact') }}
+        <p class="mb-3 text-sm font-medium text-brass">
+          {{ t('footer.explore') }}
         </p>
-        <p class="text-sm">
+        <p
+          v-for="link in exploreLinks"
+          :key="link.path"
+          class="text-sm"
+        >
           <NuxtLink
-            :to="localePath('/contact')"
+            :to="localePath(link.path)"
             class="transition hover:text-foam"
           >
-            {{ t('footer.write') }}
+            {{ link.label }}
           </NuxtLink>
         </p>
-        <p class="text-sm">
+      </div>
+
+      <div>
+        <p class="mb-3 text-sm font-medium text-brass">
+          {{ t('footer.help') }}
+        </p>
+        <p
+          v-for="link in helpLinks"
+          :key="link.path"
+          class="text-sm"
+        >
           <NuxtLink
-            :to="localePath('/wifi')"
+            :to="localePath(link.path)"
             class="transition hover:text-foam"
           >
-            {{ t('nav.wifi') }}
+            {{ link.label }}
           </NuxtLink>
         </p>
-        <p class="text-sm">
-          <NuxtLink
-            :to="localePath('/press')"
-            class="transition hover:text-foam"
-          >
-            {{ t('nav.press') }}
-          </NuxtLink>
-        </p>
-        <p class="text-sm">
-          <NuxtLink
-            :to="localePath('/careers')"
-            class="transition hover:text-foam"
-          >
-            {{ t('nav.careers') }}
-          </NuxtLink>
-        </p>
-        <p class="text-sm">
-          <NuxtLink
-            :to="localePath('/care')"
-            class="transition hover:text-foam"
-          >
-            {{ t('nav.care') }}
-          </NuxtLink>
-        </p>
-        <p class="text-sm">
-          <NuxtLink
-            :to="localePath('/faq')"
-            class="transition hover:text-foam"
-          >
-            {{ t('nav.faq') }}
-          </NuxtLink>
-        </p>
-        <p class="text-sm">
-          <NuxtLink
-            :to="localePath('/gift-cards')"
-            class="transition hover:text-foam"
-          >
-            {{ t('nav.giftCards') }}
-          </NuxtLink>
-        </p>
-        <p class="text-sm">
-          <NuxtLink
-            :to="localePath('/loyalty')"
-            class="transition hover:text-foam"
-          >
-            {{ t('nav.loyalty') }}
-          </NuxtLink>
-        </p>
-        <p class="text-sm">
-          <NuxtLink
-            :to="localePath('/catering')"
-            class="transition hover:text-foam"
-          >
-            {{ t('nav.catering') }}
-          </NuxtLink>
-        </p>
-        <p class="text-sm">
-          <NuxtLink
-            :to="localePath('/wholesale')"
-            class="transition hover:text-foam"
-          >
-            {{ t('nav.wholesale') }}
-          </NuxtLink>
-        </p>
-        <p class="text-sm">
+        <p class="mt-3 text-sm">
           <a
             :href="`mailto:${info.email}`"
             class="transition hover:text-foam"
           >{{ info.email }}</a>
-        </p>
-        <p class="text-sm">
-          {{ info.instagram }}
         </p>
       </div>
     </div>

@@ -1,9 +1,8 @@
 <script setup lang="ts">
-const { info, menu } = useCafe()
+const { info } = useCafe()
 const { t, te } = useI18n()
-const { tx } = useLocaleText()
 const localePath = useLocalePath()
-const { lines, count, subtotalLabel, addItem, setQty, clear } = useCart()
+const { lines, count, subtotalLabel, setQty, clear } = useCart()
 const { etaLabel } = usePickupEta()
 const { isOpen } = useCafeHours()
 
@@ -74,118 +73,96 @@ async function submitOrder() {
 
 <template>
   <div class="section-space">
-    <div class="container-site">
+    <div class="container-site max-w-2xl">
       <p class="eyebrow">
         {{ t('order.eyebrow') }}
       </p>
       <h1 class="mb-3 text-[clamp(2.4rem,6vw,3.5rem)] leading-snug">
         {{ t('order.title') }}
       </h1>
-      <p class="mb-10 max-w-xl leading-relaxed text-mute">
+      <p class="mb-8 max-w-xl leading-relaxed text-mute">
         {{ t('order.lede') }}
       </p>
 
-      <div class="grid gap-10 lg:grid-cols-[1.15fr_0.85fr]">
-        <section>
-          <h2 class="mb-4 text-2xl">
-            {{ t('order.menu') }}
-          </h2>
-          <ul class="m-0 grid list-none gap-3 p-0">
-            <li
-              v-for="item in menu"
-              :key="item.id"
-              class="flex flex-wrap items-center justify-between gap-3 border border-ink/10 bg-foam px-4 py-4"
-            >
-              <div class="min-w-0">
-                <p class="font-display text-lg">
-                  {{ tx(item.name) }}
-                </p>
-                <p class="text-sm leading-relaxed text-mute">
-                  {{ tx(item.description) }}
-                </p>
-                <p class="mt-1 text-sm font-medium">
-                  {{ item.price }}
-                </p>
-              </div>
-              <BaseButton
-                variant="ink"
-                type="button"
-                @click="addItem(item, tx(item.name))"
-              >
-                {{ t('order.add') }}
-              </BaseButton>
-            </li>
-          </ul>
-        </section>
-
-        <aside class="h-fit rounded-md border border-ink/10 bg-mist p-5 sm:p-6 lg:sticky lg:top-24">
-          <h2 class="mb-1 text-2xl">
-            {{ t('order.bag') }}
-          </h2>
-          <p class="mb-2 text-sm text-mute">
-            {{ count }} {{ count === 1 ? t('order.item') : t('order.items') }}
-          </p>
-          <p class="mb-5 text-xs leading-relaxed text-mute">
-            {{ etaLabel }}
-            <span class="mt-1 block text-mute/80">{{ t('order.etaNote') }}</span>
-          </p>
-
-          <ul
-            v-if="lines.length"
-            class="mb-5 space-y-3"
-          >
-            <li
-              v-for="line in lines"
-              :key="line.id"
-              class="flex items-center justify-between gap-3 border-b border-ink/10 pb-3"
-            >
-              <div>
-                <p class="font-medium">
-                  {{ line.name }}
-                </p>
-                <p class="text-sm text-mute">
-                  {{ line.price }}
-                </p>
-              </div>
-              <div class="flex items-center gap-2">
-                <button
-                  type="button"
-                  class="h-8 w-8 rounded-sm border border-ink/15"
-                  :aria-label="t('order.decrease', { name: line.name })"
-                  @click="setQty(line.id, line.qty - 1)"
-                >
-                  −
-                </button>
-                <span
-                  class="w-6 text-center text-sm"
-                  :aria-label="t('order.quantity', { name: line.name, qty: line.qty })"
-                >{{ line.qty }}</span>
-                <button
-                  type="button"
-                  class="h-8 w-8 rounded-sm border border-ink/15"
-                  :aria-label="t('order.increase', { name: line.name })"
-                  @click="setQty(line.id, line.qty + 1)"
-                >
-                  +
-                </button>
-              </div>
-            </li>
-          </ul>
-          <div
-            v-else
-            class="mb-5 rounded-sm border border-dashed border-ink/15 bg-foam/70 px-4 py-5"
-          >
-            <p class="mb-3 text-sm leading-relaxed text-mute">
-              {{ t('order.empty') }}
+      <div class="rounded-md border border-ink/10 bg-mist p-5 sm:p-6">
+        <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h2 class="mb-1 text-2xl">
+              {{ t('order.bag') }}
+            </h2>
+            <p class="text-sm text-mute">
+              {{ count }} {{ count === 1 ? t('order.item') : t('order.items') }}
+              <span
+                v-if="lines.length"
+                class="ms-1"
+              >· {{ etaLabel }}</span>
             </p>
-            <BaseButton
-              :to="localePath('/menu')"
-              variant="ink"
-            >
-              {{ t('order.browseMenu') }}
-            </BaseButton>
           </div>
+          <BaseButton
+            :to="localePath('/menu')"
+            variant="ink"
+          >
+            {{ t('order.browseMenu') }}
+          </BaseButton>
+        </div>
 
+        <ul
+          v-if="lines.length"
+          class="mb-5 space-y-3"
+        >
+          <li
+            v-for="line in lines"
+            :key="line.id"
+            class="flex items-center justify-between gap-3 border-b border-ink/10 pb-3"
+          >
+            <div>
+              <p class="font-medium">
+                {{ line.name }}
+              </p>
+              <p class="text-sm text-mute">
+                {{ line.price }}
+              </p>
+            </div>
+            <div class="flex items-center gap-2">
+              <button
+                type="button"
+                class="h-8 w-8 rounded-sm border border-ink/15"
+                :aria-label="t('order.decrease', { name: line.name })"
+                @click="setQty(line.id, line.qty - 1)"
+              >
+                −
+              </button>
+              <span
+                class="w-6 text-center text-sm"
+                :aria-label="t('order.quantity', { name: line.name, qty: line.qty })"
+              >{{ line.qty }}</span>
+              <button
+                type="button"
+                class="h-8 w-8 rounded-sm border border-ink/15"
+                :aria-label="t('order.increase', { name: line.name })"
+                @click="setQty(line.id, line.qty + 1)"
+              >
+                +
+              </button>
+            </div>
+          </li>
+        </ul>
+        <div
+          v-else
+          class="mb-5 rounded-sm border border-dashed border-ink/15 bg-foam/70 px-4 py-8 text-center"
+        >
+          <p class="mb-4 text-sm leading-relaxed text-mute">
+            {{ t('order.empty') }}
+          </p>
+          <BaseButton
+            :to="localePath('/menu')"
+            variant="primary"
+          >
+            {{ t('order.browseMenu') }}
+          </BaseButton>
+        </div>
+
+        <template v-if="lines.length">
           <p class="mb-5 flex justify-between font-medium">
             <span>{{ t('order.subtotal') }}</span>
             <span>{{ subtotalLabel }}</span>
@@ -260,7 +237,7 @@ async function submitOrder() {
             <BaseButton
               type="submit"
               variant="primary"
-              :disabled="status === 'loading' || !lines.length || !isOpen"
+              :disabled="status === 'loading' || !isOpen"
             >
               {{ status === 'loading' ? t('order.sending') : t('order.place') }}
             </BaseButton>
@@ -271,7 +248,7 @@ async function submitOrder() {
               {{ t('order.etaClosedHint') }}
             </p>
           </form>
-        </aside>
+        </template>
       </div>
     </div>
   </div>

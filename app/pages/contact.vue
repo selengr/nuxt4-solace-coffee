@@ -28,7 +28,7 @@ const igHref = computed(() =>
         </p>
 
         <div class="mb-8">
-          <OpenStatus detailed />
+          <OpenStatus />
         </div>
 
         <div class="space-y-5 text-sm">

@@ -14,14 +14,10 @@ useSeoMeta({
 <template>
   <div class="home-page">
     <HomeHero />
-    <HomeMarquee />
     <HomeFeatured />
     <HomeStory />
-    <HomeValues />
     <HomeGallery />
-    <HomeInstagram />
     <HomeTestimonials />
-    <HomeJournal />
     <HomeNewsletter />
     <HomeVisit />
   </div>
