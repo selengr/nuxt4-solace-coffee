@@ -93,9 +93,9 @@
   "menuPage": {
     "eyebrow": "Menu",
     "title": "What we’re pouring",
-    "lede": "Pick a category, tap Add, then checkout pickup from your bag.",
+    "lede": "Tap Add. Check out from your bag when ready.",
     "search": "Search menu",
-    "searchPlaceholder": "Search drinks or food…",
+    "searchPlaceholder": "Search menu…",
     "all": "All",
     "espresso": "Espresso",
     "brew": "Brew",
@@ -295,7 +295,7 @@
     "ledeGeneric": "Seasonal café notes for people who linger. Subscribe from the homepage when you’re ready.",
     "seoDescription": "Confirmation for Solace Coffee newsletter signup.",
     "note1": "No ads, no tracking pixels in this demo flow.",
-    "note2": "You can write hello@solace.coffee anytime to leave the list.",
+    "note2": "You can write hello{'@'}solace.coffee anytime to leave the list.",
     "note3": "Meanwhile, cuppings and workshops live on the Events page.",
     "home": "Back home",
     "events": "See events"

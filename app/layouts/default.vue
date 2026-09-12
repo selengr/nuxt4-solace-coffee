@@ -21,7 +21,6 @@ const { t } = useI18n()
     </main>
     <AppFooter />
     <ToastHost />
-    <CookieLangBanner />
   </div>
 </template>
 
