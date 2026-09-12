@@ -9,7 +9,7 @@ const { addItem } = useCart()
 const { isFavorite, toggleFavorite, trackView } = useMenuPrefs()
 const toast = useToast()
 
-useSeoMeta({
+useCafeSeo({
   title: () => `${t('menuPage.eyebrow')} — ${info.name}`,
   description: () => t('menuPage.lede'),
 })

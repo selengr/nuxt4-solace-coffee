@@ -17,7 +17,7 @@ const feedback = ref('')
 const fieldErrors = ref<string[]>([])
 const orderId = ref('')
 
-useSeoMeta({
+useCafeSeo({
   title: () => `${t('order.eyebrow')} — ${info.name}`,
   description: () => t('order.lede'),
 })

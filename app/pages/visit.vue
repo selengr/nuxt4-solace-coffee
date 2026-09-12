@@ -4,7 +4,7 @@ const { t } = useI18n()
 const localePath = useLocalePath()
 const { weekRows, statusLabel } = useCafeHours()
 
-useSeoMeta({
+useCafeSeo({
   title: () => `${t('visitPage.eyebrow')} — ${info.name}`,
   description: () => t('visitPage.lede'),
 })

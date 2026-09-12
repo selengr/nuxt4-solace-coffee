@@ -31,6 +31,22 @@ export default defineNuxtConfig({
           content: 'Quiet specialty coffee for people who linger.',
         },
         { property: 'og:type', content: 'website' },
+        {
+          property: 'og:image',
+          content:
+            'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&h=630&q=80',
+        },
+        { name: 'twitter:card', content: 'summary_large_image' },
+        { name: 'twitter:title', content: 'Solace — Specialty Coffee' },
+        {
+          name: 'twitter:description',
+          content: 'Quiet specialty coffee for people who linger.',
+        },
+        {
+          name: 'twitter:image',
+          content:
+            'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&h=630&q=80',
+        },
       ],
       link: [
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },

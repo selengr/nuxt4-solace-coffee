@@ -3,7 +3,7 @@ const { info } = useCafe()
 const { t } = useI18n()
 const localePath = useLocalePath()
 
-useSeoMeta({
+useCafeSeo({
   title: () => `${t('contactPage.eyebrow')} — ${info.name}`,
   description: () => t('contactPage.lede'),
 })

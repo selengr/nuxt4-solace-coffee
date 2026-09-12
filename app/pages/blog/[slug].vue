@@ -30,9 +30,10 @@ if (!getPostBySlug(slug.value, current.value)) {
   throw createError({ statusCode: 404, statusMessage: t('error.postNotFound') })
 }
 
-useSeoMeta({
+useCafeSeo({
   title: () => post.value ? `${post.value.title} — Solace` : t('blogPage.seoTitle', { name: 'Solace' }),
   description: () => post.value?.description || '',
+  type: 'article',
 })
 </script>
 

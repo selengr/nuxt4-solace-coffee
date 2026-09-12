@@ -323,7 +323,8 @@
     "toggleMenu": "Toggle menu",
     "primaryNav": "Primary",
     "mobileNav": "Mobile",
-    "cartWithCount": "Order bag, {count} items"
+    "cartWithCount": "Order bag, {count} items",
+    "loading": "Loading page"
   },
   "journalTeaser": {
     "eyebrow": "Journal",

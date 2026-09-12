@@ -323,7 +323,8 @@
     "toggleMenu": "باز و بسته کردن منو",
     "primaryNav": "ناوبری اصلی",
     "mobileNav": "ناوبری موبایل",
-    "cartWithCount": "سبد سفارش، {count} مورد"
+    "cartWithCount": "سبد سفارش، {count} مورد",
+    "loading": "در حال بارگذاری صفحه"
   },
   "journalTeaser": {
     "eyebrow": "یادداشت‌ها",
