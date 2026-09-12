@@ -89,24 +89,52 @@ function onToggleFavorite(item: MenuItem) {
       : t('menuPage.unfavorited', { name: tx(item.name) }),
   )
 }
+
+function printMenu() {
+  if (!import.meta.client) {
+    return
+  }
+  const prevFilter = filter.value
+  const prevQuery = query.value
+  filter.value = 'all'
+  query.value = ''
+  nextTick(() => {
+    window.print()
+    filter.value = prevFilter
+    query.value = prevQuery
+  })
+}
 </script>
 
 <template>
   <div class="section-space menu-page">
     <div class="container-site">
-      <div class="mb-8">
-        <p class="eyebrow">
-          {{ t('menuPage.eyebrow') }}
-        </p>
-        <h1 class="mb-3 text-[clamp(2.4rem,6vw,3.5rem)]">
-          {{ t('menuPage.title') }}
-        </h1>
-        <p class="max-w-xl text-mute">
-          {{ t('menuPage.lede') }}
-        </p>
+      <div class="mb-8 flex flex-wrap items-end justify-between gap-4">
+        <div>
+          <p class="eyebrow">
+            {{ t('menuPage.eyebrow') }}
+          </p>
+          <h1 class="mb-3 text-[clamp(2.4rem,6vw,3.5rem)]">
+            {{ t('menuPage.title') }}
+          </h1>
+          <p class="max-w-xl text-mute print:hidden">
+            {{ t('menuPage.lede') }}
+          </p>
+          <p class="mt-2 hidden text-sm text-mute print:block">
+            {{ info.name }} · {{ info.address }}, {{ info.city }}
+          </p>
+        </div>
+        <BaseButton
+          class="print:hidden"
+          type="button"
+          variant="ink"
+          @click="printMenu"
+        >
+          {{ t('menuPage.print') }}
+        </BaseButton>
       </div>
 
-      <label class="mb-5 block max-w-md">
+      <label class="mb-5 block max-w-md print:hidden">
         <span class="sr-only">{{ t('menuPage.search') }}</span>
         <input
           v-model="query"
@@ -118,7 +146,7 @@ function onToggleFavorite(item: MenuItem) {
       </label>
 
       <div
-        class="mb-10 flex flex-wrap gap-2"
+        class="mb-10 flex flex-wrap gap-2 print:hidden"
         role="group"
         :aria-label="t('menuPage.categories')"
       >
@@ -139,7 +167,7 @@ function onToggleFavorite(item: MenuItem) {
 
       <p
         v-if="!visibleSections.length"
-        class="mb-8 text-mute"
+        class="mb-8 text-mute print:hidden"
       >
         {{ t('menuPage.empty', { query }) }}
       </p>
@@ -162,7 +190,7 @@ function onToggleFavorite(item: MenuItem) {
               <h3 class="mb-1 text-[1.15rem]">
                 <button
                   type="button"
-                  class="text-start transition hover:text-leaf"
+                  class="text-start transition hover:text-leaf print:pointer-events-none"
                   @click="openDetail(item)"
                 >
                   {{ tx(item.name) }}
@@ -176,6 +204,7 @@ function onToggleFavorite(item: MenuItem) {
               </p>
             </div>
             <BaseButton
+              class="print:hidden"
               type="button"
               variant="ink"
               @click="addToOrder(item)"
@@ -190,12 +219,13 @@ function onToggleFavorite(item: MenuItem) {
         {{ t('menuPage.allergenNote') }}
         <a
           href="/allergen-card.pdf"
-          class="ms-1 text-leaf underline-offset-2 hover:underline"
+          class="ms-1 text-leaf underline-offset-2 hover:underline print:hidden"
           download
         >{{ t('menuPage.allergenPdf') }}</a>
       </p>
 
       <BaseButton
+        class="print:hidden"
         :to="localePath('/order')"
         variant="primary"
       >
