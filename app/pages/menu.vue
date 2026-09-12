@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { MenuItem } from '~/types/cafe'
 
-const { info, menu, byCategory } = useCafe()
+const { info, byCategory } = useCafe()
 const { t } = useI18n()
 const { tx } = useLocaleText()
 const localePath = useLocalePath()
