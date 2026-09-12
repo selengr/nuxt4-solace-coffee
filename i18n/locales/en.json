@@ -16,6 +16,7 @@
     "careers": "Careers",
     "press": "Press",
     "wifi": "Wi‑Fi",
+    "loyalty": "Loyalty",
     "visitCta": "Visit us"
   },
   "hero": {
@@ -349,6 +350,32 @@
     "stubCta": "Continue (demo)",
     "stubReady": "Demo gift card for ${amount} ready — connect payments later.",
     "minError": "Please choose at least $10."
+  },
+  "loyaltyPage": {
+    "eyebrow": "Loyalty",
+    "title": "Eight quiet visits. One on us.",
+    "lede": "A simple stamp card for regulars — no app noise, no points theater. Fill the ring, redeem a drink of your choice.",
+    "seoDescription": "Solace loyalty stamp card — eight visits earn a complimentary drink.",
+    "cardLabel": "Your stamp card",
+    "progress": "{current} of {total}",
+    "reward": "Complete the card for any drink on the board.",
+    "stampOn": "Stamp {n} collected",
+    "stampOff": "Stamp {n} empty",
+    "addStamp": "Add stamp (demo)",
+    "redeem": "Redeem free drink",
+    "reset": "Reset card",
+    "demoNote": "Demo only — stamps live in this browser session until you clear site data.",
+    "stampAdded": "Stamp added.",
+    "full": "Card full — redeem when you’re ready.",
+    "readyHint": "Card is full. Redeem your free drink.",
+    "notReady": "Collect all eight stamps first.",
+    "redeemed": "Enjoy — card cleared for the next round.",
+    "resetDone": "Card reset.",
+    "howTitle": "How it works",
+    "how1": "Ask the barista to stamp after each paid drink",
+    "how2": "Eight stamps unlock any espresso, brew, or house specialty",
+    "how3": "One card per guest — no stacking, no expiry on the demo",
+    "cta": "Find us in person"
   },
   "faqPage": {
     "eyebrow": "FAQ",
