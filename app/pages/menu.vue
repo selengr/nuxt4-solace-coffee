@@ -6,6 +6,7 @@ const { t } = useI18n()
 const { tx } = useLocaleText()
 const localePath = useLocalePath()
 const { addItem, count, subtotalLabel, qtyMap, setQty } = useCart()
+const { active, shortStatus, remainingLabel } = useActiveOrder()
 const { isFavorite, toggleFavorite, trackView } = useMenuPrefs()
 const toast = useToast()
 
@@ -260,19 +261,34 @@ function onToggleFavorite(item: MenuItem) {
     >
       <div class="pointer-events-auto container-site flex items-center justify-between gap-3">
         <div class="min-w-0 text-sm">
-          <p class="font-medium text-ink">
-            {{ count ? t('menuPage.bagSummary', { count, total: subtotalLabel }) : t('menuPage.bagEmpty') }}
-          </p>
-          <p class="truncate text-mute">
-            {{ info.name }} · {{ t('order.eyebrow') }}
-          </p>
+          <template v-if="active">
+            <p class="flex items-center gap-2 font-medium text-ink">
+              <span class="order-live-dot h-2 w-2 shrink-0 rounded-full bg-leaf" aria-hidden="true" />
+              {{ t('menuPage.activeTicket', { status: shortStatus }) }}
+            </p>
+            <p class="truncate text-mute">
+              {{ remainingLabel }}
+            </p>
+          </template>
+          <template v-else>
+            <p class="font-medium text-ink">
+              {{ count ? t('menuPage.bagSummary', { count, total: subtotalLabel }) : t('menuPage.bagEmpty') }}
+            </p>
+            <p class="truncate text-mute">
+              {{ info.name }} · {{ t('order.eyebrow') }}
+            </p>
+          </template>
         </div>
         <BaseButton
           :to="localePath('/order')"
-          :variant="count ? 'primary' : 'ink'"
-          :class="count ? '' : 'opacity-80'"
+          :variant="active || count ? 'primary' : 'ink'"
+          :class="active || count ? '' : 'opacity-80'"
         >
-          {{ count ? t('menuPage.reviewOrder') : t('menuPage.goOrder') }}
+          {{ active
+            ? t('menuPage.viewTicket')
+            : count
+              ? t('menuPage.reviewOrder')
+              : t('menuPage.goOrder') }}
         </BaseButton>
       </div>
     </div>

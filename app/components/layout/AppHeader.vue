@@ -4,6 +4,7 @@ const { t, locale } = useI18n()
 const localePath = useLocalePath()
 const switchLocalePath = useSwitchLocalePath()
 const { count } = useCart()
+const { active, shortStatus } = useActiveOrder()
 const route = useRoute()
 const open = ref(false)
 
@@ -71,11 +72,22 @@ watch(locale, () => {
         <NuxtLink
           :to="localePath('/order')"
           class="relative inline-flex h-9 items-center rounded-sm bg-ink px-3 text-sm font-medium text-foam transition hover:bg-roast"
-          :aria-label="count ? t('a11y.cartWithCount', { count }) : t('nav.bag')"
+          :aria-label="active
+            ? t('a11y.activeTicket', { status: shortStatus })
+            : count
+              ? t('a11y.cartWithCount', { count })
+              : t('nav.bag')"
         >
-          {{ t('nav.bag') }}
+          {{ active ? t('order.viewTicket') : t('nav.bag') }}
           <span
-            v-if="count"
+            v-if="active"
+            class="ms-1.5 grid h-2 w-2 place-items-center"
+            aria-hidden="true"
+          >
+            <span class="order-live-dot h-2 w-2 rounded-full bg-leaf" />
+          </span>
+          <span
+            v-else-if="count"
             class="ms-1.5 grid h-4 min-w-4 place-items-center rounded-full bg-leaf px-1 text-[10px] text-foam"
             aria-hidden="true"
           >

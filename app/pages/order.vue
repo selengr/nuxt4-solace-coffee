@@ -9,19 +9,28 @@ const {
   count,
   subtotalLabel,
   setQty,
+  setNote,
   removeItem,
   lineTotalLabel,
   clear,
 } = useCart()
-const { etaLabel } = usePickupEta()
+const { etaLabel, etaRange } = usePickupEta()
 const { isOpen, statusLabel } = useCafeHours()
-const { active, start, clear: clearActive, watchKitchen } = useActiveOrder()
+const {
+  active,
+  start,
+  clear: clearActive,
+  watchKitchen,
+  elapsedLabel,
+  remainingLabel,
+} = useActiveOrder()
+const { profile, save: saveGuest } = useGuestProfile()
 
 const serviceMode = ref<ServiceMode>('table')
 const tableNumber = ref('')
-const customerName = ref('')
-const customerEmail = ref('')
-const phone = ref('')
+const customerName = ref(profile.value.name)
+const customerEmail = ref(profile.value.email)
+const phone = ref(profile.value.phone)
 const notes = ref('')
 
 const toast = useToast()
@@ -33,6 +42,22 @@ useCafeSeo({
   title: () => `${t('order.eyebrow')} — ${info.name}`,
   description: () => t('order.lede'),
 })
+
+watch(
+  profile,
+  (next) => {
+    if (!customerName.value && next.name) {
+      customerName.value = next.name
+    }
+    if (!customerEmail.value && next.email) {
+      customerEmail.value = next.email
+    }
+    if (!phone.value && next.phone) {
+      phone.value = next.phone
+    }
+  },
+  { deep: true },
+)
 
 const showingWait = computed(() => !!active.value)
 
@@ -53,9 +78,9 @@ const steps = computed(() => [
 ])
 
 const kitchenSteps = computed(() => [
-  { key: 'received' as const, label: t('order.statusReceived') },
-  { key: 'preparing' as const, label: t('order.statusPreparing') },
-  { key: 'ready' as const, label: t('order.statusReady') },
+  { key: 'received' as const, label: t('order.statusReceived'), hint: t('order.statusReceivedHint') },
+  { key: 'preparing' as const, label: t('order.statusPreparing'), hint: t('order.statusPreparingHint') },
+  { key: 'ready' as const, label: t('order.statusReady'), hint: t('order.statusReadyHint') },
 ])
 
 function kitchenIndex(key: string) {
@@ -92,6 +117,17 @@ const waitLede = computed(() => {
   return t('order.waitCounterLede')
 })
 
+const progressPct = computed(() => {
+  if (!active.value) {
+    return 0
+  }
+  const idx = kitchenIndex(active.value.status)
+  if (idx < 0) {
+    return 0
+  }
+  return ((idx + 1) / kitchenSteps.value.length) * 100
+})
+
 onMounted(() => {
   watchKitchen()
 })
@@ -126,12 +162,19 @@ async function submitOrder() {
       },
     })
 
+    saveGuest({
+      name: customerName.value,
+      email: customerEmail.value,
+      phone: phone.value,
+    })
+
     start({
       orderId: result.orderId,
       mode: serviceMode.value,
       table: tableNumber.value.trim() || undefined,
       customerName: customerName.value.trim(),
       etaLabel: etaLabel.value,
+      etaMaxMinutes: etaRange.value?.max ?? 14,
       status: 'received',
       placedAt: Date.now(),
       items: lines.value.map(line => ({
@@ -143,9 +186,6 @@ async function submitOrder() {
 
     toast.success(t('order.sentToast'))
     clear()
-    customerName.value = ''
-    customerEmail.value = ''
-    phone.value = ''
     notes.value = ''
     tableNumber.value = ''
     status.value = 'idle'
@@ -169,6 +209,15 @@ function finishAndOrderAgain() {
   clearActive()
   navigateTo(localePath('/menu'))
 }
+
+function dismissTicket() {
+  if (!import.meta.client) {
+    return
+  }
+  if (window.confirm(t('order.dismissConfirm'))) {
+    clearActive()
+  }
+}
 </script>
 
 <template>
@@ -185,134 +234,196 @@ function finishAndOrderAgain() {
           {{ showingWait ? t('order.waitIntro') : t('order.lede') }}
         </p>
 
-        <ol class="m-0 flex list-none gap-2 p-0 sm:gap-3">
-          <li
-            v-for="item in steps"
+        <ol class="m-0 flex list-none items-center gap-0 p-0">
+          <template
+            v-for="(item, index) in steps"
             :key="item.n"
-            class="flex flex-1 items-center gap-2 rounded-sm border px-3 py-2.5 text-sm"
-            :class="step >= item.n
-              ? 'border-ink/20 bg-mist text-ink'
-              : 'border-ink/10 text-mute'"
           >
-            <span
-              class="grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-medium"
-              :class="step >= item.n ? 'bg-ink text-foam' : 'bg-mist text-mute'"
+            <li
+              class="flex min-w-0 flex-1 items-center gap-2 rounded-sm border px-3 py-2.5 text-sm transition"
+              :class="step >= item.n
+                ? 'border-ink/20 bg-mist text-ink'
+                : 'border-ink/10 text-mute'"
             >
-              {{ item.n }}
-            </span>
-            <span class="hidden sm:inline">{{ item.label }}</span>
-          </li>
+              <span
+                class="grid h-6 w-6 shrink-0 place-items-center rounded-full text-xs font-medium transition"
+                :class="step > item.n
+                  ? 'bg-leaf text-foam'
+                  : step === item.n
+                    ? 'bg-ink text-foam'
+                    : 'bg-mist text-mute'"
+              >
+                <template v-if="step > item.n">
+                  ✓
+                </template>
+                <template v-else>
+                  {{ item.n }}
+                </template>
+              </span>
+              <span class="truncate text-xs sm:text-sm">{{ item.label }}</span>
+            </li>
+            <div
+              v-if="index < steps.length - 1"
+              class="mx-1 hidden h-px w-4 shrink-0 bg-ink/15 sm:block"
+              :class="step > item.n ? '!bg-leaf/50' : ''"
+              aria-hidden="true"
+            />
+          </template>
         </ol>
       </header>
 
-      <!-- Waiting for barista / waitress -->
+      <!-- Live ticket -->
       <section
         v-if="active"
-        class="border border-ink/10 bg-foam p-5 sm:p-8"
+        class="order-ticket overflow-hidden border border-ink/10 bg-foam"
       >
-        <p class="mb-2 text-sm font-medium text-leaf">
-          {{ t('order.ticket', { id: active.orderId }) }}
-        </p>
-        <h2 class="mb-3 font-display text-[clamp(1.6rem,3vw,2.2rem)] tracking-tight">
-          {{ waitTitle }}
-        </h2>
-        <p class="mb-8 max-w-lg leading-relaxed text-mute">
-          {{ waitLede }}
-        </p>
-
-        <ol class="mb-8 m-0 grid list-none gap-3 p-0 sm:grid-cols-3">
-          <li
-            v-for="(item, index) in kitchenSteps"
-            :key="item.key"
-            class="rounded-sm border px-4 py-3"
-            :class="kitchenIndex(active.status) >= index
-              ? 'border-leaf/40 bg-leaf/5 text-ink'
-              : 'border-ink/10 text-mute'"
-          >
-            <p class="text-xs uppercase tracking-wide text-mute">
-              {{ t('order.stage', { n: index + 1 }) }}
-            </p>
-            <p class="font-medium">
-              {{ item.label }}
-            </p>
-          </li>
-        </ol>
-
-        <dl class="mb-8 grid gap-4 border-y border-ink/10 py-5 sm:grid-cols-2">
-          <div>
-            <dt class="mb-1 text-xs text-mute">
-              {{ t('order.forGuest') }}
-            </dt>
-            <dd class="m-0 font-medium">
-              {{ active.customerName }}
-            </dd>
+        <div class="border-b border-ink/10 bg-mist/60 px-5 py-4 sm:px-8 sm:py-5">
+          <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+              <p class="mb-1 text-sm font-medium text-leaf">
+                {{ t('order.ticket', { id: active.orderId }) }}
+              </p>
+              <h2 class="font-display text-[clamp(1.55rem,3vw,2.1rem)] tracking-tight">
+                {{ waitTitle }}
+              </h2>
+            </div>
+            <div class="rounded-sm border border-ink/10 bg-foam px-3 py-2 text-end">
+              <p class="text-xs text-mute">
+                {{ elapsedLabel }}
+              </p>
+              <p class="text-sm font-medium">
+                {{ remainingLabel }}
+              </p>
+            </div>
           </div>
-          <div>
-            <dt class="mb-1 text-xs text-mute">
-              {{ active.mode === 'table' ? t('order.table') : t('order.serviceCounter') }}
-            </dt>
-            <dd class="m-0 font-medium">
-              {{ active.mode === 'table' ? (active.table || '—') : t('order.counterValue') }}
-            </dd>
-          </div>
-          <div>
-            <dt class="mb-1 text-xs text-mute">
-              {{ t('order.pickupEta') }}
-            </dt>
-            <dd class="m-0 font-medium">
-              {{ active.etaLabel }}
-            </dd>
-          </div>
-          <div>
-            <dt class="mb-1 text-xs text-mute">
-              {{ t('order.payNoteTitle') }}
-            </dt>
-            <dd class="m-0 text-sm text-mute">
-              {{ t('order.payNote') }}
-            </dd>
-          </div>
-        </dl>
+          <p class="mt-3 max-w-lg leading-relaxed text-mute">
+            {{ waitLede }}
+          </p>
+        </div>
 
-        <ul class="mb-8 m-0 list-none space-y-2 border border-ink/10 p-4">
-          <li
-            v-for="(item, index) in active.items"
-            :key="`${item.name}-${index}`"
-            class="flex justify-between gap-3 text-sm"
+        <div class="px-5 py-6 sm:px-8">
+          <div
+            class="mb-3 h-1.5 overflow-hidden rounded-full bg-ink/10"
+            role="progressbar"
+            :aria-valuenow="progressPct"
+            aria-valuemin="0"
+            aria-valuemax="100"
+            :aria-label="t('order.ticketLive')"
           >
-            <span>
-              {{ item.qty }}× {{ item.name }}
-              <span
-                v-if="item.note"
-                class="text-mute"
-              > — {{ item.note }}</span>
-            </span>
-          </li>
-        </ul>
+            <div
+              class="h-full rounded-full bg-leaf transition-all duration-700 ease-out"
+              :style="{ width: `${progressPct}%` }"
+            />
+          </div>
 
-        <div class="flex flex-wrap gap-3">
-          <BaseButton
-            v-if="active.status === 'ready'"
-            type="button"
-            variant="primary"
-            @click="finishAndOrderAgain"
-          >
-            {{ t('order.doneNew') }}
-          </BaseButton>
-          <BaseButton
-            v-else
-            type="button"
-            variant="ink"
-            :to="localePath('/menu')"
-          >
-            {{ t('order.keepBrowsing') }}
-          </BaseButton>
-          <button
-            type="button"
-            class="text-sm text-mute underline-offset-2 hover:text-ink hover:underline"
-            @click="clearActive"
-          >
-            {{ t('order.dismissTicket') }}
-          </button>
+          <ol class="mb-8 m-0 grid list-none gap-3 p-0 sm:grid-cols-3">
+            <li
+              v-for="(item, index) in kitchenSteps"
+              :key="item.key"
+              class="relative rounded-sm border px-4 py-3 transition duration-500"
+              :class="[
+                kitchenIndex(active.status) > index
+                  ? 'border-leaf/35 bg-leaf/5 text-ink'
+                  : kitchenIndex(active.status) === index
+                    ? 'border-leaf/50 bg-leaf/10 text-ink ring-1 ring-leaf/20'
+                    : 'border-ink/10 text-mute',
+                kitchenIndex(active.status) === index && active.status !== 'ready'
+                  ? 'order-stage-live'
+                  : '',
+              ]"
+            >
+              <p class="text-[0.68rem] uppercase tracking-wide text-mute">
+                {{ t('order.stage', { n: index + 1 }) }}
+              </p>
+              <p class="font-medium">
+                {{ item.label }}
+              </p>
+              <p class="mt-1 text-xs leading-snug text-mute">
+                {{ item.hint }}
+              </p>
+            </li>
+          </ol>
+
+          <dl class="mb-8 grid gap-4 border-y border-ink/10 py-5 sm:grid-cols-2">
+            <div>
+              <dt class="mb-1 text-xs text-mute">
+                {{ t('order.forGuest') }}
+              </dt>
+              <dd class="m-0 font-medium">
+                {{ active.customerName }}
+              </dd>
+            </div>
+            <div>
+              <dt class="mb-1 text-xs text-mute">
+                {{ active.mode === 'table' ? t('order.table') : t('order.serviceCounter') }}
+              </dt>
+              <dd class="m-0 font-medium">
+                {{ active.mode === 'table' ? (active.table || '—') : t('order.counterValue') }}
+              </dd>
+            </div>
+            <div>
+              <dt class="mb-1 text-xs text-mute">
+                {{ t('order.pickupEta') }}
+              </dt>
+              <dd class="m-0 font-medium">
+                {{ active.etaLabel }}
+              </dd>
+            </div>
+            <div>
+              <dt class="mb-1 text-xs text-mute">
+                {{ t('order.payNoteTitle') }}
+              </dt>
+              <dd class="m-0 text-sm text-mute">
+                {{ active.mode === 'table' ? t('order.payNoteTable') : t('order.payNote') }}
+              </dd>
+            </div>
+          </dl>
+
+          <p class="mb-2 text-xs font-medium uppercase tracking-wide text-mute">
+            {{ t('order.itemsOnTicket') }}
+          </p>
+          <ul class="mb-8 m-0 list-none space-y-2 border border-ink/10 bg-mist/30 p-4">
+            <li
+              v-for="(item, index) in active.items"
+              :key="`${item.name}-${index}`"
+              class="flex justify-between gap-3 text-sm"
+            >
+              <span>
+                <span class="font-medium tabular-nums">{{ item.qty }}×</span>
+                {{ item.name }}
+                <span
+                  v-if="item.note"
+                  class="text-mute"
+                > — {{ item.note }}</span>
+              </span>
+            </li>
+          </ul>
+
+          <div class="flex flex-wrap items-center gap-3">
+            <BaseButton
+              v-if="active.status === 'ready'"
+              type="button"
+              variant="primary"
+              @click="finishAndOrderAgain"
+            >
+              {{ t('order.doneNew') }}
+            </BaseButton>
+            <BaseButton
+              v-else
+              type="button"
+              variant="ink"
+              :to="localePath('/menu')"
+            >
+              {{ t('order.keepBrowsing') }}
+            </BaseButton>
+            <button
+              type="button"
+              class="text-sm text-mute underline-offset-2 hover:text-ink hover:underline"
+              @click="dismissTicket"
+            >
+              {{ t('order.dismissTicket') }}
+            </button>
+          </div>
         </div>
       </section>
 
@@ -350,54 +461,62 @@ function finishAndOrderAgain() {
             <li
               v-for="line in lines"
               :key="line.id"
-              class="flex flex-wrap items-center gap-3 px-4 py-4 sm:px-5"
+              class="px-4 py-4 sm:px-5"
             >
-              <div class="min-w-0 flex-1">
-                <p class="font-medium">
-                  {{ line.name }}
-                </p>
-                <p class="text-sm text-mute">
-                  {{ line.price }} {{ t('order.each') }}
-                </p>
-                <p
-                  v-if="line.note"
-                  class="mt-1 text-sm text-leaf"
-                >
-                  {{ line.note }}
-                </p>
-              </div>
+              <div class="flex flex-wrap items-center gap-3">
+                <div class="min-w-0 flex-1">
+                  <p class="font-medium">
+                    {{ line.name }}
+                  </p>
+                  <p class="text-sm text-mute">
+                    {{ line.price }} {{ t('order.each') }}
+                  </p>
+                </div>
 
-              <div class="flex items-center gap-2">
+                <div class="flex items-center gap-2">
+                  <button
+                    type="button"
+                    class="grid h-9 w-9 place-items-center rounded-sm border border-ink/15 text-base transition hover:bg-mist"
+                    :aria-label="t('order.decrease', { name: line.name })"
+                    @click="setQty(line.id, line.qty - 1)"
+                  >
+                    −
+                  </button>
+                  <span class="w-6 text-center text-sm font-medium tabular-nums">{{ line.qty }}</span>
+                  <button
+                    type="button"
+                    class="grid h-9 w-9 place-items-center rounded-sm border border-ink/15 text-base transition hover:bg-mist"
+                    :aria-label="t('order.increase', { name: line.name })"
+                    @click="setQty(line.id, line.qty + 1)"
+                  >
+                    +
+                  </button>
+                </div>
+
+                <p class="w-16 text-end text-sm font-medium tabular-nums sm:w-20">
+                  {{ lineTotalLabel(line) }}
+                </p>
+
                 <button
                   type="button"
-                  class="grid h-9 w-9 place-items-center rounded-sm border border-ink/15 text-base transition hover:bg-mist"
-                  :aria-label="t('order.decrease', { name: line.name })"
-                  @click="setQty(line.id, line.qty - 1)"
+                  class="text-xs text-mute underline-offset-2 hover:text-ink hover:underline"
+                  @click="removeItem(line.id)"
                 >
-                  −
-                </button>
-                <span class="w-6 text-center text-sm font-medium tabular-nums">{{ line.qty }}</span>
-                <button
-                  type="button"
-                  class="grid h-9 w-9 place-items-center rounded-sm border border-ink/15 text-base transition hover:bg-mist"
-                  :aria-label="t('order.increase', { name: line.name })"
-                  @click="setQty(line.id, line.qty + 1)"
-                >
-                  +
+                  {{ t('order.remove') }}
                 </button>
               </div>
 
-              <p class="w-16 text-end text-sm font-medium tabular-nums sm:w-20">
-                {{ lineTotalLabel(line) }}
-              </p>
-
-              <button
-                type="button"
-                class="text-xs text-mute underline-offset-2 hover:text-ink hover:underline"
-                @click="removeItem(line.id)"
-              >
-                {{ t('order.remove') }}
-              </button>
+              <label class="mt-3 block">
+                <span class="sr-only">{{ t('order.lineNote', { name: line.name }) }}</span>
+                <input
+                  :value="line.note || ''"
+                  type="text"
+                  maxlength="80"
+                  :placeholder="t('order.lineNotePlaceholder')"
+                  class="w-full rounded-sm border border-ink/10 bg-mist/30 px-3 py-2 text-sm outline-none transition focus:border-leaf focus:bg-foam"
+                  @change="setNote(line.id, ($event.target as HTMLInputElement).value)"
+                >
+              </label>
             </li>
           </ul>
 
@@ -452,7 +571,7 @@ function finishAndOrderAgain() {
           >
             <button
               type="button"
-              class="rounded-sm border px-4 py-3 text-start transition"
+              class="rounded-sm border px-4 py-3.5 text-start transition"
               :class="serviceMode === 'table'
                 ? 'border-ink bg-ink text-foam'
                 : 'border-ink/15 hover:border-ink/30'"
@@ -461,13 +580,13 @@ function finishAndOrderAgain() {
             >
               <span class="block text-sm font-medium">{{ t('order.serviceTable') }}</span>
               <span
-                class="mt-1 block text-xs"
+                class="mt-1 block text-xs leading-snug"
                 :class="serviceMode === 'table' ? 'text-foam/70' : 'text-mute'"
               >{{ t('order.serviceTableHint') }}</span>
             </button>
             <button
               type="button"
-              class="rounded-sm border px-4 py-3 text-start transition"
+              class="rounded-sm border px-4 py-3.5 text-start transition"
               :class="serviceMode === 'counter'
                 ? 'border-ink bg-ink text-foam'
                 : 'border-ink/15 hover:border-ink/30'"
@@ -476,7 +595,7 @@ function finishAndOrderAgain() {
             >
               <span class="block text-sm font-medium">{{ t('order.serviceCounter') }}</span>
               <span
-                class="mt-1 block text-xs"
+                class="mt-1 block text-xs leading-snug"
                 :class="serviceMode === 'counter' ? 'text-foam/70' : 'text-mute'"
               >{{ t('order.serviceCounterHint') }}</span>
             </button>
@@ -542,6 +661,13 @@ function finishAndOrderAgain() {
               />
             </label>
 
+            <p
+              v-if="profile.name"
+              class="text-xs text-mute"
+            >
+              {{ t('order.savedGuest') }}
+            </p>
+
             <ul
               v-if="fieldErrors.length"
               class="list-disc space-y-1 pe-5 ps-5 text-sm text-red-800"
@@ -561,7 +687,7 @@ function finishAndOrderAgain() {
               {{ feedback }}
             </p>
 
-            <div class="mt-2 rounded-sm border border-ink/10 bg-mist/40 px-4 py-3 text-sm text-mute">
+            <div class="mt-2 rounded-sm border border-ink/10 bg-mist/40 px-4 py-3 text-sm leading-relaxed text-mute">
               {{ serviceMode === 'table' ? t('order.payNoteTable') : t('order.payNote') }}
             </div>
 
