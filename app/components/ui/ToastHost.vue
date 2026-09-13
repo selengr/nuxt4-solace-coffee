@@ -10,7 +10,7 @@ const toneClass: Record<string, string> = {
 
 <template>
   <div
-    class="pointer-events-none fixed inset-x-0 bottom-4 z-50 flex flex-col items-center gap-2 px-4"
+    class="pointer-events-none fixed inset-x-0 bottom-24 z-[80] flex flex-col items-center gap-2 px-4 sm:bottom-6"
     aria-live="polite"
   >
     <div

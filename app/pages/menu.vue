@@ -5,7 +5,7 @@ const { info, byCategory } = useCafe()
 const { t } = useI18n()
 const { tx } = useLocaleText()
 const localePath = useLocalePath()
-const { addItem, count, subtotalLabel, qtyOf, setQty } = useCart()
+const { addItem, count, subtotalLabel, qtyMap, setQty } = useCart()
 const { isFavorite, toggleFavorite, trackView } = useMenuPrefs()
 const toast = useToast()
 
@@ -68,11 +68,16 @@ const visibleSections = computed(() => {
     .filter(section => section.items.length > 0)
 })
 
-function addToOrder(item: MenuItem) {
+function addToOrder(item: MenuItem, event?: Event) {
+  event?.stopPropagation()
   const name = tx(item.name)
   trackView(item.id)
   addItem(item, name)
   toast.success(t('menuPage.added', { name }))
+}
+
+function qtyOf(id: string) {
+  return qtyMap.value[id] ?? 0
 }
 
 function onToggleFavorite(item: MenuItem) {
@@ -87,7 +92,7 @@ function onToggleFavorite(item: MenuItem) {
 </script>
 
 <template>
-  <div class="menu-page section-space pb-32 sm:pb-[clamp(4.5rem,10vw,7.5rem)]">
+  <div class="menu-page section-space pb-40 sm:pb-36">
     <div class="container-site">
       <header class="mb-8 max-w-2xl">
         <p class="eyebrow">
@@ -220,7 +225,7 @@ function onToggleFavorite(item: MenuItem) {
                       type="button"
                       class="grid h-11 w-11 place-items-center text-lg transition hover:bg-mist"
                       :aria-label="t('order.increase', { name: tx(item.name) })"
-                      @click="addToOrder(item)"
+                      @click="addToOrder(item, $event)"
                     >
                       +
                     </button>
@@ -229,8 +234,8 @@ function onToggleFavorite(item: MenuItem) {
                 <button
                   v-else
                   type="button"
-                  class="flex h-11 flex-1 items-center justify-center rounded-sm bg-ink text-sm font-medium text-foam transition hover:bg-roast"
-                  @click="addToOrder(item)"
+                  class="relative z-10 flex h-11 flex-1 items-center justify-center rounded-sm bg-ink text-sm font-medium text-foam transition hover:bg-roast"
+                  @click="addToOrder(item, $event)"
                 >
                   {{ t('menuPage.add') }}
                 </button>
@@ -251,9 +256,9 @@ function onToggleFavorite(item: MenuItem) {
     </div>
 
     <div
-      class="print:hidden fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-foam/95 p-3 backdrop-blur-md"
+      class="print:hidden pointer-events-none fixed inset-x-0 bottom-0 z-40 border-t border-ink/10 bg-foam/95 p-3 backdrop-blur-md"
     >
-      <div class="container-site flex items-center justify-between gap-3">
+      <div class="pointer-events-auto container-site flex items-center justify-between gap-3">
         <div class="min-w-0 text-sm">
           <p class="font-medium text-ink">
             {{ count ? t('menuPage.bagSummary', { count, total: subtotalLabel }) : t('menuPage.bagEmpty') }}

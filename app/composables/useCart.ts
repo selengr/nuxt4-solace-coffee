@@ -29,9 +29,11 @@ function isCartLine(value: unknown): value is CartLine {
 }
 
 export function useCart() {
+  const { tx } = useLocaleText()
   const lines = useState<CartLine[]>('solace-cart', () => [])
+  // Distinct defaults avoid Nuxt payload dedupe linking these flags together.
   const hydrated = useState('solace-cart-hydrated', () => false)
-  const watching = useState('solace-cart-watching', () => false)
+  const watching = useState<'off' | 'on'>('solace-cart-watching', () => 'off')
 
   const count = computed(() =>
     lines.value.reduce((sum, line) => sum + line.qty, 0),
@@ -45,6 +47,14 @@ export function useCart() {
   )
 
   const subtotalLabel = computed(() => `$${subtotal.value.toFixed(2)}`)
+
+  const qtyMap = computed(() => {
+    const map: Record<string, number> = {}
+    for (const line of lines.value) {
+      map[line.id] = line.qty
+    }
+    return map
+  })
 
   function persist() {
     if (!import.meta.client) {
@@ -80,8 +90,8 @@ export function useCart() {
 
   if (import.meta.client) {
     hydrate()
-    if (!watching.value) {
-      watching.value = true
+    if (watching.value === 'off') {
+      watching.value = 'on'
       watch(lines, persist, { deep: true })
     }
   }
@@ -91,52 +101,58 @@ export function useCart() {
     displayName?: string,
     options?: { qty?: number, note?: string },
   ) {
-    const { tx } = useLocaleText()
     const name = displayName || tx(item.name)
     const qty = Math.max(1, options?.qty ?? 1)
     const note = options?.note?.trim() || undefined
-    const existing = lines.value.find(line => line.id === item.id)
-    if (existing) {
-      existing.qty += qty
-      existing.name = name
-      if (note) {
-        existing.note = note
+    const index = lines.value.findIndex(line => line.id === item.id)
+
+    if (index >= 0) {
+      const current = lines.value[index]!
+      const next = [...lines.value]
+      next[index] = {
+        ...current,
+        name,
+        qty: current.qty + qty,
+        note: note ?? current.note,
       }
+      lines.value = next
       return
     }
-    lines.value.push({
-      id: item.id,
-      name,
-      price: item.price,
-      qty,
-      note,
-    })
+
+    lines.value = [
+      ...lines.value,
+      {
+        id: item.id,
+        name,
+        price: item.price,
+        qty,
+        note,
+      },
+    ]
   }
 
   function setQty(id: string, qty: number) {
-    const line = lines.value.find(entry => entry.id === id)
-    if (!line) {
-      return
-    }
     if (qty <= 0) {
       lines.value = lines.value.filter(entry => entry.id !== id)
       return
     }
-    line.qty = qty
+    lines.value = lines.value.map(entry =>
+      entry.id === id ? { ...entry, qty } : entry,
+    )
   }
 
   function setNote(id: string, note: string) {
-    const line = lines.value.find(entry => entry.id === id)
-    if (!line) {
-      return
-    }
     const next = note.trim()
-    if (next) {
-      line.note = next
-    }
-    else {
-      delete line.note
-    }
+    lines.value = lines.value.map((entry) => {
+      if (entry.id !== id) {
+        return entry
+      }
+      if (next) {
+        return { ...entry, note: next }
+      }
+      const { note: _removed, ...rest } = entry
+      return rest
+    })
   }
 
   function removeItem(id: string) {
@@ -144,7 +160,7 @@ export function useCart() {
   }
 
   function qtyOf(id: string) {
-    return lines.value.find(entry => entry.id === id)?.qty ?? 0
+    return qtyMap.value[id] ?? 0
   }
 
   function lineTotalLabel(line: CartLine) {
@@ -160,6 +176,7 @@ export function useCart() {
     count,
     subtotal,
     subtotalLabel,
+    qtyMap,
     addItem,
     setQty,
     setNote,

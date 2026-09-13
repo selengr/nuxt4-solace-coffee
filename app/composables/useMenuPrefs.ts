@@ -6,7 +6,7 @@ export function useMenuPrefs() {
   const favorites = useState<string[]>('solace-favorites', () => [])
   const recent = useState<string[]>('solace-recent', () => [])
   const hydrated = useState('solace-menu-prefs-hydrated', () => false)
-  const watching = useState('solace-menu-prefs-watching', () => false)
+  const watching = useState<'off' | 'on'>('solace-menu-prefs-watching', () => 'off')
 
   function readList(key: string) {
     try {
@@ -42,8 +42,8 @@ export function useMenuPrefs() {
 
   if (import.meta.client) {
     hydrate()
-    if (!watching.value) {
-      watching.value = true
+    if (watching.value === 'off') {
+      watching.value = 'on'
       watch(favorites, value => writeList(FAVORITES_KEY, value), { deep: true })
       watch(recent, value => writeList(RECENT_KEY, value), { deep: true })
     }
