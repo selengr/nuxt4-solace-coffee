@@ -2,8 +2,9 @@
 import type { ServiceMode } from '~/composables/useActiveOrder'
 
 const { info } = useCafe()
-const { t, te } = useI18n()
+const { t, te, locale } = useI18n()
 const localePath = useLocalePath()
+const route = useRoute()
 const {
   lines,
   count,
@@ -23,8 +24,10 @@ const {
   watchKitchen,
   elapsedLabel,
   remainingLabel,
+  statusLabel: kitchenStatusLabel,
 } = useActiveOrder()
 const { profile, save: saveGuest } = useGuestProfile()
+const { entries: pastOrders, clearHistory } = useOrderHistory()
 
 const serviceMode = ref<ServiceMode>('table')
 const tableNumber = ref('')
@@ -32,6 +35,7 @@ const customerName = ref(profile.value.name)
 const customerEmail = ref(profile.value.email)
 const phone = ref(profile.value.phone)
 const notes = ref('')
+const tableFromQr = ref(false)
 
 const toast = useToast()
 const status = ref<'idle' | 'loading' | 'error'>('idle')
@@ -130,7 +134,38 @@ const progressPct = computed(() => {
 
 onMounted(() => {
   watchKitchen()
+  applyTableQuery()
 })
+
+function applyTableQuery() {
+  const raw = route.query.table
+  const table = Array.isArray(raw) ? raw[0] : raw
+  if (typeof table === 'string' && table.trim()) {
+    serviceMode.value = 'table'
+    tableNumber.value = table.trim()
+    tableFromQr.value = true
+    return
+  }
+  const mode = Array.isArray(route.query.mode) ? route.query.mode[0] : route.query.mode
+  if (mode === 'counter') {
+    serviceMode.value = 'counter'
+  }
+}
+
+watch(
+  () => route.query.table,
+  () => applyTableQuery(),
+)
+
+function formatPastDate(value: number) {
+  const tag = locale.value === 'fa' ? 'fa-IR' : 'en-US'
+  return new Date(value).toLocaleString(tag, {
+    month: 'short',
+    day: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+  })
+}
 
 async function submitOrder() {
   if (serviceMode.value === 'table' && !tableNumber.value.trim()) {
@@ -428,6 +463,13 @@ function dismissTicket() {
       </section>
 
       <template v-else>
+        <div
+          v-if="tableFromQr && tableNumber"
+          class="mb-4 rounded-sm border border-leaf/30 bg-leaf/5 px-4 py-3 text-sm"
+        >
+          {{ t('order.tableQrBanner', { table: tableNumber }) }}
+        </div>
+
         <div class="mb-4 flex flex-wrap items-center justify-between gap-2 text-sm">
           <OpenStatus />
           <p class="text-mute">
@@ -706,6 +748,53 @@ function dismissTicket() {
               {{ t('order.etaClosedHint') }}
             </p>
           </form>
+        </section>
+
+        <section
+          v-if="pastOrders.length"
+          class="mt-8 border border-ink/10 bg-foam p-4 sm:p-6"
+        >
+          <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+            <div>
+              <h2 class="font-display text-xl tracking-tight">
+                {{ t('order.historyTitle') }}
+              </h2>
+              <p class="text-sm text-mute">
+                {{ t('order.historyLede') }}
+              </p>
+            </div>
+            <button
+              type="button"
+              class="text-sm text-mute underline-offset-2 hover:text-ink hover:underline"
+              @click="clearHistory"
+            >
+              {{ t('order.historyClear') }}
+            </button>
+          </div>
+          <ul class="m-0 list-none divide-y divide-ink/10 border border-ink/10 p-0">
+            <li
+              v-for="entry in pastOrders"
+              :key="`${entry.orderId}-${entry.archivedAt}`"
+              class="px-4 py-3"
+            >
+              <div class="flex flex-wrap items-baseline justify-between gap-2">
+                <p class="font-medium">
+                  {{ t('order.ticket', { id: entry.orderId }) }}
+                </p>
+                <p class="text-xs text-mute">
+                  {{ formatPastDate(entry.archivedAt) }}
+                </p>
+              </div>
+              <p class="mt-1 text-sm text-mute">
+                {{ entry.mode === 'table'
+                  ? t('order.historyTable', { table: entry.table || '—' })
+                  : t('order.serviceCounter') }}
+                · {{ kitchenStatusLabel(entry.status) }}
+                · {{ entry.items.reduce((sum, item) => sum + item.qty, 0) }}
+                {{ t('order.items') }}
+              </p>
+            </li>
+          </ul>
         </section>
       </template>
     </div>

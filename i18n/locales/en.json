@@ -17,6 +17,7 @@
     "press": "Press",
     "wifi": "Wi‑Fi",
     "loyalty": "Loyalty",
+    "kitchen": "Kitchen",
     "catering": "Catering",
     "more": "More",
     "privacy": "Privacy",
@@ -191,7 +192,12 @@
     "copyAddress": "Copy address",
     "copied": "Address copied.",
     "transit": "Transit: ~6 min walk from Westlake Station (demo).",
-    "parking": "Parking: street spots nearby; paid garage one block south (demo)."
+    "parking": "Parking: street spots nearby; paid garage one block south (demo).",
+    "tableOrder": "Table service",
+    "tableOrderTitle": "Scan. Sit. Send to the bar.",
+    "tableOrderLede": "Demo table links — in the café these would be QR codes on each table.",
+    "tableChip": "Table {n}",
+    "tableOrderHint": "Opens order with your table number already filled."
   },
   "contactPage": {
     "eyebrow": "Contact",
@@ -347,6 +353,11 @@
     "keepBrowsing": "Back to menu",
     "doneNew": "Start a new order",
     "dismissTicket": "Clear this ticket",
+    "tableQrBanner": "Table {table} — ready for table service. Add from the menu, then send to the bar.",
+    "historyTitle": "Past tickets",
+    "historyLede": "Saved on this device after each café order.",
+    "historyClear": "Clear history",
+    "historyTable": "Table {table}",
     "successEyebrow": "Order received",
     "successTitle": "See you at the counter.",
     "successLede": "We’re preparing your order.",
@@ -354,6 +365,21 @@
     "successEtaFallback": "We’ll confirm by email",
     "toVisit": "Get directions",
     "orderAgain": "Order again"
+  },
+  "kitchen": {
+    "eyebrow": "Staff",
+    "title": "Kitchen board",
+    "lede": "Demo bar view — same live ticket as the guest phone. Advance stages by hand for the floor.",
+    "backSite": "Back to site",
+    "table": "Table {table}",
+    "counter": "Counter pickup",
+    "now": "Now · {status}",
+    "markPreparing": "Start preparing",
+    "markReady": "Mark ready",
+    "advance": "Next stage",
+    "clear": "Clear ticket",
+    "emptyTitle": "No open ticket",
+    "emptyLede": "When a guest sends an order from this browser (or another tab), it shows up here."
   },
   "testimonials": {
     "eyebrow": "From the room",

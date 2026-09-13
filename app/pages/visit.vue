@@ -76,6 +76,32 @@ useCafeSeo({
         </dl>
 
         <VisitDirections />
+
+        <div class="mt-10 border border-ink/10 bg-mist/40 p-5">
+          <p class="mb-1 text-[0.7rem] text-leaf label-meta">
+            {{ t('visitPage.tableOrder') }}
+          </p>
+          <h2 class="mb-2 font-display text-xl tracking-tight">
+            {{ t('visitPage.tableOrderTitle') }}
+          </h2>
+          <p class="mb-4 text-sm leading-relaxed text-mute">
+            {{ t('visitPage.tableOrderLede') }}
+          </p>
+          <div class="flex flex-wrap gap-2">
+            <BaseButton
+              v-for="n in [3, 4, 5, 7]"
+              :key="n"
+              :to="`${localePath('/order')}?table=${n}`"
+              variant="ink"
+              class="!px-4 !py-2.5"
+            >
+              {{ t('visitPage.tableChip', { n }) }}
+            </BaseButton>
+          </div>
+          <p class="mt-3 text-xs text-mute">
+            {{ t('visitPage.tableOrderHint') }}
+          </p>
+        </div>
       </div>
 
       <VisitMap />

@@ -24,11 +24,13 @@ const ACTIVE_KEY = 'solace-active-order-v1'
 export function useActiveOrder() {
   const { t } = useI18n()
   const toast = useToast()
+  const { archive } = useOrderHistory()
   const active = useState<ActiveOrder | null>('solace-active-order', () => null)
   const hydrated = useState('solace-active-order-hydrated', () => false)
   const timerId = useState<number | null>('solace-kitchen-timer', () => null)
   const tick = useState('solace-order-tick', () => Date.now())
   const tickTimer = useState<number | null>('solace-order-tick-timer', () => null)
+  const storageWatching = useState<'off' | 'on'>('solace-active-order-storage', () => 'off')
 
   function persist() {
     if (!import.meta.client) {
@@ -37,6 +39,7 @@ export function useActiveOrder() {
     try {
       if (active.value) {
         localStorage.setItem(ACTIVE_KEY, JSON.stringify(active.value))
+        archive(active.value)
       }
       else {
         localStorage.removeItem(ACTIVE_KEY)
@@ -106,26 +109,42 @@ export function useActiveOrder() {
     return t('order.statusReceived')
   }
 
-  function advanceStatus() {
-    if (!active.value || active.value.status === 'ready') {
-      stopKitchen()
+  function setStatus(status: KitchenStatus, options?: { notify?: boolean }) {
+    if (!active.value) {
       return
     }
-    const prev = active.value.status
-    if (prev === 'received') {
-      active.value = { ...active.value, status: 'preparing' }
+    active.value = { ...active.value, status }
+    if (status === 'ready') {
+      stopKitchen()
+    }
+    persist()
+    if (options?.notify === false) {
+      return
+    }
+    if (status === 'preparing') {
       toast.info(t('order.toastPreparing'))
     }
-    else if (prev === 'preparing') {
-      active.value = { ...active.value, status: 'ready' }
+    else if (status === 'ready') {
       toast.success(
         active.value.mode === 'table'
           ? t('order.toastReadyTable')
           : t('order.toastReadyCounter'),
       )
-      stopKitchen()
     }
-    persist()
+  }
+
+  function advanceStatus(options?: { notify?: boolean }) {
+    if (!active.value || active.value.status === 'ready') {
+      stopKitchen()
+      return
+    }
+    if (active.value.status === 'received') {
+      setStatus('preparing', options)
+      return
+    }
+    if (active.value.status === 'preparing') {
+      setStatus('ready', options)
+    }
   }
 
   function stepIntervalMs() {
@@ -178,6 +197,9 @@ export function useActiveOrder() {
   }
 
   function clear() {
+    if (active.value) {
+      archive(active.value)
+    }
     stopKitchen()
     stopTick()
     active.value = null
@@ -188,6 +210,30 @@ export function useActiveOrder() {
     hydrate()
     if (active.value) {
       watchKitchen()
+    }
+    if (storageWatching.value === 'off') {
+      storageWatching.value = 'on'
+      window.addEventListener('storage', (event) => {
+        if (event.key !== ACTIVE_KEY) {
+          return
+        }
+        if (!event.newValue) {
+          active.value = null
+          stopKitchen()
+          return
+        }
+        try {
+          const parsed = JSON.parse(event.newValue) as ActiveOrder
+          active.value = {
+            ...parsed,
+            etaMaxMinutes: parsed.etaMaxMinutes || 14,
+          }
+          startTick()
+        }
+        catch {
+          // ignore bad payloads
+        }
+      })
     }
   }
 
@@ -229,6 +275,7 @@ export function useActiveOrder() {
     start,
     clear,
     advanceStatus,
+    setStatus,
     watchKitchen,
     elapsedLabel,
     remainingLabel,
