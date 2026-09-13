@@ -77,7 +77,7 @@ useCafeSeo({
 
         <VisitDirections />
 
-        <div class="mt-10 border border-ink/10 bg-mist/40 p-5">
+        <div class="mt-10 border border-ink/10 bg-mist/40 p-5 no-print">
           <p class="mb-1 text-[0.7rem] text-leaf label-meta">
             {{ t('visitPage.tableOrder') }}
           </p>
@@ -102,6 +102,8 @@ useCafeSeo({
             {{ t('visitPage.tableOrderHint') }}
           </p>
         </div>
+
+        <TableQrSheet />
       </div>
 
       <VisitMap />

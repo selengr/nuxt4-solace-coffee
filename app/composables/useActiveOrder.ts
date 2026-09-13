@@ -2,6 +2,7 @@ export type ServiceMode = 'table' | 'counter'
 export type KitchenStatus = 'received' | 'preparing' | 'ready'
 
 export interface ActiveOrderItem {
+  id?: string
   name: string
   qty: number
   note?: string

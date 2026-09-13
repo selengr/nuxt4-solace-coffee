@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { ServiceMode } from '~/composables/useActiveOrder'
 
-const { info } = useCafe()
+const { info, menu } = useCafe()
 const { t, te, locale } = useI18n()
 const localePath = useLocalePath()
 const route = useRoute()
@@ -14,6 +14,7 @@ const {
   removeItem,
   lineTotalLabel,
   clear,
+  addItem,
 } = useCart()
 const { etaLabel, etaRange } = usePickupEta()
 const { isOpen, statusLabel } = useCafeHours()
@@ -28,6 +29,8 @@ const {
 } = useActiveOrder()
 const { profile, save: saveGuest } = useGuestProfile()
 const { entries: pastOrders, clearHistory } = useOrderHistory()
+const { stamps, stampsNeeded, addStamp, isFull } = useLoyalty()
+const { tx } = useLocaleText()
 
 const serviceMode = ref<ServiceMode>('table')
 const tableNumber = ref('')
@@ -213,13 +216,25 @@ async function submitOrder() {
       status: 'received',
       placedAt: Date.now(),
       items: lines.value.map(line => ({
+        id: line.id,
         name: line.name,
         qty: line.qty,
         note: line.note,
       })),
     })
 
-    toast.success(t('order.sentToast'))
+    const stampResult = addStamp()
+    if (stampResult.added) {
+      toast.success(
+        stampResult.full
+          ? t('order.stampFull', { total: stampsNeeded })
+          : t('order.stampEarned', { current: stamps.value, total: stampsNeeded }),
+      )
+    }
+    else {
+      toast.success(t('order.sentToast'))
+    }
+
     clear()
     notes.value = ''
     tableNumber.value = ''
@@ -253,12 +268,51 @@ function dismissTicket() {
     clearActive()
   }
 }
+
+function printReceipt() {
+  if (import.meta.client) {
+    window.print()
+  }
+}
+
+function reorderEntry(entry: (typeof pastOrders.value)[number]) {
+  let added = 0
+  for (const item of entry.items) {
+    const menuItem = item.id
+      ? menu.find(entryItem => entryItem.id === item.id)
+      : menu.find(entryItem => tx(entryItem.name) === item.name || entryItem.name.en === item.name)
+    if (!menuItem) {
+      continue
+    }
+    addItem(menuItem, item.name, { qty: item.qty, note: item.note })
+    added += 1
+  }
+  if (!added) {
+    toast.error(t('order.reorderEmpty'))
+    return
+  }
+  toast.success(t('order.reorderDone', { count: added }))
+  if (import.meta.client) {
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+}
+
+const receiptTime = computed(() => {
+  if (!active.value) {
+    return ''
+  }
+  const tag = locale.value === 'fa' ? 'fa-IR' : 'en-US'
+  return new Date(active.value.placedAt).toLocaleString(tag, {
+    dateStyle: 'medium',
+    timeStyle: 'short',
+  })
+})
 </script>
 
 <template>
-  <div class="section-space">
+  <div class="order-page section-space">
     <div class="container-site max-w-3xl">
-      <header class="mb-8">
+      <header class="mb-8 no-print">
         <p class="eyebrow">
           {{ t('order.eyebrow') }}
         </p>
@@ -302,7 +356,7 @@ function dismissTicket() {
               class="mx-1 hidden h-px w-4 shrink-0 bg-ink/15 sm:block"
               :class="step > item.n ? '!bg-leaf/50' : ''"
               aria-hidden="true"
-            />
+            ></div>
           </template>
         </ol>
       </header>
@@ -310,7 +364,7 @@ function dismissTicket() {
       <!-- Live ticket -->
       <section
         v-if="active"
-        class="order-ticket overflow-hidden border border-ink/10 bg-foam"
+        class="order-ticket no-print overflow-hidden border border-ink/10 bg-foam"
       >
         <div class="border-b border-ink/10 bg-mist/60 px-5 py-4 sm:px-8 sm:py-5">
           <div class="flex flex-wrap items-start justify-between gap-3">
@@ -333,6 +387,16 @@ function dismissTicket() {
           </div>
           <p class="mt-3 max-w-lg leading-relaxed text-mute">
             {{ waitLede }}
+          </p>
+          <p class="mt-3 text-sm">
+            <NuxtLink
+              :to="localePath('/loyalty')"
+              class="font-medium text-leaf underline-offset-2 hover:underline"
+            >
+              {{ isFull
+                ? t('order.loyaltyFull')
+                : t('order.loyaltyProgress', { current: stamps, total: stampsNeeded }) }}
+            </NuxtLink>
           </p>
         </div>
 
@@ -434,7 +498,7 @@ function dismissTicket() {
             </li>
           </ul>
 
-          <div class="flex flex-wrap items-center gap-3">
+          <div class="flex flex-wrap items-center gap-3 no-print">
             <BaseButton
               v-if="active.status === 'ready'"
               type="button"
@@ -451,6 +515,13 @@ function dismissTicket() {
             >
               {{ t('order.keepBrowsing') }}
             </BaseButton>
+            <BaseButton
+              type="button"
+              variant="ink"
+              @click="printReceipt"
+            >
+              {{ t('order.printReceipt') }}
+            </BaseButton>
             <button
               type="button"
               class="text-sm text-mute underline-offset-2 hover:text-ink hover:underline"
@@ -462,7 +533,45 @@ function dismissTicket() {
         </div>
       </section>
 
-      <template v-else>
+      <!-- Print-only receipt -->
+      <section
+        v-if="active"
+        class="order-receipt hidden print:block"
+      >
+        <p class="mb-1 text-sm">
+          {{ info.name }}
+        </p>
+        <h2 class="mb-1 font-display text-2xl">
+          {{ t('order.receiptTitle') }}
+        </h2>
+        <p class="mb-4 text-sm">
+          {{ t('order.ticket', { id: active.orderId }) }} · {{ receiptTime }}
+        </p>
+        <p class="mb-1">
+          {{ t('order.forGuest') }}: {{ active.customerName }}
+        </p>
+        <p class="mb-4">
+          {{ active.mode === 'table'
+            ? t('order.historyTable', { table: active.table || '—' })
+            : t('order.serviceCounter') }}
+        </p>
+        <ul class="mb-4 list-none space-y-1 p-0">
+          <li
+            v-for="(item, index) in active.items"
+            :key="`print-${item.name}-${index}`"
+          >
+            {{ item.qty }}× {{ item.name }}<span v-if="item.note"> — {{ item.note }}</span>
+          </li>
+        </ul>
+        <p class="text-sm">
+          {{ active.mode === 'table' ? t('order.payNoteTable') : t('order.payNote') }}
+        </p>
+      </section>
+
+      <div
+        v-if="!active"
+        class="no-print"
+      >
         <div
           v-if="tableFromQr && tableNumber"
           class="mb-4 rounded-sm border border-leaf/30 bg-leaf/5 px-4 py-3 text-sm"
@@ -793,10 +902,17 @@ function dismissTicket() {
                 · {{ entry.items.reduce((sum, item) => sum + item.qty, 0) }}
                 {{ t('order.items') }}
               </p>
+              <button
+                type="button"
+                class="mt-2 text-sm font-medium text-leaf underline-offset-2 hover:underline"
+                @click="reorderEntry(entry)"
+              >
+                {{ t('order.orderAgain') }}
+              </button>
             </li>
           </ul>
         </section>
-      </template>
+      </div>
     </div>
   </div>
 </template>

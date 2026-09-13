@@ -246,6 +246,21 @@
     color: inherit !important;
   }
 
+  .order-receipt {
+    display: block !important;
+    padding: 1rem;
+  }
+
+  .table-qr-sheet {
+    border: none !important;
+    padding: 0 !important;
+  }
+
+  .table-qr-card {
+    break-inside: avoid;
+    page-break-inside: avoid;
+  }
+
   .container-site {
     width: 100% !important;
     max-width: none !important;

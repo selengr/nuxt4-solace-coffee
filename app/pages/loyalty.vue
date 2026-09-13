@@ -1,51 +1,50 @@
 <script setup lang="ts">
-const STAMPS_NEEDED = 8
-
 const { info } = useCafe()
 const { t } = useI18n()
 const localePath = useLocalePath()
 const toast = useToast()
+const {
+  stamps,
+  slots,
+  isFull,
+  stampsNeeded,
+  addStamp,
+  redeem,
+  reset,
+} = useLoyalty()
 
 useSeoMeta({
   title: () => `${t('loyaltyPage.eyebrow')} — ${info.name}`,
   description: () => t('loyaltyPage.seoDescription'),
 })
 
-const stamps = useState<number>('solace-loyalty-stamps', () => 0)
-
-const slots = computed(() =>
-  Array.from({ length: STAMPS_NEEDED }, (_, i) => i < stamps.value),
-)
-
 const progressLabel = computed(() =>
-  t('loyaltyPage.progress', { current: stamps.value, total: STAMPS_NEEDED }),
+  t('loyaltyPage.progress', { current: stamps.value, total: stampsNeeded }),
 )
 
-function addStamp() {
-  if (stamps.value >= STAMPS_NEEDED) {
+function onAddStamp() {
+  const result = addStamp()
+  if (!result.added && result.full) {
     toast.success(t('loyaltyPage.readyHint'))
     return
   }
-  stamps.value += 1
-  if (stamps.value >= STAMPS_NEEDED) {
+  if (result.full) {
     toast.success(t('loyaltyPage.full'))
+    return
   }
-  else {
-    toast.success(t('loyaltyPage.stampAdded'))
-  }
+  toast.success(t('loyaltyPage.stampAdded'))
 }
 
-function redeem() {
-  if (stamps.value < STAMPS_NEEDED) {
+function onRedeem() {
+  if (!redeem()) {
     toast.error(t('loyaltyPage.notReady'))
     return
   }
-  stamps.value = 0
   toast.success(t('loyaltyPage.redeemed'))
 }
 
-function resetCard() {
-  stamps.value = 0
+function onReset() {
+  reset()
   toast.success(t('loyaltyPage.resetDone'))
 }
 </script>
@@ -100,28 +99,34 @@ function resetCard() {
           <BaseButton
             type="button"
             variant="ink"
-            @click="addStamp"
+            @click="onAddStamp"
           >
             {{ t('loyaltyPage.addStamp') }}
           </BaseButton>
           <BaseButton
             type="button"
             variant="primary"
-            :disabled="stamps < STAMPS_NEEDED"
-            @click="redeem"
+            :disabled="!isFull"
+            @click="onRedeem"
           >
             {{ t('loyaltyPage.redeem') }}
           </BaseButton>
-          <BaseButton
+          <button
             type="button"
-            variant="ghost"
-            @click="resetCard"
+            class="text-sm text-mute underline-offset-2 hover:text-ink hover:underline"
+            @click="onReset"
           >
             {{ t('loyaltyPage.reset') }}
-          </BaseButton>
+          </button>
         </div>
         <p class="mt-4 text-sm text-mute">
           {{ t('loyaltyPage.demoNote') }}
+        </p>
+        <p
+          v-if="isFull"
+          class="mt-3 text-sm font-medium text-leaf"
+        >
+          {{ t('loyaltyPage.readyHint') }}
         </p>
       </section>
 
@@ -140,12 +145,20 @@ function resetCard() {
         </li>
       </ul>
 
-      <BaseButton
-        :to="localePath('/visit')"
-        variant="ink"
-      >
-        {{ t('loyaltyPage.cta') }}
-      </BaseButton>
+      <div class="flex flex-wrap gap-3">
+        <BaseButton
+          :to="localePath('/menu')"
+          variant="primary"
+        >
+          {{ t('loyaltyPage.ctaOrder') }}
+        </BaseButton>
+        <BaseButton
+          :to="localePath('/visit')"
+          variant="ink"
+        >
+          {{ t('loyaltyPage.cta') }}
+        </BaseButton>
+      </div>
     </div>
   </div>
 </template>
