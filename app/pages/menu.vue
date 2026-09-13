@@ -31,11 +31,6 @@ function closeDetail() {
   detailOpen.value = false
 }
 
-function addFromDetail(item: MenuItem) {
-  addToOrder(item)
-  closeDetail()
-}
-
 const sections = computed(() => [
   { key: 'espresso' as const, title: t('menuPage.espressoTitle') },
   { key: 'brew' as const, title: t('menuPage.brewTitle') },
@@ -281,7 +276,6 @@ function onToggleFavorite(item: MenuItem) {
       :item="selected"
       :open="detailOpen"
       @close="closeDetail"
-      @add="addFromDetail"
       @favorite="onToggleFavorite"
     />
   </div>

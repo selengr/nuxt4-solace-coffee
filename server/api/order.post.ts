@@ -3,6 +3,7 @@ export interface OrderItemPayload {
   name: string
   price: string
   qty: number
+  note?: string
 }
 
 export interface OrderPayload {
@@ -51,9 +52,11 @@ export default defineEventHandler(async (event) => {
   }
 
   const orderId = `SLC-${Date.now().toString(36).toUpperCase()}`
-  const lines = items.map(
-    item => `• ${item.qty}× ${item.name} (${item.price})`,
-  )
+  const lines = items.map((item) => {
+    const base = `• ${item.qty}× ${item.name} (${item.price})`
+    const note = item.note?.trim()
+    return note ? `${base} — ${note}` : base
+  })
 
   const text = [
     `Pickup order ${orderId}`,

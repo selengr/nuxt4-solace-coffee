@@ -5,6 +5,7 @@ export interface CartLine {
   name: string
   price: string
   qty: number
+  note?: string
 }
 
 const CART_KEY = 'solace-cart-v1'
@@ -85,20 +86,30 @@ export function useCart() {
     }
   }
 
-  function addItem(item: MenuItem, displayName?: string) {
+  function addItem(
+    item: MenuItem,
+    displayName?: string,
+    options?: { qty?: number, note?: string },
+  ) {
     const { tx } = useLocaleText()
     const name = displayName || tx(item.name)
+    const qty = Math.max(1, options?.qty ?? 1)
+    const note = options?.note?.trim() || undefined
     const existing = lines.value.find(line => line.id === item.id)
     if (existing) {
-      existing.qty += 1
+      existing.qty += qty
       existing.name = name
+      if (note) {
+        existing.note = note
+      }
       return
     }
     lines.value.push({
       id: item.id,
       name,
       price: item.price,
-      qty: 1,
+      qty,
+      note,
     })
   }
 
@@ -112,6 +123,20 @@ export function useCart() {
       return
     }
     line.qty = qty
+  }
+
+  function setNote(id: string, note: string) {
+    const line = lines.value.find(entry => entry.id === id)
+    if (!line) {
+      return
+    }
+    const next = note.trim()
+    if (next) {
+      line.note = next
+    }
+    else {
+      delete line.note
+    }
   }
 
   function removeItem(id: string) {
@@ -137,6 +162,7 @@ export function useCart() {
     subtotalLabel,
     addItem,
     setQty,
+    setNote,
     removeItem,
     qtyOf,
     lineTotalLabel,

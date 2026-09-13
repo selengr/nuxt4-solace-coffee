@@ -243,6 +243,12 @@ function startNewOrder() {
                 <p class="text-sm text-mute">
                   {{ line.price }} {{ t('order.each') }}
                 </p>
+                <p
+                  v-if="line.note"
+                  class="mt-1 text-sm text-leaf"
+                >
+                  {{ line.note }}
+                </p>
               </div>
 
               <div class="flex items-center gap-2">

@@ -8,15 +8,31 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   close: []
-  add: [MenuItem]
   favorite: [MenuItem]
 }>()
 
 const { t } = useI18n()
 const { tx } = useLocaleText()
+const localePath = useLocalePath()
+const toast = useToast()
 const { isFavorite } = useMenuPrefs()
+const { addItem, qtyOf, setQty } = useCart()
 
 const titleId = 'menu-item-detail-title'
+const pickQty = ref(1)
+const note = ref('')
+
+const inBag = computed(() => (props.item ? qtyOf(props.item.id) : 0))
+
+watch(
+  () => [props.open, props.item?.id] as const,
+  ([isOpen]) => {
+    if (isOpen && props.item) {
+      pickQty.value = 1
+      note.value = ''
+    }
+  },
+)
 
 function onKeydown(event: KeyboardEvent) {
   if (event.key === 'Escape') {
@@ -46,6 +62,26 @@ onUnmounted(() => {
     window.removeEventListener('keydown', onKeydown)
   }
 })
+
+function bumpPick(delta: number) {
+  pickQty.value = Math.min(12, Math.max(1, pickQty.value + delta))
+}
+
+function addToBag(goCheckout = false) {
+  if (!props.item) {
+    return
+  }
+  const name = tx(props.item.name)
+  addItem(props.item, name, {
+    qty: pickQty.value,
+    note: note.value,
+  })
+  toast.success(t('menuPage.addedQty', { name, count: pickQty.value }))
+  emit('close')
+  if (goCheckout) {
+    navigateTo(localePath('/order'))
+  }
+}
 </script>
 
 <template>
@@ -108,17 +144,97 @@ onUnmounted(() => {
           </p>
           <DietaryTags :tags="item.dietary" />
 
-          <div class="mt-auto flex flex-col gap-3 pt-8">
+          <p
+            v-if="inBag"
+            class="mt-4 text-sm text-mute"
+          >
+            {{ t('menuPage.alreadyInBag', { count: inBag }) }}
+          </p>
+
+          <div class="mt-6 grid gap-4">
+            <div>
+              <p class="mb-2 text-sm font-medium">
+                {{ t('menuPage.qty') }}
+              </p>
+              <div class="flex w-full max-w-[11rem] items-center justify-between rounded-sm border border-ink/15">
+                <button
+                  type="button"
+                  class="grid h-11 w-11 place-items-center text-lg transition hover:bg-mist"
+                  :aria-label="t('order.decrease', { name: tx(item.name) })"
+                  @click="bumpPick(-1)"
+                >
+                  −
+                </button>
+                <span class="text-sm font-medium tabular-nums">
+                  {{ pickQty }}
+                </span>
+                <button
+                  type="button"
+                  class="grid h-11 w-11 place-items-center text-lg transition hover:bg-mist"
+                  :aria-label="t('order.increase', { name: tx(item.name) })"
+                  @click="bumpPick(1)"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
+            <label class="grid gap-1.5 text-sm">
+              <span class="font-medium">{{ t('menuPage.itemNote') }}</span>
+              <input
+                v-model="note"
+                type="text"
+                maxlength="80"
+                :placeholder="t('menuPage.itemNotePlaceholder')"
+                class="rounded-sm border border-ink/15 bg-mist/40 px-3 py-3 text-sm outline-none focus:border-leaf focus:bg-foam"
+              >
+            </label>
+          </div>
+
+          <div class="mt-auto flex flex-col gap-2 pt-8">
             <BaseButton
               type="button"
               variant="ink"
-              @click="emit('add', item)"
+              @click="addToBag(false)"
             >
-              {{ t('menuPage.add') }}
+              {{ t('menuPage.addToBag') }}
             </BaseButton>
+            <BaseButton
+              type="button"
+              variant="primary"
+              @click="addToBag(true)"
+            >
+              {{ t('menuPage.addAndCheckout') }}
+            </BaseButton>
+
+            <div
+              v-if="inBag"
+              class="mt-2 flex items-center justify-between rounded-sm border border-ink/10 bg-mist/40 px-3 py-2"
+            >
+              <span class="text-sm text-mute">
+                {{ t('menuPage.inBagNow', { count: inBag }) }}
+              </span>
+              <div class="flex items-center gap-1">
+                <button
+                  type="button"
+                  class="grid h-8 w-8 place-items-center rounded-sm border border-ink/15 text-sm"
+                  @click="setQty(item.id, inBag - 1)"
+                >
+                  −
+                </button>
+                <button
+                  type="button"
+                  class="grid h-8 w-8 place-items-center rounded-sm border border-ink/15 text-sm"
+                  @click="addItem(item, tx(item.name))"
+                >
+                  +
+                </button>
+              </div>
+            </div>
+
             <button
               type="button"
-              class="inline-flex items-center justify-center rounded-sm border border-ink/15 px-5 py-3.5 text-sm font-medium transition hover:border-ink/30"
+              class="mt-2 inline-flex items-center justify-center rounded-sm border border-ink/15 px-5 py-3 text-sm font-medium transition hover:border-ink/30"
               :class="isFavorite(item.id) ? 'border-brass/40 bg-brass/10' : ''"
               @click="emit('favorite', item)"
             >
