@@ -197,14 +197,14 @@ function addToBag(goCheckout = false) {
               variant="ink"
               @click="addToBag(false)"
             >
-              {{ t('menuPage.addToBag') }}
+              {{ t('menuPage.addToOrder') }}
             </BaseButton>
             <BaseButton
               type="button"
               variant="primary"
               @click="addToBag(true)"
             >
-              {{ t('menuPage.addAndCheckout') }}
+              {{ t('menuPage.addAndSend') }}
             </BaseButton>
 
             <div

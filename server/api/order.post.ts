@@ -11,6 +11,8 @@ export interface OrderPayload {
   customerEmail: string
   phone?: string
   notes?: string
+  serviceMode?: 'table' | 'counter'
+  tableNumber?: string
   items: OrderItemPayload[]
 }
 
@@ -26,6 +28,8 @@ export default defineEventHandler(async (event) => {
   const customerEmail = body.customerEmail?.trim() ?? ''
   const phone = body.phone?.trim() ?? ''
   const notes = body.notes?.trim() ?? ''
+  const serviceMode = body.serviceMode === 'counter' ? 'counter' : 'table'
+  const tableNumber = body.tableNumber?.trim() ?? ''
   const items = Array.isArray(body.items) ? body.items : []
 
   const errors: string[] = []
@@ -35,6 +39,9 @@ export default defineEventHandler(async (event) => {
   }
   if (!isEmail(customerEmail)) {
     errors.push('form.errors.email')
+  }
+  if (serviceMode === 'table' && !tableNumber) {
+    errors.push('order.tableRequired')
   }
   if (!items.length) {
     errors.push('form.errors.emptyOrder')
@@ -59,7 +66,8 @@ export default defineEventHandler(async (event) => {
   })
 
   const text = [
-    `Pickup order ${orderId}`,
+    `Café order ${orderId}`,
+    `Service: ${serviceMode === 'table' ? `Table ${tableNumber}` : 'Counter pickup'}`,
     `Customer: ${customerName}`,
     `Email: ${customerEmail}`,
     phone ? `Phone: ${phone}` : null,
@@ -75,7 +83,7 @@ export default defineEventHandler(async (event) => {
     to: config.contactInbox,
     from: config.mailFrom,
     replyTo: customerEmail,
-    subject: `[Solace] Pickup order ${orderId}`,
+    subject: `[Solace] Café order ${orderId}`,
     text,
   })
 
