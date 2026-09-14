@@ -174,11 +174,15 @@ export function useActiveOrder() {
     }
   }
 
-  function watchKitchen() {
+  function watchKitchen(options?: { autoAdvance?: boolean }) {
     if (!import.meta.client || !active.value) {
       return
     }
     startTick()
+    if (options?.autoAdvance === false) {
+      stopKitchen()
+      return
+    }
     syncFromElapsed()
     if (!active.value || active.value.status === 'ready') {
       stopKitchen()
@@ -209,9 +213,6 @@ export function useActiveOrder() {
 
   if (import.meta.client) {
     hydrate()
-    if (active.value) {
-      watchKitchen()
-    }
     if (storageWatching.value === 'off') {
       storageWatching.value = 'on'
       window.addEventListener('storage', (event) => {

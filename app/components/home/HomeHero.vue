@@ -64,6 +64,12 @@ useHead({
           >
             {{ t('hero.ctaOrder') }}
           </BaseButton>
+          <BaseButton
+            :to="localePath('/visit')"
+            variant="ghost"
+          >
+            {{ t('hero.ctaVisit') }}
+          </BaseButton>
         </div>
       </div>
     </div>

@@ -8,6 +8,7 @@
     "dev": "nuxt dev",
     "generate": "nuxt generate",
     "preview": "nuxt preview",
+    "start": "node .output/server/index.mjs",
     "lint": "eslint .",
     "postinstall": "nuxt prepare"
   },

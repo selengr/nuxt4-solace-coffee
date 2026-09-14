@@ -10,7 +10,7 @@ useSeoMeta({
 })
 
 const assets = computed(() => [
-  { title: t('pressPage.asset1Title'), body: t('pressPage.asset1Body'), href: '/favicon.ico' },
+  { title: t('pressPage.asset1Title'), body: t('pressPage.asset1Body'), href: '/favicon.svg' },
   { title: t('pressPage.asset2Title'), body: t('pressPage.asset2Body'), href: '/allergen-card.pdf' },
   { title: t('pressPage.asset3Title'), body: t('pressPage.asset3Body'), href: localePath('/about') },
 ])

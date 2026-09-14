@@ -11,6 +11,8 @@ const exploreLinks = computed(() => [
   { path: '/events', label: t('nav.events') },
   { path: '/blog', label: t('nav.blog') },
   { path: '/about', label: t('nav.about') },
+  { path: '/catering', label: t('nav.catering') },
+  { path: '/wholesale', label: t('nav.wholesale') },
 ])
 
 const helpLinks = computed(() => [
@@ -20,6 +22,8 @@ const helpLinks = computed(() => [
   { path: '/wifi', label: t('nav.wifi') },
   { path: '/loyalty', label: t('nav.loyalty') },
   { path: '/gift-cards', label: t('nav.giftCards') },
+  { path: '/press', label: t('nav.press') },
+  { path: '/care', label: t('nav.care') },
   { path: '/kitchen', label: t('nav.kitchen') },
   { path: '/privacy', label: t('nav.privacy') },
 ])

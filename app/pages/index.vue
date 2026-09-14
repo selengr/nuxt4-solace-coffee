@@ -12,10 +12,14 @@ useCafeSeo({
 <template>
   <div class="home-page">
     <HomeHero />
+    <HomeMarquee />
     <HomeFeatured />
     <HomeStory />
+    <HomeValues />
     <HomeGallery />
     <HomeTestimonials />
+    <HomeJournal />
+    <HomeInstagram />
     <HomeNewsletter />
     <HomeVisit />
   </div>

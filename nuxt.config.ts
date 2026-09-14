@@ -13,7 +13,7 @@ export default defineNuxtConfig({
       pathPrefix: false,
     },
   ],
-  devtools: { enabled: true },
+  devtools: { enabled: process.env.NODE_ENV !== 'production' },
   app: {
     pageTransition: { name: 'page', mode: 'out-in' },
     head: {
@@ -49,6 +49,7 @@ export default defineNuxtConfig({
         },
       ],
       link: [
+        { rel: 'icon', type: 'image/svg+xml', href: '/favicon.svg' },
         { rel: 'preconnect', href: 'https://fonts.googleapis.com' },
         {
           rel: 'preconnect',

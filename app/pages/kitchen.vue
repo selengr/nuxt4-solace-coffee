@@ -23,7 +23,7 @@ useCafeSeo({
 })
 
 onMounted(() => {
-  watchKitchen()
+  watchKitchen({ autoAdvance: false })
 })
 
 const itemCount = computed(() =>
